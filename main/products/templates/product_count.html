@@ -1,0 +1,51 @@
+<small class="fsz-12 color-666 text-uppercase mb-2">قیمت کل:</small>
+
+{% if variant.price %}
+    <h5 class="fsz-30 fw-bold">{{ variant.price }} تومان</h5>
+    
+    <p class="fsz-12 mt-3">
+        <i class="fas fa-check-circle color-green2 me-1"></i>در انبار
+    </p>
+{% else %}
+    <h5 class="fsz-30 fw-bold text-danger">ناموجود</h5>
+    
+    <p class="fsz-12 mt-3 text-danger">
+        <i class="fas fa-times-circle me-1"></i> لطفا گزینه های دیگر رو برسی کنید
+    </p>
+{% endif %}
+
+{% if messages %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+{% if variant.price %}  {# فقط اگر قیمت دارد دکمه‌های کم و زیاد را نمایش بده #}
+    {% if 0 < quantity %}
+    <div class="add-more">
+        <button class="qt-minus" hx-post="{% url 'carts:cart_decrease' %}"
+                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                hx-vals='{"variant":{{ variant.id }}, "product_id": {{product.id}}}'
+                hx-target="#product-list"
+                hx-indicator="#loading-spinner"><i class="fas fa-minus"></i></button>
+
+        <input class="qt border-0" type="text" value="{{quantity}}" />
+
+        <button class="qt-plus" hx-post="{% url 'carts:cartadd' %}"
+                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                hx-vals='{"variant":{{ variant.id }}, "product_id": {{product.id}}}'
+                hx-target="#product-list"
+                hx-indicator="#loading-spinner"><i class="fas fa-plus"></i></button>
+    </div>
+    {% else %}
+    <button type="button"
+            class="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-10 w-100 py-3"
+            hx-post="{% url 'carts:cartadd' %}"
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+            hx-vals='{"variant":{{ variant.id }}, "product_id": {{product.id}}}'
+            hx-target="#product-list"
+            hx-indicator="#loading-spinner">
+        <span>به سبد خرید اضافه کنید</span>
+    </button>
+    {% endif %}
+{% endif %}

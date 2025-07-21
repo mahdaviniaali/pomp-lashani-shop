@@ -1,0 +1,89 @@
+{% if addresses %}
+<!-- نمایش آدرس انتخاب شده -->
+<div class="address-selected mb-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h6 class="fw-500 mb-0">آدرس انتخاب‌شده</h6>
+  </div>
+  
+  <div class="address-card selected">
+    <div class="card-body">
+      <div class="d-flex align-items-start mb-2">
+        <i class="fas fa-map-marker-alt mt-1 me-2 text-primary"></i>
+        <div>
+          <h6 class="fw-500 mb-1">{{ addresses.title }}</h6>
+          <p class="small mb-1">
+            {{ addresses.province }}، {{ addresses.city }}، {{ addresses.address }}
+          </p>
+          <p class="small text-muted mb-0">
+            <i class="fas fa-mail-bulk me-1"></i> کد پستی: {{ addresses.postal_code }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- فیلدهای مخفی برای ارسال داده‌ها -->
+  <input type="hidden" name="step1-address_id" value="{{ addresses.id }}">
+  <input type="hidden" name="step1-address_title" value="{{ addresses.title }}">
+  <input type="hidden" name="step1-address_province" value="{{ addresses.province }}">
+  <input type="hidden" name="step1-address_city" value="{{ addresses.city }}">
+  <input type="hidden" name="step1-address_postal_code" value="{{ addresses.postal_code }}">
+  <input type="hidden" name="step1-address_address" value="{{ addresses.address }}">
+</div>
+
+<!-- دکمه تغییر آدرس -->
+<div id="address" class="mb-4">
+  <button 
+    hx-get="{% url 'users:user_address_list' %}" 
+    hx-target="#address" 
+    class="btn btn-outline-primary rounded-pill">
+    <i class="fas fa-exchange-alt me-2"></i> تغییر آدرس
+  </button>
+</div>
+
+{% else %}
+<!-- حالت عدم وجود آدرس -->
+<div class="empty-address text-center py-4">
+  <div class="mb-3">
+    <i class="fas fa-map-marker-alt fa-3x text-muted opacity-25"></i>
+  </div>
+  <h6 class="fw-500 mb-2">آدرس ثبت‌شده‌ای وجود ندارد</h6>
+  <p class="text-muted small mb-3">برای ادامه فرایند خرید نیاز به ثبت آدرس دارید</p>
+  
+  <!-- دکمه ثبت آدرس جدید -->
+  <div id="address_form">
+    <button 
+      hx-get="{% url 'users:add_address' %}" 
+      hx-target="#address_form" 
+      class="btn btn-primary rounded-pill">
+      <i class="fas fa-plus me-2"></i> ثبت آدرس جدید
+    </button>
+  </div>
+</div>
+{% endif %}
+
+<style>
+  .address-selected {
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: rgba(74, 108, 247, 0.03);
+  }
+  
+  .address-card {
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+  }
+  
+  .address-card.selected {
+    border-color: #4a6cf7;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(74, 108, 247, 0.1);
+  }
+  
+  .empty-address {
+    border: 1px dashed #e9ecef;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+</style>

@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}تکمیل خرید | Djangocenter{% endblock %}
+
+{% block css %}
+<link href="{% static 'pages/css/inner_pages.rtl.css' %}" rel="stylesheet" />
+<link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+<style>
+    /* استایل‌های مینیمال (همانند مرحله اول) */
+    body {
+        background-color: #f8f9fa;
+    }
+    .checkout-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+    }
+    .checkout-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+    .checkout-header {
+        background-color: transparent;
+        border-bottom: 1px solid #eee;
+        padding: 1.25rem 1.5rem;
+    }
+    .checkout-body {
+        padding: 1.5rem;
+    }
+    .step-indicator-delicate {
+        display: flex;
+        position: relative;
+        margin: 2.5rem 0 3rem;
+        padding: 0 1rem;
+    }
+    
+    .step-line {
+        position: absolute;
+        top: 10px;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background-color: #e0e0e0;
+        z-index: 0;
+    }
+    
+    .step {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .step-marker {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #e0e0e0;
+        margin-bottom: 0.8rem;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .step.active .step-marker {
+        background-color: transparent;
+    }
+    
+    .step.active .step-marker::before {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        border: 1px solid #4a6cf7;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+    
+    .step.active .step-marker::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 8px;
+        height: 8px;
+        background-color: #4a6cf7;
+        border-radius: 50%;
+    }
+    
+    .step-label {
+        font-size: 0.85rem;
+        color: #9e9e9e;
+        font-weight: 400;
+        transition: all 0.3s ease;
+        text-align: center;
+        padding: 0 0.5rem;
+    }
+    
+    .step.active .step-label {
+        color: #4a6cf7;
+        font-weight: 500;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.1); opacity: 0.7; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    
+    /* استایل‌های جدید برای مرحله پرداخت */
+    .payment-method {
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    
+    .payment-method:hover {
+        border-color: #4a6cf7;
+        box-shadow: 0 5px 15px rgba(74, 108, 247, 0.1);
+    }
+    
+    .payment-method.selected {
+        border-color: #4a6cf7;
+        background-color: rgba(74, 108, 247, 0.03);
+    }
+    
+    .payment-method .icon {
+        font-size: 1.5rem;
+        color: #4a6cf7;
+        margin-bottom: 0.5rem;
+    }
+    
+    .coupon-form {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+    
+    .coupon-input {
+        flex: 1;
+    }
+    
+    .btn-continue {
+        background-color: #4a6cf7;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    .btn-continue:hover {
+        background-color: #3a5ce4;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(74, 108, 247, 0.2);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="checkout-container">
+    <div class="row g-4">
+        <!-- بخش اصلی فرم -->
+        <div class="col-lg-8">
+            <div class="checkout-card">
+                <div class="checkout-header">
+                    <div class="checkout-body">
+                        <!-- نمایش مراحل پرداخت -->
+                        <div class="step-indicator-delicate">
+                            <div class="step-line"></div>
+                            <div class="step">
+                                <div class="step-marker"></div>
+                                <div class="step-label">اطلاعات ارسال</div>
+                            </div>
+                            <div class="step active">
+                                <div class="step-marker"></div>
+                                <div class="step-label">پرداخت</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-marker"></div>
+                                <div class="step-label">اتمام خرید</div>
+                            </div>
+                        </div>
+
+                        <form id="payment-form" method="POST" action="{% url 'payments:checkout' %}">
+                            {% csrf_token %}
+                            {{ wizard.management_form }}
+                            <!-- بخش روش‌های پرداخت -->
+                            <div class="checkout-card mb-4">
+                                <div class="checkout-header">
+                                    <h6 class="mb-0 fw-500">روش پرداخت</h6>
+                                </div>
+                                <div class="checkout-body">
+                                    <div class="payment-method selected" onclick="selectPayment('gateway')">
+                                       <input type="radio" name="step2-payment_method" value="gateway" class="d-none" checked> 
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon">
+                                                <i class="fas fa-credit-card"></i>
+                                            </div>
+                                            <div class="ms-3">
+                                                <h6 class="fw-500 mb-1">درگاه پرداخت زرین‌پال</h6>
+                                                <p class="text-muted small mb-0">پرداخت آنلاین با تمامی کارت‌های بانکی</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="payment-method" onclick="selectPayment('manual')">
+                                        <input type="radio" name="step2-payment_method" value="manual" class="d-none">
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon">
+                                                <i class="fas fa-exchange-alt"></i>
+                                            </div>
+                                            <div class="ms-3">
+                                                <h6 class="fw-500 mb-1">درگاه کارت به کارت</h6>
+                                                <p class="text-muted small mb-0">انتقال مستقیم به حساب بانکی ما</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- بخش کد تخفیف -->
+                            <div class="checkout-card mb-4">
+                                <div class="checkout-header">
+                                    <h6 class="mb-0 fw-500">کد تخفیف</h6>
+                                </div>
+                                <div class="checkout-body">
+                                    <div class="coupon-form">
+                                        <input type="text" class="form-control coupon-input" placeholder="کد تخفیف خود را وارد کنید">
+                                        <button type="button" class="btn btn-outline-secondary">اعمال</button>
+                                    </div>
+                                    <small class="text-muted mt-2 d-block">در صورت داشتن کد تخفیف، آن را وارد کنید</small>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="checkout-header">
+                            <h5 class="mb-0 fw-500">محصولات</h5>
+                        </div>
+                        <div class="mb-3">
+                        <div id="cart-items-container"
+                            hx-get="{% url 'carts:cart_items_partial' %}"
+                            hx-trigger="load, cartUpdated from:body"
+                            hx-swap="innerHTML">
+                            <!-- محتوای اولیه یا اسکلتون لودر -->
+                            <div class="htmx-indicator">در حال بارگذاری...</div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- بخش خلاصه سفارش -->
+        <div class="col-lg-4">
+            <div class="checkout-card sticky-top" style="top: 20px;">
+                <div class="checkout-header">
+                    <h5 class="mb-0 fw-500">خلاصه سفارش</h5>
+                </div>
+                <div class="checkout-body">
+                    
+
+                    <div class="border-bottom pb-3 mb-3">
+                        <div class="summary-item d-flex justify-content-between">
+                            <span>جمع کل محصولات</span><span 
+                                hx-get="{% url 'carts:get_cart_total' %}" 
+                                hx-trigger="load, cartUpdated from:body"  
+                                hx-swap="innerHTML"                       
+                            >
+                                0 تومان  
+                        </div>
+                        <div class="summary-item d-flex justify-content-between">
+                            <span>هزینه ارسال</span>
+                            <span class="text-success">رایگان</span>
+                        </div>
+                        <div class="summary-item d-flex justify-content-between">
+                            <span>تخفیف</span>
+                            <span class="text-danger">0 تومان</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between fw-bold fs-5 mb-4">
+                        <span>مبلغ قابل پرداخت</span>
+                        <span class="text-primary">1,109,000 تومان</span>
+                    </div>
+
+                    <button type="submit" form="payment-form" class="btn btn-continue w-100 text-white">
+                        پرداخت و تکمیل سفارش
+                    </button>
+
+                    <div class="alert alert-light border mt-3 mb-0">
+                        <small class="d-block mb-1"><i class="fas fa-info-circle me-2"></i> پس از پرداخت، رسید به ایمیل شما ارسال می‌شود</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // تابع انتخاب روش پرداخت
+    function selectPayment(method) {
+        // حذف کلاس selected از همه روش‌ها
+        document.querySelectorAll('.payment-method').forEach(item => {
+            item.classList.remove('selected');
+        });
+        
+        // اضافه کردن کلاس selected به روش انتخاب شده
+        event.currentTarget.classList.add('selected');
+        
+        // پیدا کردن input مربوطه در همان payment-method
+        const input = event.currentTarget.querySelector('input[type="radio"]');
+        if (input) {
+            input.checked = true;
+        }
+    }
+</script>
+
+{% endblock %}

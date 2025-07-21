@@ -1,0 +1,209 @@
+
+/* استایل‌های مینیمال و مدرن */
+.cart-container {
+max-width: 1200px;
+margin: 2rem auto;
+}
+.cart-card {
+border: none;
+border-radius: 12px;
+box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+overflow: hidden;
+margin-bottom: 1.5rem;
+}
+.cart-header {
+background-color: transparent;
+border-bottom: 1px solid #eee;
+padding: 1.25rem 1.5rem;
+}
+.cart-body {
+padding: 1.5rem;
+}
+.product-card {
+display: flex;
+align-items: center;
+padding: 1.5rem;
+border-bottom: 1px solid #f5f5f5;
+transition: all 0.2s ease;
+}
+.product-card:hover {
+background-color: rgba(74, 108, 247, 0.02);
+}
+.product-img {
+width: 100px;
+height: 100px;
+object-fit: contain;
+border-radius: 8px;
+margin-left: 1.5rem;
+}
+.product-info {
+flex: 1;
+}
+.product-title {
+font-weight: 500;
+color: #333;
+margin-bottom: 0.5rem;
+}
+.product-variant {
+font-size: 0.85rem;
+color: #777;
+margin-bottom: 0.5rem;
+}
+.product-price {
+font-weight: 600;
+color: #4a6cf7;
+}
+.quantity-control {
+display: flex;
+align-items: center;
+margin-top: 1rem;
+}
+.quantity-btn {
+width: 32px;
+height: 32px;
+display: flex;
+align-items: center;
+justify-content: center;
+background-color: #f5f5f5;
+border-radius: 6px;
+cursor: pointer;
+user-select: none;
+}
+.quantity-input {
+width: 50px;
+text-align: center;
+border: 1px solid #eee;
+border-radius: 6px;
+margin: 0 0.5rem;
+padding: 0.25rem;
+}
+.remove-btn {
+color: #ff4d4f;
+cursor: pointer;
+transition: all 0.2s ease;
+}
+.remove-btn:hover {
+transform: scale(1.1);
+}
+.summary-card {
+position: sticky;
+top: 20px;
+border-radius: 12px;
+box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+padding: 1.5rem;
+}
+.summary-title {
+font-weight: 600;
+margin-bottom: 1.5rem;
+padding-bottom: 1rem;
+border-bottom: 1px solid #eee;
+}
+.summary-item {
+display: flex;
+justify-content: space-between;
+margin-bottom: 0.75rem;
+}
+.summary-total {
+font-weight: 600;
+font-size: 1.1rem;
+margin-top: 1rem;
+padding-top: 1rem;
+border-top: 1px solid #eee;
+}
+.btn-checkout {
+background-color: #4a6cf7;
+color: white;
+border: none;
+border-radius: 8px;
+padding: 0.75rem;
+font-weight: 500;
+width: 100%;
+margin-top: 1.5rem;
+transition: all 0.2s ease;
+}
+.btn-checkout:hover {
+background-color: #3a5ce4;
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(74, 108, 247, 0.2);
+}
+.empty-cart {
+text-align: center;
+padding: 4rem 0;
+}
+.empty-cart-icon {
+font-size: 5rem;
+color: #ddd;
+margin-bottom: 1.5rem;
+}
+.empty-cart-text {
+font-size: 1.2rem;
+color: #777;
+margin-bottom: 1.5rem;
+}
+.empty-cart-btn {
+background-color: #4a6cf7;
+color: white;
+border: none;
+border-radius: 8px;
+padding: 0.75rem 1.5rem;
+font-weight: 500;
+transition: all 0.2s ease;
+}
+.empty-cart-btn:hover {
+background-color: #3a5ce4;
+}
+
+/* استایل لودینگ */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    display: none;
+}
+
+.loading-spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #4a6cf7;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* استایل شماره سبد خرید */
+.cart-count-badge {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #4a6cf7;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.cart-count-badge.animate {
+    transform: scale(1.2);
+    background-color: #3a5ce4;
+}
+

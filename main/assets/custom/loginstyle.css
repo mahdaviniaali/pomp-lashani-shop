@@ -1,0 +1,65 @@
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .card {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: #4e73df;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 60px;
+            font-size: 1.5rem;
+            border: 2px solid #e3e6f0;
+            border-radius: 8px;
+            text-align: left; /* متن از چپ چین شده */
+            margin: 0 5px;
+            direction: ltr; /* جهت متن از چپ به راست */
+            padding-left: 15px; /* فاصله از چپ */
+            caret-color: #4e73df; /* رنگ مکان‌نما */
+            unicode-bidi: isolate; /* حل مشکل جهت متن */
+        }
+
+         .form-label {
+            text-align: right;
+            display: block;
+            width: 100%;
+            padding-left: 15px; /* فاصله از راست */
+        }
+        
+
+        .otp-input:focus {
+            border-color: #4e73df;
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+        }
+
+        .timer {
+            color: #e74a3b;
+            font-weight: 600;
+        }
+
+        @media (max-width: 576px) {
+            .otp-input {
+                width: 40px;
+                height: 50px;
+                font-size: 1.2rem;
+                margin: 0 3px;
+                padding-left: 10px;
+            }
+
+            .card-body {
+                padding: 1.5rem !important;
+            }
+        }

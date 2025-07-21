@@ -1,0 +1,12 @@
+{% for item in cart_items %}
+<div class="d-flex align-items-center mb-3">
+    <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" 
+         class="rounded-2 me-3" width="60" height="60">
+    <div>
+        <div class="fw-500">{{ item.product.title }}</div>
+        <small class="text-muted">
+            {{ item.quantity }} × {{ item.price|floatformat:"0" }} تومان
+        </small>
+    </div>
+</div>
+{% endfor %}

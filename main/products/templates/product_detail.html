@@ -1,0 +1,378 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Djangocenter Blog List{% endblock %}
+
+
+{% block css %}
+<link href="{% static 'pages/css/product_detail.css' %}" rel="stylesheet" />
+<link href="{% static 'pages/css/inner_pages.rtl.css' %}" rel="stylesheet" />
+<link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block bodystyle %}
+home-style3 sin-prod-pg-1
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'pages/js/inner_pages.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="body-container">
+      <div class="container container-llgg">
+     
+          <!--  Start breadcrumb  -->
+          <section
+            class="tc-breadcrumb-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp"
+          >
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb fw-bold mb-0">
+                <li class="breadcrumb-item color-999"><a href="#">خانه</a></li>
+                <li class="breadcrumb-item color-999">
+                  <a href="#">فروشگاه</a>
+                </li>
+                <li
+                  aria-current="page"
+                  class="breadcrumb-item active color-000"
+                >
+                  {{product.title}}
+                </li>
+              </ol>
+            </nav>
+          </section>
+          <!--  End breadcrumb  -->
+          <!--  Start main details  -->
+          <section class="fixed-section d-lg-none w-100" style="z-index: 99999999999; position:fixed; bottom: 0; left:0; width:100vw; z-index:1050; background:#fff;">
+            <div class="container d-flex align-items-center justify-content-between py-3" style="z-index: 999;">
+              <div class="fixed-section-actions d-flex justify-content-between w-100 align-items-center">
+                <a href="#add-to-cart" class="btn btn-primary btn-sm ms-2">
+                  <i class="la la-cart-plus me-1"></i>افزودن به سبد خرید
+                </a>
+                {% if product.min_price %}
+                  <span class="me-3 fsz-16 fw-600 text-success">{{ variant.price|floatformat:"0" }} تومان</span>
+                {% elif product.need_to_call %}
+                  <span class="me-3 fsz-14 text-warning"><i class="fas fa-phone-alt me-1"></i> تماس بگیرید</span>
+                {% else %}
+                  <span class="me-3 fsz-14 text-danger">عدم موجودی</span>
+                {% endif %}
+              </div>
+            </div>
+          </section>
+          <section
+            class="product-main-details p-30 radius-4 bg-white mt-3 wow fadeInUp">
+          
+            <div class="row">
+              <div class="col-lg-5">
+                <div class="img-slider">
+                  <div class="top-title">
+                  </div>
+                  <div class="swiper-container gallery-top">
+                    <div class="swiper-wrapper">
+                     
+                      <div class="swiper-slide">
+                        <div class="img">
+                          <img alt="" src="{{product.image.url}}"  />
+                        </div>
+                      </div>
+                      {% for image in product.images.all %}
+                      <div class="swiper-slide">
+                        <div class="img">
+                          <img alt="" src="{{ image.image.url }}" />
+                        </div>
+                      </div>
+                      {% endfor %}
+                      <div class="swiper-slide">
+                        <div class="img">
+                          <img alt="" src="{% static 'pages/img/sin_product/prod3.jpg' %}" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="swiper-container gallery-thumbs">
+                    <div class="swiper-wrapper">
+                      <div class="swiper-slide">
+                        <div class="img">
+                          <img alt="" src="{{product.image.url}}" />
+                        </div>
+                      </div>
+                      {% for image in product.images.all %}
+                      <div class="swiper-slide">
+                        <div class="img">
+                          <img alt="" src="{{ image.image.url }}" />
+                        </div>
+                      </div>
+                      {% endfor %}
+                      <div class="swiper-slide">
+                        <div class="img">
+                          <img alt="" src="{% static 'pages/img/sin_product/prod3.jpg' %}" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="info">
+                 
+                  <div class="price mt-20">
+                    <h3 class="fsz-22 fw-600">{{product.title}}</h3>
+                  </div>
+                  <ul class="fsz-12 mt-15 lh-5">
+                    <h4 class="product_title">
+                      مشخصات محصول:
+                    </h4>
+
+                    {% for att in product.attributes.all|slice:":3" %}
+                      <li>
+                        <span class="icon-6 bg-666 rounded-circle me-2"></span>
+                        <strong>{{att.attribute.title}}</strong>:<strong>{{att.value}}</strong>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                  <div class="meta pb-20">
+                    {% for tag in tags %}
+                    
+                    <a class="meta-item color-green2" href="#"
+                      >{{tag}}<span class="bg bg-green2"></span>
+                    </a>
+                    {% endfor %}
+                   
+                  </div>
+                  {% if not product.need_to_call %}
+                  <div class="color-content mb-4">
+                    <p class="color-666">
+                      <strong class="color-000 text-uppercase me-1"
+                        >{{product.variants.first.name}}:</strong>
+
+                    </p>
+                    <div class="color-choose">
+                      <div class="row">
+                        {% for variant in product.variants.all %}
+                          <div class="col-lg-4 col-md-3 col-6">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                id="variant-{{ variant.id }}"
+                                name="variant"
+                                type="radio"
+                                value="{{ variant.id }}"
+                                hx-trigger="change, keyup delay:500ms"
+                                {% if forloop.first %}checked{% endif %}
+                                {% if variant.stock <= 0 %}disabled{% endif %}
+                              />
+                              <label class="form-check-label" for="variant-{{ variant.id }}">
+                                <div class="color-item {% if variant.stock <= 0 %}out-of-stock{% endif %}">
+                                  <div class="inf">
+                                    <p class="fsz-12">{{ variant.value }}</p>
+                                    <strong class="fsz-12">{{ variant.price|floatformat:"0" }} تومان</strong>
+                                    {% if variant.stock <= 0 %}
+                                      <span class="badge bg-danger fsz-10">ناموجود</span>
+                                    {% endif %}
+                                  </div>
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+                        {% empty %}
+                          <p class="fsz-12 mt-2">
+                                  <i class="fas fa-phone-alt me-1"></i>
+                                  <a href="#"> تماس بگیرین</a>
+                          </p>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    
+                    
+                  </div>
+                  {% endif %}
+                  <p class="color-666">
+                    <strong class="color-000 text-uppercase me-1">دسته:</strong>
+                    <span>{{product.category}} </span>
+                  </p>
+                  <p class="color-666">
+                    <strong class="color-000 text-uppercase me-1">برند:</strong>
+                    <span class="color-green2">{{product.brand}}</span>
+                  </p>
+                 
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="payment-side">
+                  {% if not product.need_to_call %}
+                  <div class="payment-card" id="product-list" 
+                            hx-get="{% url 'carts:cart_count' product_id=product.id %}" 
+                            hx-include="[name='variant'] " 
+                            hx-target="#product-list" 
+                            hx-trigger="load,change from:input"
+                            hx-indicator="#loading-spinner">
+                            
+                            {% include 'product_count.html' with product=product %}
+                            
+                    </div>
+                  {% else %}
+                  <div class="text-center mt-3">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                      <span class="text-muted small">قیمت:</span>
+                      <a href="tel:+982122223333" class="text-decoration-none">
+                        <span class="badge text-bg-light border border-1 border-success text-success rounded-pill px-3 py-1">
+                          <i class="fas fa-phone-volume me-1 small"></i>
+                          استعلام قیمت
+                        </span>
+                      </a>
+                    </div>
+                    <p class="text-muted mt-1 small">تماس بگیرید تا بهترین پیشنهاد را دریافت کنید</p>
+                  </div>
+                  {% endif %}
+                  <div class="payment-card">
+                    <span class="q-order py-2 px-3 radius-3 bg-333 text-white">
+                      <i class="la la-tty me-1"></i>
+                      <small>سفارش سریع 24/7</small>
+                    </span>
+                    <h5 class="fsz-22 mt-3 fw-bold">(025) 3886 25 16</h5>
+                  </div>
+                  <p class="color-000 mt-15">
+                    <i class="fal fa-shipping-fast me-2"></i>
+                    <span class="color-666">ارسال از</span>
+                    <strong> تهران</strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!--  End main details  -->
+          <!--  Start products together  -->
+         
+          <!--  End products together  -->
+          <!--  Start details  -->
+          <section class="product-details-container p-4 radius-12 bg-white mt-4 mb-4 wow fadeInUp shadow-sm">
+    <!-- تب‌های محصول -->
+    <ul class="nav nav-pills mb-4 border-bottom pb-3" id="product-tabs" role="tablist">
+        <li class="nav-item me-2" role="presentation">
+            <button class="nav-link active px-4 py-2 rounded-pill fw-medium" 
+                    id="description-tab" 
+                    data-bs-toggle="pill" 
+                    data-bs-target="#description-content"
+                    aria-controls="description-content">
+                <i class="fas fa-align-left me-2"></i>شرح محصول
+            </button>
+        </li>
+        
+        <li class="nav-item" role="presentation">
+            <button class="nav-link px-4 py-2 rounded-pill fw-medium"
+                    id="specs-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#specs-content"
+                    aria-controls="specs-content">
+                <i class="fas fa-list-check me-2"></i>مشخصات فنی
+            </button>
+        </li>
+    </ul>
+
+    <!-- محتوای تب‌ها -->
+    <div class="tab-content pt-2" id="product-tabs-content">
+        <!-- تب شرح محصول -->
+        <div class="tab-pane fade show active" id="description-content" role="tabpanel" aria-labelledby="description-tab">
+            <div class="product-description fsz-16 lh-lg text-justify">
+                {{product.description|safe}}
+            </div>
+        </div>
+        
+        <!-- تب مشخصات فنی -->
+        <div class="tab-pane fade" id="specs-content" role="tabpanel" aria-labelledby="specs-tab">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="specs-card border rounded-3 overflow-hidden">
+                        <div class="specs-table">
+                            {% for att in product.attributes.all %}
+                            <div class="specs-row {% cycle 'odd' 'even' %} d-flex py-3 px-4">
+                                <div class="specs-key flex-grow-1 fw-bold text-dark">
+                                    <i class="fas fa-circle-small text-primary me-2 fsz-10"></i>
+                                    {{att.attribute.title}}
+                                </div>
+                                <div class="specs-value flex-grow-1 text-muted">
+                                    {{att.value}}
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                            <div class="specs-row even d-flex py-3 px-4">
+                                <div class="specs-key flex-grow-1 fw-bold text-dark">
+                                    <i class="fas fa-circle-small text-primary me-2 fsz-10"></i>
+                                    سبک
+                                </div>
+                                <div class="specs-value flex-grow-1 text-muted">
+                                    کلاسیک، مدرن
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+          <!--  End details  -->
+          <!--  Start related  -->
+          <section
+            class="related-products p-30 radius-4 bg-white mt-3 wow fadeInUp mb-3"
+          >
+            <h6 class="fsz-18 fw-bold text-uppercase">محصولات مرتبط</h6>
+            <div class="products-content">
+              <div class="products-slider swiper"
+                data-swiper='{
+                  "slidesPerView": 1,
+                  "spaceBetween": 24,
+                  "breakpoints": {
+                    "576": { "slidesPerView": 2 },
+                    "768": { "slidesPerView": 4 },
+                    "992": { "slidesPerView": 4 },
+                    "1200": { "slidesPerView": 6 }
+                  },
+                  "navigation": {
+                    "nextEl": ".related-products .swiper-button-next",
+                    "prevEl": ".related-products .swiper-button-prev"
+                  }
+                }'>
+                <div class="swiper-wrapper">
+                  {% for product in related_products %}
+                    <div class="swiper-slide">
+                      <div class="product-card">
+                        <a class="img" href="#0">
+                          <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                        </a>
+                        <div class="info">
+                          <h6>
+                            <a
+                              class="prod-title fsz-14 fw-bold mt-2 hover-green2"
+                              href="#"
+                              >{{product.title}}</a
+                            >
+                          </h6>
+                          <div class="price mt-15">
+                            <h5 class="fsz-18 fw-600">
+                              {% if product.product_price %}
+                                {{ product.product_price|floatformat:"0" }} تومان
+                              {% else %}
+                                <p class="fsz-12 mt-2">
+                                  <i class="fas fa-phone-alt me-1"></i>
+                                  <a href="#"> تماس بگیرین</a>
+                                </p>
+                              {% endif %}
+                            </h5>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+              </div>
+            </div>
+          </section>
+      </div>
+    </div>
+
+{% endblock %}

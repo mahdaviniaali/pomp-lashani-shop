@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Djangocenter Blog List{% endblock %}
+
+
+{% block css %}
+<link href="{% static 'pages/css/inner_pages.rtl.css' %}" rel="stylesheet" />
+<link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block bodystyle %}
+home-style3 sin-prod-pg-1
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'pages/js/inner_pages.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+        <main>
+          <!--  Start breadcrumb  -->
+          <section
+            class="tc-breadcrumb-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp"
+          >
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb fw-bold mb-0">
+                <li class="breadcrumb-item color-999">
+                  <a href="checkout.html#">خانه</a>
+                </li>
+                <li class="breadcrumb-item color-999">
+                  <a href="checkout.html#">صفحات</a>
+                </li>
+                <li
+                  aria-current="page"
+                  class="breadcrumb-item active color-000"
+                >
+                  پرداخت
+                </li>
+              </ol>
+            </nav>
+          </section>
+          <!--  End breadcrumb  -->
+          <!--  Start checkout  -->
+          <section class="tc-checkout p-5 radius-4 bg-white mt-3 mb-3">
+          <div class="checkout-form">
+            <h6 class="fsz-18 fw-bold text-uppercase mb-4">پرداخت</h6>
+            <div class="alerts mb-30">
+            
+            <div class="row">
+            
+              <div class="col-lg-7">
+                <div class="card mb-4 border-0 shadow-sm">
+                  <div class="card-header bg-light d-flex justify-content-between align-items-center py-3">
+                    <h6 class="mb-0 fw-bold">اطلاعات کاربر</h6>
+                    <button 
+                      class="btn btn-sm btn-outline-secondary"
+                      hx-get="{% url 'users:compleateprofile' %}" 
+                      hx-target="#userprofile" 
+                      hx-swap="innerHTML">
+                      <i class="fas fa-edit"></i>
+                    </button>
+
+                  </div>
+                  <div class="card-body" id="userprofile">
+
+                  <div  hx-get="{% url 'home:userinfo' %}" hx-trigger="load" hx-target="#userprofile" hx-swap="innerHTML">
+                    <p>در حال بارگذاری...</p>
+                    
+                  </div>
+                  </div>
+                </div>
+
+                <!-- بخش آدرس کاربر -->
+                <div 
+                  id="user-address" 
+                  hx-get="{% url 'home:address' %}" 
+                  hx-trigger="load" 
+                  hx-target="#user-address" 
+                  hx-swap="innerHTML">
+                  <p>در حال بارگذاری...</p>
+                </div>
+              </div>
+
+              <div class="col-lg-5">
+                <!-- محتوای سبد خرید و پرداخت (همان کد قبلی شما) -->
+                <div class="order">
+                  <h6 class="fsz-16 fw-bold mb-30">سفارش شما</h6>
+                  <div class="order-card">
+                    <h6 class="card-title">
+                      <span>محصول</span> <span>در کل</span>
+                    </h6>
+                    <div class="prod-cont">
+                      <div class="prod-card">
+                        <div class="img-side">
+                          <div class="img">
+                            <img
+                              alt=""
+                              src="{% static 'pages/img/products/prod37.png' %}"
+                            />
+                          </div>
+                          <div class="inf">
+                            <p class="fsz-14 fw-500 lh-3">
+                              آناناس MacBook Pro 2022<br />M1/ 512 گیگابایت
+                            </p>
+                            <p class="fsz-14 color-666">x 3</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="worldwide d-flex justify-content-between py-2"
+                      >
+                        <span>حمل و نقل استاندارد در سراسر جهان رایگان</span>
+                        <span class="color-red1">+ 9.50 تومان</span>
+                      </div>
+                    </div>
+                    <div
+                      class="total d-flex justify-content-between py-3 fsz-16 fw-bold"
+                    >
+                      <span>کل سفارش</span>
+                      <span class="color-green2">1،746.50 تومان</span>
+                    </div>
+                  </div>
+                  <div class="payment-card">
+                    <div class="form-check">
+                      <input
+                        checked=""
+                        class="form-check-input"
+                        id="payment1"
+                        name="payment"
+                        type="radio"
+                        value=""
+                      />
+                      <label class="form-check-label" for="payment1">
+                        <h6 class="fw-bold mb-10 fsz-14">
+                          انتقال مستقیم بانک
+                        </h6>
+                        <p class="fsz-13 color-666">
+                          پرداخت خود را مستقیماً به حساب بانکی ما انجام
+                          دهید.لطفاً از شناسه سفارش خود به عنوان مرجع پرداخت
+                          استفاده کنید.سفارش شما ارسال نمی شود تا زمانی که
+                          وجوه در حساب ما پاک نشوند.
+                        </p>
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        id="payment2"
+                        name="payment"
+                        type="radio"
+                        value=""
+                      />
+                      <label class="form-check-label" for="payment2">
+                        <h6 class="fw-bold mb-10 fsz-14">
+                          پول نقد در هنگام تحویل
+                        </h6>
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        id="payment3"
+                        name="payment"
+                        type="radio"
+                        value=""
+                      />
+                      <label class="form-check-label" for="payment3">
+                        <div
+                          class="d-flex align-items-center justify-content-between"
+                        >
+                          <h6 class="fw-bold fsz-14">
+                            پیپ<a
+                              class="text-decoration-underline text-primary fw-400 ms-1"
+                              href="checkout.html#"
+                              >پی پال چیست؟</a
+                            >
+                          </h6>
+                          <div class="img">
+                            <img alt="" src="{% static 'pages/img/paypal.png' %}" />
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                    <a
+                      class="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-30 py-3 px-3 w-100"
+                      href="checkout.html#"
+                    >
+                      <span>ترتیب</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+          <!--  End checkout  -->
+        </main>
+       
+    
+
+{% endblock %}
+   

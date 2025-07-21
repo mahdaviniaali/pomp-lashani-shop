@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Djangocenter Blog List{% endblock %}
+
+
+{% block css %}
+<link href="{% static 'pages/css/inner_pages.rtl.css' %}" rel="stylesheet" />
+<link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block bodystyle %}
+home-style3 sin-prod-pg-1
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'pages/js/inner_pages.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+        <main>
+          <!--  Start breadcrumb  -->
+          <section
+            class="tc-breadcrumb-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp"
+          >
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb fw-bold mb-0">
+                <li class="breadcrumb-item color-999">
+                  <a href="checkout.html#">خانه</a>
+                </li>
+                <li class="breadcrumb-item color-999">
+                  <a href="checkout.html#">صفحات</a>
+                </li>
+                <li
+                  aria-current="page"
+                  class="breadcrumb-item active color-000"
+                >
+                  پرداخت
+                </li>
+              </ol>
+            </nav>
+          </section>
+          <!--  End breadcrumb  -->
+          <!--  Start checkout  -->
+          <section class="tc-checkout p-5 radius-4 bg-white mt-3 mb-3">
+          <div class="checkout-form">
+            <h6 class="fsz-18 fw-bold text-uppercase mb-4">پرداخت</h6>
+            <div class="alerts mb-30">
+            
+            <div class="row">
+            
+              <div class="col-lg-7">
+                  <!-- بخش اطلاعات کاربر -->
+                  <div class="card mb-4 border-0 shadow-sm">
+                      <div class="card-header bg-light d-flex justify-content-between align-items-center py-3">
+                          <h6 class="mb-0 fw-bold">اطلاعات کاربر</h6>
+                          <button 
+                              class="btn btn-sm btn-outline-secondary"
+                              hx-get="{% url 'users:compleateprofile' %}" 
+                              hx-target="#userprofile" 
+                              hx-swap="innerHTML">
+                              <i class="fas fa-edit"></i>
+                          </button>
+                      </div>
+                      <div class="card-body" id="userprofile">
+                          <div hx-get="{% url 'home:userinfo' %}" hx-trigger="load" hx-target="#userprofile" hx-swap="innerHTML">
+                              <p>در حال بارگذاری...</p>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- بخش آدرس کاربر -->
+                  <div id="user-address" 
+                      hx-get="{% url 'home:address' %}" 
+                      hx-trigger="load" 
+                      hx-target="#user-address" 
+                      hx-swap="innerHTML">
+                      <p>در حال بارگذاری...</p>
+                  </div>
+
+                  <!-- بخش جدید: توضیحات مشتری -->
+                  <div class="card mb-4 border-0 shadow-sm">
+                      <div class="card-header bg-light py-3">
+                          <h6 class="mb-0 fw-bold">توضیحات سفارش (اختیاری)</h6>
+                      </div>
+                      <div class="card-body">
+                          <textarea 
+                              class="form-control" 
+                              rows="3" 
+                              placeholder="هر گونه توضیحات یا نکات خاص درباره سفارش خود را اینجا بنویسید..."></textarea>
+                          <small class="text-muted">مثلاً ساعت مناسب برای تحویل، رنگ مورد نظر و ...</small>
+                      </div>
+                  </div>
+
+                  <!-- بخش جدید: روش‌های ارسال -->
+                  <div class="card border-0 shadow-sm mb-4">
+                  <div class="card-header bg-light py-3">
+                      <h6 class="mb-0 fw-bold">روش ارسال</h6>
+                  </div>
+                  <div class="card-body">
+                      <form id="shipping-method-form">
+                          <div class="row g-3">
+                              <!-- روش ارسال ۱ -->
+                              <div class="col-md-4">
+                                  <div class="card h-100 border shipping-method-card" data-shipping-id="1">
+                                      <div class="card-body text-center">
+                                          <input type="radio" name="shipping_method" id="shipping1" value="1" class="d-none" checked>
+                                          <label for="shipping1" class="stretched-link"></label>
+                                          <div class="mb-3">
+                                              <i class="fas fa-truck fa-2x text-primary"></i>
+                                          </div>
+                                          <h5 class="fw-bold mb-2">پست پیشتاز</h5>
+                                          <p class="text-muted small mb-2">تحویل ۲-۳ روز کاری</p>
+                                          <span class="badge bg-success">رایگان</span>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <!-- روش ارسال ۲ -->
+                              <div class="col-md-4">
+                                  <div class="card h-100 border shipping-method-card" data-shipping-id="2">
+                                      <div class="card-body text-center">
+                                          <input type="radio" name="shipping_method" id="shipping2" value="2" class="d-none">
+                                          <label for="shipping2" class="stretched-link"></label>
+                                          <div class="mb-3">
+                                              <i class="fas fa-shipping-fast fa-2x text-primary"></i>
+                                          </div>
+                                          <h5 class="fw-bold mb-2">تیپاکس</h5>
+                                          <p class="text-muted small mb-2">تحویل ۱-۲ روز کاری</p>
+                                          <span class="badge bg-warning text-dark">۱۵,۰۰۰ تومان</span>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <!-- روش ارسال ۳ -->
+                              <div class="col-md-4">
+                                  <div class="card h-100 border shipping-method-card" data-shipping-id="3">
+                                      <div class="card-body text-center">
+                                          <input type="radio" name="shipping_method" id="shipping3" value="3" class="d-none">
+                                          <label for="shipping3" class="stretched-link"></label>
+                                          <div class="mb-3">
+                                              <i class="fas fa-rocket fa-2x text-primary"></i>
+                                          </div>
+                                          <h5 class="fw-bold mb-2">ارسال اکسپرس</h5>
+                                          <p class="text-muted small mb-2">تحویل در همان روز (تهران)</p>
+                                          <span class="badge bg-danger">۳۰,۰۰۰ تومان</span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <!-- فیلدهای مخفی برای ارسال داده -->
+                          <input type="hidden" name="shipping_cost" id="shipping-cost" value="0">
+                          <input type="hidden" name="shipping_name" id="shipping-name" value="پست پیشتاز">
+                      </form>
+                  </div>
+              </div>
+
+              <style>
+                  .shipping-method-card {
+                      cursor: pointer;
+                      transition: all 0.3s ease;
+                  }
+                  .shipping-method-card:hover {
+                      transform: translateY(-5px);
+                      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                  }
+                  input[type="radio"]:checked + label + div {
+                      border: 2px solid #0d6efd !important;
+                      background-color: #f8f9fa;
+                  }
+              </style>
+
+              <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                      const cards = document.querySelectorAll('.shipping-method-card');
+                      const costInput = document.getElementById('shipping-cost');
+                      const nameInput = document.getElementById('shipping-name');
+                      
+                      cards.forEach(card => {
+                          card.addEventListener('click', function() {
+                              // حذف حالت انتخاب از همه کارت‌ها
+                              cards.forEach(c => c.classList.remove('border-primary'));
+                              
+                              // اضافه کردن حالت انتخاب به کارت کلیک شده
+                              this.classList.add('border-primary');
+                              
+                              // آپدیت فیلدهای مخفی
+                              const radio = this.querySelector('input[type="radio"]');
+                              radio.checked = true;
+                              
+                              // آپدیت هزینه و نام روش ارسال
+                              if(radio.value === '1') {
+                                  costInput.value = '0';
+                                  nameInput.value = 'پست پیشتاز';
+                              } else if(radio.value === '2') {
+                                  costInput.value = '15000';
+                                  nameInput.value = 'تیپاکس';
+                              } else {
+                                  costInput.value = '30000';
+                                  nameInput.value = 'ارسال اکسپرس';
+                              }
+                          });
+                      });
+                  });
+              </script>
+              </div>
+
+              <div class="col-lg-5">
+                  <!-- محتوای سبد خرید و پرداخت -->
+                  <div class="order">
+                      <h6 class="fsz-16 fw-bold mb-30">سفارش شما</h6>
+                      <div class="order-card">
+                          <h6 class="card-title">
+                               <span>در کل</span>
+                          </h6>
+                          <div class="prod-cont">
+                              <div class="price-details">
+                                  <div class="d-flex justify-content-between py-2">
+                                      <span>تعداد محصول</span>
+                                      <span>3 عدد</span>
+                                  </div>
+                                  <div class="d-flex justify-content-between py-2">
+                                      <span>جمع قیمت محصولات</span>
+                                      <span>1،737.00 تومان</span>
+                                  </div>
+                                  <div class="d-flex justify-content-between py-2">
+                                      <span>هزینه ارسال</span>
+                                      <span class="color-red1">+ 9.50 تومان</span>
+                                  </div>
+                                  <div class="total d-flex justify-content-between py-3 fsz-16 fw-bold border-top">
+                                      <span>مبلغ قابل پرداخت</span>
+                                      <span class="color-green2">1،746.50 تومان</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <a class="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-30 py-3 px-3 w-100" href="checkout.html#">
+                              <span>ادامه فرایند خرید</span>
+                          </a>
+                      </div>
+                      
+                      
+                  </div>
+              </div>
+            </div>
+          </div>
+        </section>
+          <!--  End checkout  -->
+        </main>
+       
+    
+
+{% endblock %}
+   

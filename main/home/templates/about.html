@@ -1,0 +1,727 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Djangocenter Blog List{% endblock %}
+
+
+{% block css %}
+<link href="{% static 'pages/css/inner_pages.rtl.css' %}" rel="stylesheet" />
+<link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block bodystyle %}
+home-style3 about-pg-1
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'pages/js/inner_pages.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="body-container">
+  <div class="container container-llgg">
+    <!--Contents-->
+    <main>
+      <!--  Start breadcrumb  -->
+      <section
+        class="tc-breadcrumb-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp"
+      >
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb fw-bold mb-0">
+            <li class="breadcrumb-item color-999"><a href="#">خانه</a></li>
+            <li class="breadcrumb-item color-999"><a href="#">صفحات</a></li>
+            <li
+              aria-current="page"
+              class="breadcrumb-item active color-000"
+            >
+              درباره ما
+            </li>
+          </ol>
+        </nav>
+      </section>
+      <!--  End breadcrumb  -->
+      <!--  Start about  -->
+      <section
+        class="tc-main-about p-30 radius-4 bg-white mt-3 wow fadeInUp"
+      >
+        <div class="main-card">
+          <div class="about-banner">
+            <h1 class="fw-400 fsz-45">
+              <strong>بهترین تجربه</strong> <br />همیشه برنده می شود
+            </h1>
+            <p class="fsz-14 color-666 mt-30">
+              #1 بازار آنلاین برای الکترونیکی و فناوری<br />در ماهانتان ،
+              کالیفرنیا
+            </p>
+          </div>
+          <div class="about-numbers">
+            <div class="row">
+              <div class="col-lg-5">
+                <div class="info-text">
+                  <h6 class="fsz-18 text-uppercase fw-bold lh-5">
+                    هدف ما این است که
+                    <span class="color-green2">زندگی را غنی کنیم</span>
+                    <br />
+                    و
+                    <span class="color-green2"
+                      >از طریق فناوری آن را تقویت کنیم</span
+                    >
+                  </h6>
+                </div>
+              </div>
+              <div class="col-lg-7">
+                <div class="numbers">
+                  <div class="row justify-content-between">
+                    <div class="col-lg-4">
+                      <div class="num-card mt-4 mt-lg-0">
+                        <h2 class="fsz-40 text-uppercase">
+                          12،5 میلیون تومان
+                        </h2>
+                        <p class="fsz-12 color-666 text-uppercase">
+                          درآمد کل از<br />2001 - 2023
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="num-card mt-4 mt-lg-0">
+                        <h2 class="fsz-40 text-uppercase">12k+</h2>
+                        <p class="fsz-12 color-666 text-uppercase">
+                          سفارشات تحویل داده شده<br />در هر روز موفق
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="num-card mt-4 mt-lg-0">
+                        <h2 class="fsz-40 text-uppercase">725+</h2>
+                        <p class="fsz-12 color-666 text-uppercase">
+                          فروشگاه و دفتر در ایالات متحده<br />و در سراسر
+                          جهان
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sub-cards">
+          <div class="row gx-2">
+            <div class="col-lg-6 mt-3">
+              <div class="img">
+                <img
+                  alt=""
+                  class="img-cover"
+                  src="assets/img/about/about2.png"
+                />
+              </div>
+            </div>
+            <div class="col-lg-6 mt-3">
+              <div class="info-card">
+                <div class="cont">
+                  <h6 class="fsz-18 fw-bold">
+                    ما میلیون ها خریدار و فروشنده را در سراسر جهان متصل می
+                    کنیم ، مردم را توانمند می کنیم و فرصت اقتصادی را برای
+                    همه ایجاد می کنیم.
+                  </h6>
+                  <p class="fsz-14 color-666 mt-30">
+                    در بازارهای ما ، میلیون ها نفر در سراسر جهان ، چه بصورت
+                    آنلاین و چه آفلاین ، برای ساخت ، فروش و خرید کالاهای
+                    منحصر به فرد وصل می شوند.ما همچنین طیف گسترده ای از
+                    خدمات و ابزارهای فروشنده را ارائه می دهیم که به
+                    کارآفرینان خلاق کمک می کند مشاغل خود را شروع ، مدیریت و
+                    مقیاس کنید.
+                  </p>
+                  <a
+                    class="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-40 py-3"
+                    data-fancybox=""
+                    href="https://www.youtube.com/watch?v=qYgdnM3BC3g"
+                  >
+                    <span> <i class="la la-play me-1"></i>نمایشگاه ما</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--  End about  -->
+      <!--  Start about-cards  -->
+      <section class="tc-about-cards">
+        <div class="row gx-2">
+          <div class="col-lg-4 mt-3">
+            <div class="about-card wow fadeInUp">
+              <div class="title">
+                <h6 class="fsz-18 fw-bold text-uppercase">
+                  100 ٪ معتبر<br />محصولات
+                </h6>
+                <span class="icon">
+                  <i class="la la-check-circle"></i>
+                </span>
+              </div>
+              <div class="text fsz-14 color-666">
+                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و
+                با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه
+                و مجله در.
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 mt-3">
+            <div class="about-card wow fadeInUp" data-wow-delay="0.2s">
+              <div class="title">
+                <h6 class="fsz-18 fw-bold text-uppercase">
+                  سریع<br />تحویل
+                </h6>
+                <span class="icon">
+                  <i class="la la-shipping-fast"></i>
+                </span>
+              </div>
+              <div class="text fsz-14 color-666">
+                حمل و نقل سریع با گزینه زیادی برای تحویل.100 ٪ تضمین می کند
+                که کالاهای شما به موقع به موقع و کیفیت را حفظ می کنند.
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 mt-3">
+            <div class="about-card wow fadeInUp" data-wow-delay="0.4s">
+              <div class="title">
+                <h6 class="fsz-18 fw-bold text-uppercase">
+                  مقرون به صرفه<br />قیمت
+                </h6>
+                <span class="icon">
+                  <i class="la la-hand-holding-usd"></i>
+                </span>
+              </div>
+              <div class="text fsz-14 color-666">
+                ما با قیمت های ویژه و تبلیغاتی قیمت مقرون به صرفه و رقابتی
+                ارائه می دهیم.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--  End about-cards  -->
+      <!--  Start products  -->
+      <section
+        class="tc-mission-vision p-30 radius-4 bg-white mt-3 wow fadeInUp"
+      >
+        <div class="main-content pb-30 border-bottom">
+          <h6 class="fsz-18 fw-bold text-uppercase mb-30">
+            رسالت و چشم انداز ما
+          </h6>
+          <div class="text fsz-14 mb-30">
+            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
+            استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله
+            در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد
+            نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد.
+            کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت.<strong
+              >لورم ایپسوم متن ساخت</strong
+            >لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
+            استفاده از طراحان گرافیک است. چاپگرها و متون بلکه رو.
+          </div>
+          <div class="img th-400">
+            <img
+              alt=""
+              class="img-cover radius-4"
+              src="assets/img/about/about3.png"
+            />
+          </div>
+        </div>
+        <div class="years-content pt-30 pb-30 border-bottom">
+          <h6 class="fsz-18 fw-bold text-uppercase mb-30">
+            از یک فروشگاه خرده فروشی گرفته تا زنجیره جهانی فروشگاه ها
+          </h6>
+          <div class="text fsz-14 mb-30">
+            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
+            استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله
+            در ستون و سطرآنچنا.
+          </div>
+          <div class="years">
+            <div class="row gx-5">
+              <div class="col-lg-6">
+                <div class="year-card">
+                  <strong class="color-000 me-2">1997:</strong>
+                  <span
+                    >یک فروشگاه کوچک واقع در شهر بروکلین ، ایالات متحده
+                    آمریکا</span
+                  >
+                </div>
+                <div class="year-card">
+                  <strong class="color-000 me-2">1998:</strong>
+                  <span
+                    >این یک واقعیت طولانی است که یک خواننده توسط خواندنی ها
+                    منحرف می شود</span
+                  >
+                </div>
+                <div class="year-card">
+                  <strong class="color-000 me-2">2000:</strong>
+                  <span
+                    >لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از
+                    صن</span
+                  >
+                </div>
+                <div class="year-card">
+                  <strong class="color-000 me-2">2002:</strong>
+                  <span
+                    >لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت
+                  </span>
+                </div>
+                <div class="year-card">
+                  <strong class="color-000 me-2">2004:</strong>
+                  <span
+                    >برخلاف تصور عامه ، Lorem Ipsum به سادگی متن تصادفی
+                    نیست</span
+                  >
+                </div>
+                <div class="year-card">
+                  <strong class="color-000 me-2">2005:</strong>
+                  <span
+                    >نکته استفاده از Lorem Ipsum این است که بر خلاف استفاده
+                    از محتوای "در اینجا ، توزیع عادی و کمتری از حروف
+                    دارد.</span
+                  >
+                </div>
+                <div class="year-card">
+                  <strong class="color-000 me-2">2006:</strong>
+                  <span
+                    >انواع بسیاری از معابر Lorem Ipsum در دسترس است ، اما
+                    اکثریت با طنز تزریق شده یا کلمات تصادفی که حتی کمی
+                    باورنکردنی به نظر نمی رسند ، به نوعی دچار تغییر شده
+                    اند.</span
+                  >
+                </div>
+                <div class="year-card">
+                  <strong class="color-000 me-2">2010:</strong>
+                  <span
+                    >تمام ژنراتورهای Lorem ipsum در اینترنت تمایل به تکرار
+                    از پیش تعریف شده دارند</span
+                  >
+                </div>
+                <div class="year-card">
+                  <strong class="color-000 me-2">2013:</strong>
+                  <span>لورم ایپسوم متن ساختگی با تولید ساد</span>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="year-card">
+                  <strong class="color-000 me-2">2014:</strong>
+                  <span
+                    >تغییرات زیادی در معابر Lorem Ipsum در دسترس است ، اما
+                    اکثریت به نوعی دچار تغییر شده اند</span
+                  >
+                </div>
+                <div class="year-card">
+                  <strong class="color-000 me-2">2016:</strong>
+                  <span
+                    >تمام ژنراتورهای Lorem ipsum در اینترنت تمایل دارند که
+                    در صورت لزوم ، تکه های از پیش تعریف شده را تکرار
+                    کنند</span
+                  >
+                </div>
+                <div class="year-card">
+                  <strong class="color-000 me-2">2020:</strong>
+                  <span>لورم ایپسوم متن ساختگی با تولید ساد</span>
+                </div>
+                <div class="year-card">
+                  <strong class="color-000 me-2">2021:</strong>
+                  <span>ساخت این اولین ژنراتور واقعی در اینترنت</span>
+                </div>
+                <div class="year-card">
+                  <strong class="color-000 me-2">2022:</strong>
+                  <span
+                    >LOREM IPSUM که منطقی به نظر می رسد. بنابراین Lorem
+                    Ipsum تولید شده همیشه عاری از تکرار ، طنز تزریق شده
+                    است</span
+                  >
+                </div>
+                <div class="year-card">
+                  <strong class="color-000 me-2">2023:</strong>
+                  <span
+                    >در اینجا تغییرات زیادی در معابر Lorem Ipsum موجود است ،
+                    اما اکثریت به نوعی دچار تغییر شده اند</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="leaderships pt-30">
+          <div class="title mb-30">
+            <div class="row">
+              <div class="col-lg-9">
+                <h6 class="fsz-18 fw-bold text-uppercase">رهبری</h6>
+              </div>
+              <div class="col-lg-3 text-lg-end mt-4 mt-lg-0">
+                <a class="fsz-13 color-666" href="#"
+                  >مشاهده همه<i class="la la-angle-left ms-1"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="leaderships-content">
+            <div class="leader-card">
+              <div class="img">
+                <a class="d-block" href="#">
+                  <img
+                    alt=""
+                    class="main-img img-cover"
+                    src="assets/img/about/members/mem1.png"
+                  />
+                </a>
+                <div class="social-icons">
+                  <a href="#"> <i class="fab fa-twitter"></i> </a>
+                  <a href="#"> <i class="fab fa-linkedin-in"></i> </a>
+                  <a href="#"> <i class="fab fa-instagram"></i> </a>
+                </div>
+              </div>
+              <div class="info pt-15">
+                <h6 class="fsz-16 fw-bold"><a href="#">هنری اوری</a></h6>
+                <small class="fsz-12 color-666 text-uppercase">رئیس</small>
+              </div>
+            </div>
+            <div class="leader-card">
+              <div class="img">
+                <a class="d-block" href="#">
+                  <img
+                    alt=""
+                    class="main-img img-cover"
+                    src="assets/img/about/members/mem2.png"
+                  />
+                </a>
+                <div class="social-icons">
+                  <a href="#"> <i class="fab fa-twitter"></i> </a>
+                  <a href="#"> <i class="fab fa-linkedin-in"></i> </a>
+                  <a href="#"> <i class="fab fa-instagram"></i> </a>
+                </div>
+              </div>
+              <div class="info pt-15">
+                <h6 class="fsz-16 fw-bold"><a href="#">مایکل ادوارد</a></h6>
+                <small class="fsz-12 color-666 text-uppercase"
+                  >معاون رئیس جمهور</small
+                >
+              </div>
+            </div>
+            <div class="leader-card">
+              <div class="img">
+                <a class="d-block" href="#">
+                  <img
+                    alt=""
+                    class="main-img img-cover"
+                    src="assets/img/about/members/mem3.png"
+                  />
+                </a>
+                <div class="social-icons">
+                  <a href="#"> <i class="fab fa-twitter"></i> </a>
+                  <a href="#"> <i class="fab fa-linkedin-in"></i> </a>
+                  <a href="#"> <i class="fab fa-instagram"></i> </a>
+                </div>
+              </div>
+              <div class="info pt-15">
+                <h6 class="fsz-16 fw-bold"><a href="#">ادن خطر</a></h6>
+                <small class="fsz-12 color-666 text-uppercase"
+                  >مدیرعامل</small
+                >
+              </div>
+            </div>
+            <div class="leader-card">
+              <div class="img">
+                <a class="d-block" href="#">
+                  <img
+                    alt=""
+                    class="main-img img-cover"
+                    src="assets/img/about/members/mem4.png"
+                  />
+                </a>
+                <div class="social-icons">
+                  <a href="#"> <i class="fab fa-twitter"></i> </a>
+                  <a href="#"> <i class="fab fa-linkedin-in"></i> </a>
+                  <a href="#"> <i class="fab fa-instagram"></i> </a>
+                </div>
+              </div>
+              <div class="info pt-15">
+                <h6 class="fsz-16 fw-bold">
+                  <a href="#">رابرت داونی جونیور</a>
+                </h6>
+                <small class="fsz-12 color-666 text-uppercase"
+                  >مدیرعامل</small
+                >
+              </div>
+            </div>
+            <div class="leader-card">
+              <div class="img">
+                <a class="d-block" href="#">
+                  <img
+                    alt=""
+                    class="main-img img-cover"
+                    src="assets/img/about/members/mem5.png"
+                  />
+                </a>
+                <div class="social-icons">
+                  <a href="#"> <i class="fab fa-twitter"></i> </a>
+                  <a href="#"> <i class="fab fa-linkedin-in"></i> </a>
+                  <a href="#"> <i class="fab fa-instagram"></i> </a>
+                </div>
+              </div>
+              <div class="info pt-15">
+                <h6 class="fsz-16 fw-bold"><a href="#">ناتان دریک</a></h6>
+                <small class="fsz-12 color-666 text-uppercase"
+                  >مدیر استراتژیست</small
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--  End products  -->
+      <!--  Start partners-clients  -->
+      <section class="partners-clients">
+        <div class="row gx-2">
+          <div class="col-lg-6">
+            <div class="partners p-30 radius-4 bg-white mt-3 wow fadeInUp">
+              <h6 class="fsz-18 fw-bold text-uppercase mb-10">شرکای ما</h6>
+              <div class="logos">
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo9.png" />
+                </a>
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo10.png" />
+                </a>
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo2.png" />
+                </a>
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo3.png" />
+                </a>
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo8.png" />
+                </a>
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo4.png" />
+                </a>
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo5.png" />
+                </a>
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo1.png" />
+                </a>
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo2.png" />
+                </a>
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo3.png" />
+                </a>
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo6.png" />
+                </a>
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo7.png" />
+                </a>
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo8.png" />
+                </a>
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo9.png" />
+                </a>
+                <a class="logo" href="#">
+                  <img alt="" src="assets/img/about/logos/logo10.png" />
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="clients p-30 radius-4 bg-white mt-3 wow fadeInUp">
+              <div class="title mb-30">
+                <div class="row">
+                  <div class="col-lg-9">
+                    <h6 class="fsz-18 fw-bold text-uppercase">
+                      از خریداران دوست داشتنی ما
+                    </h6>
+                  </div>
+                  <div class="col-lg-3 mt-4 mt-lg-0 text-lg-end">
+                    <div class="arrows">
+                      <div class="swiper-button-prev"></div>
+                      <div class="swiper-button-next"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="clients-slider">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <div class="testi-card">
+                      <div class="rate mb-20">
+                        <div class="stars">
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                        </div>
+                        <h6 class="fsz-18 fw-bold">
+                          حمل و نقل سریع و قیمت انعطاف پذیر!
+                        </h6>
+                      </div>
+                      <div class="text fsz-14 mb-40">
+                        وی گفت: "من قبلاً تجربه خرید در سکوی زیادی را به
+                        عنوان Amozon ، Eboy ، Esto و غیره داشتم و دیدم که
+                        بازار Swoo بسیار عالی است. این اولین انتخاب من برای
+                        هر تجربه خرید خواهد بود. قیمت رقابتی ، حمل و نقل
+                        سریع و پشتیبانی 24/7. بسیار توصیه می شود! "
+                      </div>
+                      <div class="btm-items">
+                        <div class="user-info">
+                          <div class="img">
+                            <img alt="" src="assets/img/user.png " />
+                            <span class="icon">
+                              <i class="fas fa-check"></i>
+                            </span>
+                          </div>
+                          <div class="inf">
+                            <h6 class="fsz-18 fw-bold">
+                              Drake N.<small
+                                class="fsz-10 color-green1 ms-1 text-uppercase"
+                                >خریدار تأیید شده</small
+                              >
+                            </h6>
+                            <p class="fsz-12 color-666">
+                              بروکلین ، لس آنجلس
+                            </p>
+                          </div>
+                        </div>
+                        <a
+                          class="text-capitalize color-blue1 text-decoration-underline fsz-11 fw-600"
+                          href="#"
+                          >بلندگو Marshall Standmore / سیاه</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="testi-card">
+                      <div class="rate mb-20">
+                        <div class="stars">
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                        </div>
+                        <h6 class="fsz-18 fw-bold">
+                          حمل و نقل سریع و قیمت انعطاف پذیر!
+                        </h6>
+                      </div>
+                      <div class="text fsz-14 mb-40">
+                        وی گفت: "من قبلاً تجربه خرید در سکوی زیادی را به
+                        عنوان Amozon ، Eboy ، Esto و غیره داشتم و دیدم که
+                        بازار Swoo بسیار عالی است. این اولین انتخاب من برای
+                        هر تجربه خرید خواهد بود. قیمت رقابتی ، حمل و نقل
+                        سریع و پشتیبانی 24/7. بسیار توصیه می شود! "
+                      </div>
+                      <div class="btm-items">
+                        <div class="user-info">
+                          <div class="img">
+                            <img alt="" src="assets/img/user.png " />
+                            <span class="icon">
+                              <i class="fas fa-check"></i>
+                            </span>
+                          </div>
+                          <div class="inf">
+                            <h6 class="fsz-18 fw-bold">
+                              Drake N.<small
+                                class="fsz-10 color-green1 ms-1 text-uppercase"
+                                >خریدار تأیید شده</small
+                              >
+                            </h6>
+                            <p class="fsz-12 color-666">
+                              بروکلین ، لس آنجلس
+                            </p>
+                          </div>
+                        </div>
+                        <a
+                          class="text-capitalize color-blue1 text-decoration-underline fsz-11 fw-600"
+                          href="#"
+                          >بلندگو Marshall Standmore / سیاه</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="testi-card">
+                      <div class="rate mb-20">
+                        <div class="stars">
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                        </div>
+                        <h6 class="fsz-18 fw-bold">
+                          حمل و نقل سریع و قیمت انعطاف پذیر!
+                        </h6>
+                      </div>
+                      <div class="text fsz-14 mb-40">
+                        وی گفت: "من قبلاً تجربه خرید در سکوی زیادی را به
+                        عنوان Amozon ، Eboy ، Esto و غیره داشتم و دیدم که
+                        بازار Swoo بسیار عالی است. این اولین انتخاب من برای
+                        هر تجربه خرید خواهد بود. قیمت رقابتی ، حمل و نقل
+                        سریع و پشتیبانی 24/7. بسیار توصیه می شود! "
+                      </div>
+                      <div class="btm-items">
+                        <div class="user-info">
+                          <div class="img">
+                            <img alt="" src="assets/img/user.png " />
+                            <span class="icon">
+                              <i class="fas fa-check"></i>
+                            </span>
+                          </div>
+                          <div class="inf">
+                            <h6 class="fsz-18 fw-bold">
+                              Drake N.<small
+                                class="fsz-10 color-green1 ms-1 text-uppercase"
+                                >خریدار تأیید شده</small
+                              >
+                            </h6>
+                            <p class="fsz-12 color-666">
+                              بروکلین ، لس آنجلس
+                            </p>
+                          </div>
+                        </div>
+                        <a
+                          class="text-capitalize color-blue1 text-decoration-underline fsz-11 fw-600"
+                          href="#"
+                          >بلندگو Marshall Standmore / سیاه</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--  End partners-clients  -->
+      <!--  Start banner1  -->
+      <section class="tc-banner-style3 mt-3 mb-3">
+        <div class="banner-card text-center">
+          <h6
+            class="d-block d-lg-inline-flex align-items-center fw-400 fsz-18 lh-5"
+          >
+            <img alt="" class="icon-30 me-2" src="assets/img/star.png" />عضو
+            دریافت کنید<span class="text-uppercase text-color"
+              >حمل و نقل رایگان*</span
+            >بدون سفارش حداقل!. *محدودیت اعمال می شود<a
+              class="fsz-14 text-decoration-underline ms-2"
+              href="#"
+              >آزمایش 30 روزه رایگان را امتحان کنید!</a
+            >
+          </h6>
+        </div>
+      </section>
+      <!--  End banner1  -->
+    </main>
+    <!--End-Contents-->
+  </div>
+</div>
+
+{% endblock %}
+

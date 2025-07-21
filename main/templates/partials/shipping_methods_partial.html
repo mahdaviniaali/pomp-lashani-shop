@@ -1,0 +1,33 @@
+<div class="row g-3">
+    {% for method in shipping_methods %}
+    <div class="col-md-4">
+        <div class="shipping-method-card {% if forloop.first %}selected{% endif %}" 
+             onclick="selectShipping({{ method.id }}, {% if method.is_postpaid %}0{% else %}{{ method.price|default:0 }}{% endif %}, '{{ method.name }}')">
+            <div class="p-3 text-center">
+                <input type="radio" name="step1-shippingmethod" 
+                       value="{{ method.id }}" class="d-none" {% if forloop.first %}checked{% endif %}>
+                <div class="mb-3">
+                    {% if method.logo %}
+                    <img src="{{ method.logo.url }}" alt="{{ method.name }}" style="height: 40px;">
+                    {% else %}
+                    <i class="fas fa-truck fa-2x" style="color: #4a6cf7;"></i>
+                    {% endif %}
+                </div>
+                <h6 class="fw-500 mb-2">{{ method.name }}</h6>
+                <p class="text-muted small mb-2">{{ method.description }}</p>
+                <span class="badge rounded-pill 
+                            {% if method.is_postpaid %}text-info
+                            {% elif method.price == 0 or not method.price %}text-success
+                            {% else %}text-warning{% endif %}"
+                    id="shipping-{{ method.id }}-price"
+                    style="background-color: transparent !important; border: none; padding: 0;">
+                    {% if method.is_postpaid %}پس‌کرایه
+                    {% elif method.price == 0 or not method.price %}رایگان
+                    {% else %}{{ method.price}} تومان
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

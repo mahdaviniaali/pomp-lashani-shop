@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}مقالات | وبلاگ شما{% endblock %}
+
+{% block css %}
+<link href="{% static 'pages/css/inner_pages.rtl.css' %}" rel="stylesheet" />
+<link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+<style>
+    /* استایل‌های اختصاصی وبلاگ */
+    .blog-card {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    .blog-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    .blog-img-container {
+        height: 220px;
+        overflow: hidden;
+    }
+    .blog-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    .blog-card:hover .blog-img {
+        transform: scale(1.05);
+    }
+    .blog-category {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: rgba(74, 108, 247, 0.9);
+        color: white;
+        padding: 3px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+    }
+    .blog-meta {
+        color: #6c757d;
+        font-size: 0.85rem;
+    }
+    .blog-meta i {
+        margin-left: 5px;
+    }
+    .read-more {
+        color: #4a6cf7;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+    }
+    .read-more:hover {
+        color: #3a5ce4;
+    }
+    .pagination .page-item.active .page-link {
+        background-color: #4a6cf7;
+        border-color: #4a6cf7;
+    }
+    .pagination .page-link {
+        color: #4a6cf7;
+    }
+</style>
+{% endblock %}
+
+
+
+{% block bodystyle %}  
+"home-style1"
+{% endblock %}
+
+
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h1 class="fw-bold">آخرین مقالات</h1>
+                <p class="text-muted">مطالب آموزشی، تکنولوژی و نکات توسعه وب</p>
+            </div>
+        </div>
+
+        <!-- فیلتر دسته‌بندی -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="" class="btn btn-outline-primary rounded-pill px-3 {% if not active_category %}active{% endif %}">همه مقالات</a>
+                    {% for category in categories %}
+                    <a href="?category={{ category.slug }}" 
+                       class="btn btn-outline-primary rounded-pill px-3 {% if category.slug == active_category %}active{% endif %}">
+                        {{ category.title }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- لیست مقالات -->
+        <div class="row g-4">
+            {% for post in posts %}
+            <div class="col-md-6 col-lg-4">
+                <div class="blog-card">
+                    <div class="position-relative blog-img-container">
+                        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="blog-img">
+                        <span class="blog-category">{{ post.category.title }}</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="d-flex justify-content-between blog-meta mb-2">
+                            <span><i class="far fa-calendar-alt"></i> {{ post.jalali_publish }}</span>
+                            <span><i class="far fa-eye"></i> {{ post.views }} بازدید</span>
+                        </div>
+                        <h4 class="mb-3">{{ post.title }}</h4>
+                        <p class="text-muted">{{ post.summary|truncatewords:20 }}</p>
+                        <a href="{% url 'blog:blogdetail' post.slug %}" class="read-more">
+                            ادامه مطلب
+                            <i class="fas fa-arrow-left me-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-info">مقاله‌ای یافت نشد!</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- صفحه‌بندی -->
+        {% if page_obj.has_other_pages %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if active_category %}&category={{ active_category }}{% endif %}" aria-label="Previous">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                            <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                            {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}{% if active_category %}&category={{ active_category }}{% endif %}">{{ num }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if active_category %}&category={{ active_category }}{% endif %}" aria-label="Next">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

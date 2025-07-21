@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}سبد خرید | Djangocenter{% endblock %}
+
+{% block css %}
+<link href="{% static 'pages/css/cart.css' %}" rel="stylesheet" />
+<link href="{% static 'pages/css/inner_pages.rtl.css' %}" rel="stylesheet" />
+<link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+    <!-- لودینگ overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="cart-container">
+    {% if cart_items %}
+    <div class="row g-4">
+        <!-- بخش محصولات -->
+        <div class="col-lg-8">
+            <div class="cart-card">
+                <div class="cart-header">
+                    <h5 class="mb-0 fw-500">سبد خرید شما ({{ cart_items|length }} محصول)</h5>
+                </div>
+                <div class="cart-body">
+                    {% for item in cart_items %}
+                    <div class="product-card">
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" class="product-img">
+                        <div class="product-info">
+                            <h6 class="product-title">{{ item.product.title }}</h6>
+                            <p class="product-variant">{{ item.productvariant.name }}: {{ item.productvariant.value }}</p>
+                            <p class="product-price">{{ item.price|floatformat:"0" }} تومان</p>
+                            
+                            <div class="quantity-control">
+                                <!-- دکمه کاهش -->
+                                <span class="quantity-btn qt-minus"
+                                    hx-post="{% url 'carts:cart_decrease_just_number' %}"
+                                    hx-trigger="click"
+                                    hx-vals='{"product_id": "{{ item.product.id }}", "variant": "{{ item.productvariant.id }}"}'
+                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                    hx-target="#number{{item.id}}"
+                                    hx-indicator="#loading-overlay">
+                                    <i class="fas fa-minus"></i>
+                                </span>
+                                
+                                <p id="number{{item.id}}" type="text" class="quantity-input" >{{ item.quantity }}</p>
+                                
+                                <!-- دکمه افزایش -->
+                                <span class="quantity-btn qt-plus"
+                                    hx-post="{% url 'carts:cart_add_just_number' %}"
+                                    hx-trigger="click"
+                                    hx-vals='{"product_id": "{{ item.product.id }}", "variant": "{{ item.productvariant.id }}"}'
+                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                    hx-target="#number{{item.id}}"
+                                    hx-indicator="#loading-overlay">
+                                    <i class="fas fa-plus"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- دکمه حذف -->
+                        <div class="remove-btn"
+                            hx-post="{% url 'carts:cart_remove' %}"
+                            hx-trigger="click"
+                            hx-vals='{"product_id": "{{ item.product.id }}", "variant": "{{ item.productvariant.id }}"}'
+                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                            hx-target="closest .product-card"
+                            hx-swap="outerHTML"
+                            hx-indicator="#loading-overlay">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- بخش خلاصه سفارش -->
+        <div class="col-lg-4">
+            <div class="summary-card">
+                <h6 class="summary-title">خلاصه سفارش</h6>
+                
+                <div class="summary-item">
+                    <span>تعداد کل</span>
+                    <span id="total-items">{{ cart_items|length }}</span>
+                </div>
+                <div class="summary-item">
+                    <span>جمع کل</span>
+                    <span id="total-price">{{ total_price|floatformat:"0" }}</span> تومان
+                </div>
+                <div class="summary-item">
+                    <span>تخفیف</span>
+                    <span class="text-danger">0 تومان</span>
+                </div>
+                <div class="summary-item summary-total">
+                    <span>مبلغ قابل پرداخت</span>
+                    <span class="text-primary">{{ total_price|floatformat:"0" }} تومان</span>
+                </div>
+                
+                <a href="{% url 'payments:checkout' %}" class="btn-checkout">
+                    ادامه خرید
+                </a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-cart">
+        <div class="empty-cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h3 class="empty-cart-text">سبد خرید شما خالی است</h3>
+            <a href="{% url 'products:product_list' %}" class="empty-cart-btn">
+                بازگشت به فروشگاه
+            </a>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
+

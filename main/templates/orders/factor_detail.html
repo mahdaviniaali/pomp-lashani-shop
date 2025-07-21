@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}فاکتور خرید #{{ order.order_number }} | Djangocenter{% endblock %}
+
+{% block css %}
+<link href="{% static 'pages/css/inner_pages.rtl.css' %}" rel="stylesheet" />
+<link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+
+{% if order.status == 'paid' %}
+    {% include 'orders/order_paid.html' %}
+  {% elif order.status == 'pending' %}
+    {% include 'orders/order_pending.html' %}
+  {% elif order.status == 'canceled' %}
+    {% include 'orders/order_failed.html' %}
+  {% elif order.status == 'failed' %}
+    {% include 'orders/order_failed.html' %}
+  {% elif order.status == 'waiting_approval' %}
+    {% include 'orders/order_pending_admin.html' %}
+  {% endif %}
+
+
+{% endblock %}

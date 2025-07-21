@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ post.title }} | وبلاگ شما{% endblock %}
+
+{% block css %}
+<link href="{% static 'pages/css/inner_pages.rtl.css' %}" rel="stylesheet" />
+<link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+<style>
+    .article-header {
+        position: relative;
+        margin-bottom: 3rem;
+    }
+    .article-image {
+        width: 100%;
+        height: 450px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+    .article-title {
+        font-weight: 700;
+        line-height: 1.3;
+        margin-bottom: 1.5rem;
+    }
+    .article-meta {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    .meta-item {
+        display: flex;
+        align-items: center;
+        margin-left: 1.5rem;
+        color: #6c757d;
+    }
+    .meta-item i {
+        margin-left: 5px;
+    }
+    .article-content {
+        line-height: 1.8;
+        font-size: 1.1rem;
+    }
+    .article-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+    }
+    .article-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 2rem 0;
+    }
+    .tag {
+        background: #f1f3ff;
+        color: #4a6cf7;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+    }
+    
+    .related-post {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+    .related-post:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    .comment-form .form-control {
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e9ecef;
+    }
+    .comment-form .form-control:focus {
+        border-color: #4a6cf7;
+        box-shadow: 0 0 0 0.2rem rgba(74, 108, 247, 0.1);
+    }
+</style>
+{% endblock %}
+
+
+
+{% block bodystyle %}  
+"home-style1"
+{% endblock %}
+
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- هدر مقاله -->
+                <div class="article-header">
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="article-image">
+                </div>
+
+                <!-- محتوای مقاله -->
+                <article>
+                    <h1 class="article-title">{{ post.title }}</h1>
+                    
+                    <div class="article-meta">
+                        <div class="meta-item">
+                            <i class="far fa-calendar-alt"></i>
+                            <span>{{ post.created_at }}</span>
+                        </div>
+                        
+                        <div class="meta-item">
+                            <i class="far fa-clock"></i>
+                            <span>زمان مطالعه: {{ post.reading_time }} دقیقه</span>
+                        </div>
+                    </div>
+
+                    <div class="article-content">
+                        {{ post.content|safe }}
+                    </div>
+
+                    <!-- تگ‌ها -->
+                    {% if post.tags.all %}
+                    <div class="article-tags">
+                        {% for tag in post.tags.all %}
+                        <a href="" class="tag">#{{ tag.name }}</a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </article>
+                <!-- بخش نظرات -->
+                <div class="mt-5 pt-4 border-top">
+    <h4 class="mb-4">نظرات 
+    
+    <!-- فرم نظر با HTMX پیشرفته -->
+    <form hx-post="{% url 'blog:add_comment' post.id %}"
+          hx-target=".comments-list"
+          hx-swap="afterbegin"
+          _="on htmx:afterRequest reset() me"
+          class="comment-form mb-5">
+        {% csrf_token %}
+        <div class="row g-3">
+            <div class="col-12">
+                <textarea name="body" class="form-control" rows="4" placeholder="نظر شما..." required></textarea>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary px-4"
+                        _="on click if my.form.checkValidity() is false call event.preventDefault()">
+                    ارسال نظر
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- لیست نظرات -->
+    <div class="comments-list" hx-get="{% url 'blog:comment_list' post.id %}" 
+                                            hx-trigger="load, new-comment from:body">
+                        {% include 'comment_list.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- مقالات مرتبط -->
+        {% if related_posts %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="mb-4">مقالات مرتبط</h3>
+            </div>
+            
+            {% for related in related_posts %}
+            <div class="col-md-4">
+                <a href="{% url 'blog:detail' related.slug %}" class="text-decoration-none text-dark">
+                    <div class="related-post">
+                        <div class="p-4">
+                            <h5>{{ related.title }}</h5>
+                            <p class="text-muted small">{{ related.summary|truncatewords:15 }}</p>
+                            <div class="d-flex justify-content-between small">
+                                <span>{{ related.jalali_publish }}</span>
+                                <span>{{ related.views }} بازدید</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

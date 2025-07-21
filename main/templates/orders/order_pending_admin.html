@@ -1,0 +1,256 @@
+{% load static %}
+{% load humanize %}
+
+<style>
+    /* استایل‌های پایه */
+    .invoice-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        font-family: 'Yekan', 'Segoe UI', Tahoma, sans-serif;
+    }
+    
+    .invoice-card {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        background: white;
+    }
+    
+    /* هدر سفارش */
+    .invoice-header {
+        padding: 1.5rem;
+        color: white;
+        background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+    }
+    
+    .invoice-title {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .invoice-subtitle {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+    
+    .invoice-status {
+        display: inline-block;
+        padding: 0.35rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        font-size: 0.85rem;
+        background-color: rgba(179, 229, 252, 0.3);
+        border: 1px solid rgba(179, 229, 252, 0.5);
+    }
+    
+    /* بخش بدنه */
+    .invoice-body {
+        padding: 2rem;
+    }
+    
+    .invoice-section {
+        margin-bottom: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #00796b;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #e0f2f1;
+    }
+    
+    /* بخش اطلاع‌رسانی */
+    .alert {
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
+    }
+    
+    .alert-info {
+        background-color: #e1f5fe;
+        border-color: #b3e5fc;
+        color: #006064;
+    }
+    
+    .alert-light {
+        background-color: #f5f5f5;
+        border-color: #eee;
+    }
+    
+    /* تایم‌لاین */
+    .timeline {
+        position: relative;
+        padding-right: 30px;
+        margin-top: 1.5rem;
+    }
+    
+    .timeline-item {
+        position: relative;
+        padding-bottom: 25px;
+    }
+    
+    .timeline-badge {
+        position: absolute;
+        right: -15px;
+        top: 0;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #cfd8dc;
+        z-index: 2;
+        border: 2px solid white;
+    }
+    
+    .timeline-item.active .timeline-badge {
+        background: #00bcd4;
+        box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2);
+    }
+    
+    .timeline-content {
+        padding-right: 30px;
+        position: relative;
+    }
+    
+    .timeline-content h6 {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.25rem;
+    }
+    
+    .timeline-content small {
+        color: #78909c;
+        font-size: 0.85rem;
+    }
+    
+    .timeline-content::before {
+        content: '';
+        position: absolute;
+        right: 5px;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        background: #e0e0e0;
+    }
+    
+    .timeline-item:last-child .timeline-content::before {
+        display: none;
+    }
+    
+    /* آیکون‌ها */
+    .fa-clock {
+        color: #00bcd4;
+    }
+    
+    .fa-info-circle {
+        color: #00796b;
+    }
+    
+    /* رسپانسیو */
+    @media (max-width: 768px) {
+        .invoice-header {
+            padding: 1rem;
+        }
+        
+        .invoice-title {
+            font-size: 1.3rem;
+        }
+        
+        .invoice-body {
+            padding: 1.5rem;
+        }
+        
+        .alert {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .alert i {
+            margin-bottom: 0.5rem;
+            margin-right: 0;
+        }
+        
+        .timeline {
+            padding-right: 20px;
+        }
+        
+        .timeline-badge {
+            right: -10px;
+        }
+    }
+</style>
+
+<div class="invoice-container">
+    <div class="invoice-card">
+        <div class="invoice-header" style="background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="invoice-title">فاکتور خرید #{{ order.order_number }}</h1>
+                    <p class="invoice-subtitle">تاریخ ثبت: {{ order.created_at|date:"Y/m/d H:i" }}</p>
+                </div>
+                <div>
+                    <span class="invoice-status" style="background-color: #b3e5fc; color: #006064;">
+                        در انتظار تایید ادمین
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="invoice-body">
+            <!-- بخش‌های مشترک از order_detail.html -->
+            
+            <!-- بخش وضعیت سفارش -->
+            <div class="invoice-section">
+                <h3 class="section-title">وضعیت سفارش</h3>
+                <div class="alert alert-info">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-clock fa-2x me-3"></i>
+                        <div>
+                            <h5 class="mb-1">سفارش در حال بررسی است</h5>
+                            <p class="mb-0">سفارش شما توسط تیم پشتیبانی در حال بررسی می‌باشد. نتیجه بررسی به ایمیل و پیامک ارسال خواهد شد.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline mt-4">
+                    <div class="timeline-item active">
+                        <div class="timeline-badge"></div>
+                        <div class="timeline-content">
+                            <h6>ثبت سفارش</h6>
+                            <small class="text-muted">{{ order.created_at|date:"Y/m/d H:i" }}</small>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-badge"></div>
+                        <div class="timeline-content">
+                            <h6>تایید ادمین</h6>
+                            <small class="text-muted">در حال انتظار</small>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-badge"></div>
+                        <div class="timeline-content">
+                            <h6>آماده‌سازی</h6>
+                            <small class="text-muted">بعد از تایید</small>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-badge"></div>
+                        <div class="timeline-content">
+                            <h6>تحویل</h6>
+                            <small class="text-muted">مرحله نهایی</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- بخش پشتیبانی -->
+            <div class="alert alert-light mt-4">
+                <h6><i class="fas fa-info-circle me-2"></i> اطلاعات تماس</h6>
+                <p class="mb-1">برای پیگیری سفارش می‌توانید با پشتیبانی تماس بگیرید:</p>
+                <p class="mb-0"><strong>تلفن پشتیبانی:</strong> ۰۲۱-۱۲۳۴۵۶۷۸</p>
+            </div>
+        </div>
+    </div>
+</div>

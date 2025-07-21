@@ -1,0 +1,87 @@
+/* استایل‌های اصلی */
+.product-details-container {
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.product-details-container:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* استایل تب‌ها */
+.nav-pills .nav-link {
+    color: #495057;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.nav-pills .nav-link:hover {
+    color: #0d6efd;
+    background-color: #f8f9fa;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+}
+
+/* استایل بخش مشخصات فنی */
+.specs-card {
+    background: white;
+}
+
+.specs-row {
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+}
+
+.specs-row:last-child {
+    border-bottom: none;
+}
+
+.specs-row.odd {
+    background-color: #f9f9f9;
+}
+
+.specs-row:hover {
+    background-color: #f5f7ff !important;
+}
+
+.specs-key i {
+    transition: transform 0.3s ease;
+}
+
+.specs-row:hover .specs-key i {
+    transform: scale(1.3);
+    color: #6a11cb !important;
+}
+
+/* استایل بخش توضیحات */
+.product-description {
+    line-height: 2;
+}
+
+.product-description img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+/* واکنشگرایی */
+@media (max-width: 768px) {
+    .specs-row {
+        flex-direction: column;
+    }
+    
+    .specs-key, .specs-value {
+        width: 100%;
+        padding: 0.25rem 0;
+    }
+    
+    .nav-pills .nav-link {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}

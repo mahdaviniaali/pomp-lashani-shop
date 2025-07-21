@@ -1,0 +1,86 @@
+<form id="profile-form" class="needs-validation" novalidate>
+  {% csrf_token %}
+  {{errors|safe}}
+  <div class="row">
+    <!-- فیلد اجباری نام کامل -->
+    <div class="col-md-6 mb-3">
+      <div class="form-group position-relative">
+        <label class="d-flex align-items-center text-muted mb-2">
+          <i class="fas fa-user-circle me-2 text-primary"></i>
+          نام کامل *
+        </label>
+        <input 
+          type="text" 
+          class="form-control fw-bold" 
+          name="fullname" 
+          value="{{ user.fullname|default:'' }}"
+          placeholder="نام و نام خانوادگی"
+          required = True
+        >
+        <div class="invalid-feedback text-danger fsz-12">
+          لطفاً نام کامل خود را وارد کنید
+        </div>
+      </div>
+    </div>
+    
+    <!-- فیلد اختیاری کد ملی -->
+    <div class="col-md-6 mb-3">
+      <div class="form-group position-relative">
+        <label class="d-flex align-items-center text-muted mb-2">
+          <i class="fas fa-id-card me-2 text-primary"></i>
+          کد ملی
+        </label>
+        <input 
+          type="text" 
+          class="form-control fw-bold" 
+          name="nationalcode" 
+          value="{{ user.nationalcode|default:'' }}"
+          placeholder="کد ملی (اختیاری)"
+          pattern="\d{10}"
+        >
+        <div class="invalid-feedback text-danger fsz-12">
+          کد ملی باید 10 رقم باشد
+        </div>
+      </div>
+    </div>
+    
+    <!-- فیلد اختیاری ایمیل -->
+    <div class="col-md-6">
+      <div class="form-group position-relative">
+        <label class="d-flex align-items-center text-muted mb-2">
+          <i class="fas fa-envelope me-2 text-primary"></i>
+          ایمیل
+        </label>
+        <input 
+          type="email" 
+          class="form-control fw-bold" 
+          name="email" 
+          value="{{ user.email|default:'' }}"
+          placeholder="example@domain.com"
+        >
+        <div class="invalid-feedback text-danger fsz-12">
+          لطفاً یک ایمیل معتبر وارد کنید
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- دکمه ذخیره -->
+  <div class="mt-4 text-end">
+    <button 
+      type="submit" 
+      class="btn btn-primary px-4"
+      hx-post="{% url 'users:compleateprofile' %}" 
+      hx-target="#userprofile" 
+      hx-swap="innerHTML"
+      hx-include="#profile-form"
+      hx-indicator=".progress-indicator"
+    >
+      <span class="progress-indicator" style="display:none">
+        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+      </span>
+      <i class="fas fa-save me-2"></i>
+      ذخیره تغییرات
+    </button>
+  </div>
+</form>

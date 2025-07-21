@@ -1,0 +1,326 @@
+{% load humanize %}
+
+<style>
+    /* استایل‌های مینیمال */
+    body {
+        background-color: #f8f9fa;
+    }
+    .invoice-container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        padding: 0 15px;
+    }
+    .invoice-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        background: white;
+    }
+    .invoice-header {
+        background: linear-gradient(135deg, #4a6cf7 0%, #6a8eff 100%);
+        color: white;
+        padding: 1.5rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .invoice-body {
+        padding: 2rem;
+    }
+    .invoice-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    .invoice-subtitle {
+        opacity: 0.9;
+        font-size: 0.9rem;
+    }
+    .invoice-status {
+        display: inline-block;
+        padding: 0.35rem 0.8rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    .status-pending {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+    .status-paid {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    .status-canceled {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    .invoice-section {
+        margin-bottom: 2rem;
+    }
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #eee;
+        color: #4a6cf7;
+    }
+    .customer-info p, .shipping-info p {
+        margin-bottom: 0.5rem;
+    }
+    .info-label {
+        font-weight: 500;
+        color: #666;
+        display: inline-block;
+        width: 120px;
+    }
+    .table-items {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .table-items th {
+        background-color: #f8f9fa;
+        padding: 0.75rem;
+        text-align: right;
+        font-weight: 500;
+        color: #555;
+    }
+    .table-items td {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+        vertical-align: top;
+    }
+    .table-items tr:last-child td {
+        border-bottom: none;
+    }
+    .product-name {
+        font-weight: 500;
+    }
+    .product-options {
+        font-size: 0.85rem;
+        color: #666;
+        margin-top: 0.3rem;
+    }
+    .option-item {
+        display: inline-block;
+        margin-left: 0.8rem;
+    }
+    .text-right {
+        text-align: right;
+    }
+    .text-center {
+        text-align: center;
+    }
+    .summary-table {
+        width: 100%;
+    }
+    .summary-table td {
+        padding: 0.5rem 0;
+    }
+    .summary-table tr:last-child td {
+        border-top: 1px solid #eee;
+        font-weight: 600;
+        padding-top: 1rem;
+    }
+    .summary-value {
+        text-align: left;
+    }
+    .postpaid-badge {
+        display: inline-block;
+        background-color: #e3f2fd;
+        color: #1976d2;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        margin-right: 0.5rem;
+    }
+    .invoice-actions {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: space-between;
+    }
+    .btn-print {
+        background-color: #4a6cf7;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .btn-print:hover {
+        background-color: #3a5ce4;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(74, 108, 247, 0.2);
+    }
+    .btn-back {
+        background-color: #f8f9fa;
+        color: #555;
+        border: 1px solid #ddd;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .btn-back:hover {
+        background-color: #e9ecef;
+    }
+    .invoice-footer {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
+        color: #777;
+        font-size: 0.85rem;
+    }
+</style>
+
+
+<div class="invoice-container">
+    <div class="invoice-card">
+        <div class="invoice-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="invoice-title">فاکتور خرید #{{ order.order_number }}</h1>
+                    <p class="invoice-subtitle">تاریخ ثبت: {{ order.created_at|date:"Y/m/d H:i" }}</p>
+                </div>
+                <div>
+                    <span class="invoice-status 
+                        {% if order.status == 'pending' %}status-pending{% endif %}
+                        {% if order.status == 'paid' %}status-paid{% endif %}
+                        {% if order.status == 'canceled' %}status-canceled{% endif %}">
+                        {{ order.get_status_display }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="invoice-body">
+            <!-- بخش اطلاعات مشتری -->
+            <div class="invoice-section">
+                <h3 class="section-title">اطلاعات مشتری</h3>
+                <div class="customer-info">
+                    <p><span class="info-label">نام کامل:</span> {{ order.user_fullname }}</p>
+                    <p><span class="info-label">شماره تماس:</span> {{ order.user_phone_number }}</p>
+                    {% if order.user_email %}<p><span class="info-label">ایمیل:</span> {{ order.user_email }}</p>{% endif %}
+                    {% if order.user_nationalcode %}<p><span class="info-label">کد ملی:</span> {{ order.user_nationalcode }}</p>{% endif %}
+                </div>
+            </div>
+            
+            <!-- بخش اطلاعات ارسال -->
+            <div class="invoice-section">
+                <h3 class="section-title">اطلاعات ارسال</h3>
+                <div class="shipping-info">
+                    <p><span class="info-label">استان:</span> {{ order.address_province }}</p>
+                    <p><span class="info-label">شهر:</span> {{ order.address_city }}</p>
+                    <p><span class="info-label">آدرس:</span> {{ order.address_address }}</p>
+                    <p><span class="info-label">کد پستی:</span> {{ order.address_postal_code }}</p>
+                    {% if order.shipping_method %}
+                    <p>
+                        <span class="info-label">روش ارسال:</span> 
+                        {{ order.shipping_method.name }}
+                        {% if order.shipping_method.is_postpaid %}
+                            <span class="postpaid-badge">پس‌کرایه</span>
+                        {% else %}
+                            ({{ order.shipping_method.price|intcomma }} تومان)
+                        {% endif %}
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- بخش محصولات -->
+            <div class="invoice-section">
+                <h3 class="section-title">محصولات سفارش</h3>
+                <table class="table-items">
+                    <thead>
+                        <tr>
+                            <th class="text-right">محصول</th>
+                            <th class="text-center">تعداد</th>
+                            <th class="text-right">قیمت واحد</th>
+                            <th class="text-right">قیمت کل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items.all %}
+                        <tr>
+                            <td>
+                                <div class="product-name">{{ item.product_name }}</div>
+                                {% if item.options.all %}
+                                <div class="product-options">
+                                    {% for option in item.options.all %}
+                                    <span class="option-item">{{ option.option_name }}: {{ option.option_value }} ({{ option.Price_increase|intcomma }} تومان)</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">{{ item.quantity }}</td>
+                            <td class="text-right">{{ item.price|intcomma }} تومان</td>
+                            <td class="text-right">{{ item.get_total_price|intcomma }} تومان</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- بخش خلاصه پرداخت -->
+            <div class="invoice-section">
+                <h3 class="section-title">خلاصه پرداخت</h3>
+                <table class="summary-table">
+                    <tr>
+                        <td>جمع کل محصولات:</td>
+                        <td class="summary-value">{{ order.get_total_price|intcomma }} تومان</td>
+                    </tr>
+                    <tr>
+                        <td>هزینه ارسال:</td>
+                        <td class="summary-value">
+                            {% if order.shipping_method %}
+                                {% if order.shipping_method.is_postpaid %}
+                                    پس‌کرایه
+                                {% else %}
+                                    {{ order.shipping_method.price|intcomma }} تومان
+                                {% endif %}
+                            {% else %}
+                                رایگان
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>تخفیف:</td>
+                        <td class="summary-value">۰ تومان</td>
+                    </tr>
+                    <tr>
+                        <td>مبلغ پرداخت شده:</td>
+                        <td class="summary-value">{{ order.total_price|intcomma }} تومان</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- بخش توضیحات -->
+            {% if order.description %}
+            <div class="invoice-section">
+                <h3 class="section-title">توضیحات سفارش</h3>
+                <div class="alert alert-light border">
+                    {{ order.description|linebreaks }}
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- دکمه‌های اقدام -->
+            <div class="invoice-actions">
+                <button class="btn-back" onclick="window.history.back()">
+                    <i class="fas fa-arrow-right me-1"></i> بازگشت
+                </button>
+                <button class="btn-print" onclick="window.print()">
+                    <i class="fas fa-print me-1"></i> چاپ فاکتور
+                </button>
+            </div>
+            
+            <div class="invoice-footer">
+                <p>در صورت هرگونه سوال یا مشکل با شماره تلفن ۰۲۱-۱۲۳۴۵۶۷۸ تماس بگیرید</p>
+                <p>سفارش شما با شماره پیگیری {{ order.order_number }} ثبت شده است</p>
+            </div>
+        </div>
+    </div>
+</div>

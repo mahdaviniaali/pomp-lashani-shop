@@ -1,0 +1,68 @@
+{% if user.fullname %}
+<div class="row">
+  <!-- فیلد نام کامل -->
+  <div class="col-md-6 mb-3">
+    <div class="d-flex align-items-center">
+      <i class="fas fa-user-circle me-2 text-primary"></i>
+      <div class="w-100">
+        <small class="text-muted d-block">نام کامل</small>
+        <input type="text" class="form-control" 
+               name="step1-user_fullname" 
+               value="{% firstof form_data.user_fullname user.fullname '' %}" 
+               required>
+      </div>
+    </div>
+  </div>
+
+  <!-- فیلد کد ملی -->
+  <div class="col-md-6 mb-3">
+    <div class="d-flex align-items-center">
+      <i class="fas fa-id-card me-2 text-primary"></i>
+      <div class="w-100">
+        <small class="text-muted d-block">کد ملی</small>
+        <input type="text" class="form-control" 
+               name="step1-user_nationalcode" 
+               value="{% firstof form_data.user_nationalcode user.nationalcode '' %}" 
+               required>
+      </div>
+    </div>
+  </div>
+
+  <!-- فیلد شماره تماس -->
+  <div class="col-md-6 mb-3">
+    <div class="d-flex align-items-center">
+      <i class="fas fa-phone me-2 text-primary"></i>
+      <div class="w-100">
+        <small class="text-muted d-block">شماره تماس</small>
+        <input type="text" class="form-control" 
+               name="step1-user_phone_number" 
+               value="{% firstof form_data.user_phone_number user.phone_number '' %}" 
+               required>
+      </div>
+    </div>
+  </div>
+
+  <!-- فیلد ایمیل -->
+  <div class="col-md-6 mb-3">
+    <div class="d-flex align-items-center">
+      <i class="fas fa-envelope me-2 text-primary"></i>
+      <div class="w-100">
+        <small class="text-muted d-block">ایمیل</small>
+        <input type="email" class="form-control" 
+               name="step1-user_email" 
+               value="{% firstof form_data.user_email user.email '' %}" 
+               required>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="col-md-6 mb-3">
+    <div class="d-flex align-items-center">
+      <i class="fas fa-user-circle me-2 text-primary"></i>
+      <div>
+        <small class="text-muted d-block">لطفا اطلاعات خود را تکمیل کنید </small>
+      </div>
+    </div>
+</div>
+{% endif %}

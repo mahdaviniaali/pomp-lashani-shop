@@ -1,0 +1,491 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Djangocenter Blog List{% endblock %}
+
+
+{% block css %}
+<link href="{% static 'pages/css/inner_pages.rtl.css' %}" rel="stylesheet" />
+<link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block bodystyle %}
+home-style3 profile-pg-1
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'pages/js/inner_pages.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+  <div class="body-container">
+    <div class="container container-llgg">
+      
+      <!--Contents-->
+      <main>
+        <!--  Start breadcrumb  -->
+        <section
+          class="tc-breadcrumb-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp"
+        >
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb fw-bold mb-0">
+              <li class="breadcrumb-item color-999"><a href="#">خانه</a></li>
+              <li class="breadcrumb-item color-999"><a href="#">صفحات</a></li>
+              <li
+                aria-current="page"
+                class="breadcrumb-item active color-000"
+              >
+                مشخصات
+              </li>
+            </ol>
+          </nav>
+        </section>
+        <!--  End breadcrumb  -->
+        <!--  Start profile  -->
+        <section
+          class="tc-profile p-30 radius-4 bg-white mt-3 wow fadeInUp mb-3"
+        >
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="tabs-side me-lg-5 mb-4 mb-lg-0">
+                <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link active"
+                      data-bs-target="#pills-prof1"
+                      data-bs-toggle="pill"
+                      id="pills-prof1-tab"
+                    >
+                      <span>اطلاعات حساب</span>
+                      <i class="fal fa-arrow-left"></i>
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      data-bs-target="#pills-prof2"
+                      data-bs-toggle="pill"
+                      id="pills-prof2-tab"
+                    >
+                      <span>سفارش من</span> <i class="fal fa-arrow-left"></i>
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      data-bs-target="#pills-prof3"
+                      data-bs-toggle="pill"
+                      id="pills-prof3-tab"
+                    >
+                      <span>آدرس من</span> <i class="fal fa-arrow-left"></i>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-9">
+              <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-prof1">
+                  <div class="acount-tab">
+    <h4 class="fw-bold text-capitalize mb-30">اطلاعات حساب</h4>
+    <div class="content">
+        <form id="user-info-form">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group mb-4">
+                        <label>نام<span class="color-red1">*</span></label>
+                        <input 
+                            class="form-control" 
+                            name="fullname" 
+                            type="text" 
+                            value="{{user.fullname}}"
+                          
+                        />
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group mb-4">
+                        <label>کد ملی <span class="color-666">(اختیاری)</span></label>
+                        <input 
+                            class="form-control" 
+                            name="nationalcode" 
+                            type="text" 
+                            value="{{user.nationalcode}}"
+                            
+                        />
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group mb-4">
+                        <label>ایمیل<span class="color-666">(اختیاری)</span></label>
+                        <input 
+                            class="form-control" 
+                            name="email" 
+                            type="email" 
+                            value="{{user.email}}"
+                        />
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <button
+                        id="save-btn"
+                        class="butn bg-gray text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-20 py-3 px-5"
+                        type="button"
+                        disabled
+                        hx-post="{% url 'users:compleateprofile' %}"
+                        hx-trigger="click"
+                        hx-include="#user-info-form"
+                        hx-swap="none"
+                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                    >
+                        <span>ذخیره کردن</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .butn.bg-gray {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+    .butn.bg-green2 {
+        background-color: #4CAF50;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // فعال کردن دکمه هنگام تغییر اطلاعات
+    document.querySelectorAll('#user-info-form input').forEach(input => {
+        input.addEventListener('input', function() {
+            const saveBtn = document.getElementById('save-btn');
+            saveBtn.disabled = false;
+            saveBtn.classList.remove('bg-gray');
+            saveBtn.classList.add('bg-green2');
+        });
+    });
+});
+</script>
+                </div>
+                <div class="tab-pane fade" id="pills-prof2">
+                  <div class="orders-tab">
+                    <h4 class="fw-bold text-capitalize mb-30">
+                      تاریخ سفارشات
+                    </h4>
+                    <div class="orders">
+                      {% for order in user.order.all %}
+                      <div class="compact-order-card" onclick="window.location.href='{% url 'users:user_order_detail' order.id %}'">
+                          <div class="order-header">
+                              <div class="order-meta">
+                                  <span class="order-number">#{{ order.order_number }}</span>
+                                  <span class="order-date">{{ order.created_at|date:"Y/m/d" }}</span>
+                              </div>
+                              <div class="order-status {% if order.status == 'COMPLETED' %}completed
+                                        {% elif order.status == 'PENDING' %}pending
+                                        {% elif order.status == 'FAILED' %}failed
+                                        {% else %}unknown{% endif %}">
+                                  {{ order.get_status_display }}
+                              </div>
+                          </div>
+                          
+                          <div class="order-preview">
+                              <div class="products-preview">
+                                  {% for item in order.items.all|slice:":3" %}
+                                  <div class="product-item">
+                                      <span class="product-name">{{ item.product_name }}</span>
+                                      <span class="product-qty">×{{ item.quantity }}</span>
+                                  </div>
+                                  {% endfor %}
+                                  {% if order.items.all.count > 3 %}
+                                  <div class="more-items">+{{ order.items.all.count|add:"-3" }} محصول دیگر</div>
+                                  {% endif %}
+                              </div>
+                              
+                              <div class="order-summary">
+                                  <div class="summary-item">
+                                      <span>جمع کل:</span>
+                                      <span class="value">{{ order.total_price|floatformat:"0" }} تومان</span>
+                                  </div>
+                                  <div class="summary-item highlight">
+                                      <span>مبلغ پرداختی:</span>
+                                      <span class="value">{{ order.paid_price|floatformat:"0" }} تومان</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      {% empty %}
+                      <div class="empty-orders">
+                          <i class="fas fa-box-open"></i>
+                          <p>هنوز هیچ سفارشی ثبت نکرده‌اید</p>
+                      </div>
+                      {% endfor %}
+
+<style>
+    .compact-order-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 1px solid #f1f1f1;
+    }
+    
+    .compact-order-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        border-color: #e0e0e0;
+    }
+    
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #f5f5f5;
+    }
+    
+    .order-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .order-number {
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .order-date {
+        font-size: 0.85rem;
+        color: #777;
+    }
+    
+    .order-status {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.8rem;
+        border-radius: 50px;
+        font-weight: 500;
+    }
+    
+    .order-status.completed {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+    
+    .order-status.pending {
+        background-color: #fff8e1;
+        color: #ff8f00;
+    }
+    
+    .order-status.failed {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+    
+    .order-status.unknown {
+        background-color: #e3f2fd;
+        color: #1565c0;
+    }
+    
+    .products-preview {
+        margin-bottom: 1rem;
+    }
+    
+    .product-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px dashed #eee;
+    }
+    
+    .product-item:last-child {
+        border-bottom: none;
+    }
+    
+    .product-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 70%;
+    }
+    
+    .product-qty {
+        color: #777;
+        font-size: 0.9rem;
+    }
+    
+    .more-items {
+        font-size: 0.85rem;
+        color: #4a6cf7;
+        text-align: center;
+        margin-top: 0.5rem;
+    }
+    
+    .order-summary {
+        background: #f9f9f9;
+        border-radius: 8px;
+        padding: 0.75rem;
+        margin-top: 1rem;
+    }
+    
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .summary-item.highlight {
+        font-weight: 600;
+        color: #333;
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid #eee;
+    }
+    
+    .summary-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .empty-orders {
+        text-align: center;
+        padding: 2rem;
+        color: #777;
+    }
+    
+    .empty-orders i {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #ddd;
+    }
+    
+    @media (max-width: 576px) {
+        .compact-order-card {
+            padding: 1rem;
+        }
+        
+        .order-meta {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.3rem;
+        }
+    }
+</style>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="pills-prof3">
+                  <div class="tab-pane fade show active" id="pills-prof1">
+                            <div class="acount-tab">
+                              
+
+                              <!-- بخش آدرس‌های کاربر -->
+                              <h4 class="fw-bold text-capitalize mb-30 mt-40">آدرس‌های من</h4>
+                              <div class="content">
+                                {% for address in user.addresses.all %}
+                                <div class="address-card mb-4 p-4 border rounded {% if address.is_default %}border-success bg-light-success{% endif %}">
+                                  <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                      <h5 class="fw-bold">
+                                        {{ address.title }}
+                                        {% if address.is_default %}
+                                        <span class="badge bg-success ms-2">پیش‌فرض</span>
+                                        {% endif %}
+                                      </h5>
+                                      <p class="mb-1">
+                                        <i class="fas fa-map-marker-alt me-2"></i>
+                                        {{ address.province }}، {{ address.city }}، کدپستی: {{ address.postal_code }}
+                                      </p>
+                                      <p class="mb-0">{{ address.address }}</p>
+                                    </div>
+                                    <div class="address-actions">
+                                      <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editAddressModal" data-address-id="{{ address.id }}">
+                                        ویرایش
+                                      </button>
+                                      <button class="btn btn-sm btn-outline-danger" onclick="confirmDeleteAddress({{ address.id }})">
+                                        حذف
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                                {% empty %}
+                                <div class="alert alert-info">
+                                  هیچ آدرسی ثبت نشده است.
+                                </div>
+                                {% endfor %}
+                                
+                                <button class="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase mt-20 py-3 px-5" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                                  <span>افزودن آدرس جدید</span>
+                                </button>
+                              </div>
+                            </div>
+                  </div>
+
+                  <!-- مودال افزودن آدرس جدید -->
+                  <div class="modal fade" id="addAddressModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">افزودن آدرس جدید</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form method="post" action="">
+                          {% csrf_token %}
+                          <div class="modal-body">
+                            <div class="form-group mb-3">
+                              <label>عنوان آدرس<span class="color-red1">*</span></label>
+                              <input name="title" class="form-control" required>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                  <label>استان<span class="color-red1">*</span></label>
+                                  <input name="province" class="form-control" required>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                  <label>شهر<span class="color-red1">*</span></label>
+                                  <input name="city" class="form-control" required>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group mb-3">
+                              <label>کد پستی<span class="color-red1">*</span></label>
+                              <input name="postal_code" class="form-control" required>
+                            </div>
+                            <div class="form-group mb-3">
+                              <label>آدرس دقیق<span class="color-red1">*</span></label>
+                              <textarea name="address" class="form-control" rows="3" required></textarea>
+                            </div>
+                            <div class="form-check mb-3">
+                              <input name="is_default" type="checkbox" class="form-check-input" id="setAsDefault">
+                              <label class="form-check-label" for="setAsDefault">تنظیم به عنوان آدرس پیش‌فرض</label>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                            <button type="submit" class="btn btn-primary">ذخیره آدرس</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </section>
+        <!--  End profile  -->
+      </main>
+      <!--End-Contents-->
+    </div>
+  </div>
+{% endblock %}

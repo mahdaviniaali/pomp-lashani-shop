@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Djangocenter Blog List{% endblock %}
+
+
+{% block css %}
+<link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block bodystyle %}  
+"home-style1"
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/home_1_scripts.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- نمایش form_data -->
+            <div class="card shadow-sm mb-4 border-primary">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0 d-flex align-items-center">
+                        <i class="fas fa-info-circle me-2"></i>
+                        جزئیات فرم
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for key, value in form_data.items %}
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-start">
+                                <span class="badge bg-light text-dark me-2">{{ forloop.counter }}</span>
+                                <div>
+                                    <small class="text-muted d-block">{{ key|title }}</small>
+                                    <span class="fw-bold">
+                                        {% if value %}
+                                            {{ value }}
+                                        {% else %}
+                                            <span class="text-muted">تعیین نشده</span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="container my-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <!-- نوار پیشرفت -->
+                        <div class="wizard-progress mb-5">
+                            <div class="step {% if wizard.steps.current == 'order_info' %}active{% endif %}">
+                                <span class="step-number">1</span>
+                                <span class="step-title">اطلاعات سفارش</span>
+                            </div>
+                            <div class="step {% if wizard.steps.current == 'payment' %}active{% endif %}">
+                                <span class="step-number">2</span>
+                                <span class="step-title">پرداخت</span>
+                            </div>
+                        </div>
+                        
+                        <!-- کارت اطلاعات سفارش -->
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-primary text-white py-3">
+                                <h4 class="mb-0">
+                                    <i class="fas fa-receipt me-2"></i>
+                                    خلاصه سفارش
+                                </h4>
+                            </div>
+                            
+                            <div class="card-body">
+                                <!-- بخش اطلاعات کاربر -->
+                                <div class="mb-4">
+                                    <h5 class="d-flex align-items-center">
+                                        <i class="fas fa-user-circle text-primary me-2"></i>
+                                        اطلاعات کاربر
+                                    </h5>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-user me-2 text-muted"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">نام کامل</small>
+                                                    <span class="fw-bold">{{ user_data.fullname }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-id-card me-2 text-muted"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">کد ملی</small>
+                                                    <span class="fw-bold">{{ user_data.nationalcode }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-phone me-2 text-muted"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">شماره تماس</small>
+                                                    <span class="fw-bold">{{ user_data.phone_number }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-envelope me-2 text-muted"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">ایمیل</small>
+                                                    <span class="fw-bold">{{ user_data.email }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- بخش آدرس -->
+                                <div class="mb-4">
+                                    <h5 class="d-flex align-items-center">
+                                        <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                                        آدرس ارسال
+                                    </h5>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-tag me-2 text-muted"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">عنوان آدرس</small>
+                                                    <span class="fw-bold">{{ address_data.title }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-map me-2 text-muted"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">استان/شهر</small>
+                                                    <span class="fw-bold">{{ address_data.province }} - {{ address_data.city }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-mail-bulk me-2 text-muted"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">کد پستی</small>
+                                                    <span class="fw-bold">{{ address_data.postal_code }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-home me-2 text-muted"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">آدرس کامل</small>
+                                                    <span class="fw-bold">{{ address_data.address }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- بخش توضیحات -->
+                                {% if description %}
+                                <div class="mb-4">
+                                    <h5 class="d-flex align-items-center">
+                                        <i class="fas fa-comment text-primary me-2"></i>
+                                        توضیحات سفارش
+                                    </h5>
+                                    <hr>
+                                    <div class="bg-light p-3 rounded">
+                                        <p class="mb-0">{{ description }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+
+{% endblock %}

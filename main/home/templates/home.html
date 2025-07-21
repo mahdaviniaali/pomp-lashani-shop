@@ -1,0 +1,1491 @@
+{% extends "base.html" %}
+{% load static %}
+{% load main_filters %}
+{% block title %}Djangocenter Blog List{% endblock %}
+
+
+{% block css %}
+<link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block bodystyle %}  
+home-style1
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/home_1_scripts.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+
+<main>
+      <header>
+        <!--  Start popular cat  -->
+        <section class="tc-popular-cat-style1 pt-30 pb-50">
+          <div class="container">
+            <div class="search-cat d-block d-lg-none">
+              <div class="input-group">
+                <select class="form-select" name="name">
+                  <option value="">همه دسته بندی ها</option>
+                  <option value="">رده های 1</option>
+                  <option value="">دسته 2</option>
+                </select>
+                <input
+                  class="form-control"
+                  placeholder="هر چیزی را جستجو کنید ..."
+                  type="text"
+                />
+                <a class="search-btn" href="#">
+                  <i class="fal fa-search"></i>
+                </a>
+              </div>
+            </div>
+            <div class="sec-title">
+              <div class="row align-items-center">
+                <div class="col-lg-6">
+                  <h3 class="fsz-24 text-capitalize">دسته های محبوب</h3>
+                </div>
+                <div class="col-lg-6 text-lg-end mt-4 mt-lg-0">
+                  <a class="more-link text-capitalize" href="{% url 'products:product_list' %}"
+                    >مشاهده همه<i class="la la-angle-left ms-1"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="cat-content">
+              {% for cat in categories %}
+              <a class="cat-card" href="{% url 'products:product_list_by_category' slug=cat.slug %}">
+                <div class="img">
+                  <img alt="" src="{{cat.logo}}" />
+                </div>
+                <p class="fsz-13 fw-bold mt-15">{{cat.title}}</p>
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+        </section>
+        <!--  End popular cat  -->
+        <!--  Start header  -->
+        <section class="tc-header-style1">
+          <div class="container">
+            <div class="content">
+              <div class="row">
+                <div class="col-lg-8">
+                  <div class="main-slider">
+                    <div class="swiper-wrapper">
+                      <div class="swiper-slide">
+                        <div class="slide-card">
+                          <div class="img th-450">
+                            <img
+                              alt=""
+                              class="img-cover"
+                              src="{% static 'img/head/head_1.png' %}"
+                            />
+                          </div>
+                          <div class="info text-white">
+                            <div class="cont">
+                              <h2 class="fsz-35 fw-200">
+                                تلویزیون اندرویدی<br />40 اینچی
+                              </h2>
+                              <p class="fsz-12 mt-15 text-uppercase">
+                                تلویزیون Android Full HD Full HD با دستیار
+                                Google
+                              </p>
+                              <a
+                                class="butn px-5 py-3 bg-blue1 text-white rounded-pill mt-60 fw-600"
+                                href="../pages/single_product.html"
+                              >
+                                <span>اکنون خرید کنید</span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="slide-card">
+                          <div class="img th-450">
+                            <img
+                              alt=""
+                              class="img-cover"
+                              src="{% static 'img/head/head_1.png' %}"
+                            />
+                          </div>
+                          <div class="info text-white">
+                            <div class="cont">
+                              <h2 class="fsz-35 fw-200">
+                                تلویزیون اندرویدی<br />40 اینچی
+                              </h2>
+                              <p class="fsz-12 mt-15 text-uppercase">
+                                تلویزیون Android Full HD Full HD با دستیار
+                                Google
+                              </p>
+                              <a
+                                class="butn px-5 py-3 bg-blue1 text-white rounded-pill mt-60 fw-600"
+                                href="../pages/single_product.html"
+                              >
+                                <span>اکنون خرید کنید</span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slider-controls">
+                      <div class="swiper-button-prev"></div>
+                      <div class="swiper-pagination"></div>
+                      <div class="swiper-button-next"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="card-overlay card-center">
+                    <div class="img th-450">
+                      <img
+                        alt=""
+                        class="img-cover"
+                        src="{% static 'img/head/head_2.png' %}"
+                      />
+                    </div>
+                    <div class="info text-white p-50">
+                      <div class="cont">
+                        <h3 class="fsz-30">فن مرطوب کننده</h3>
+                        <p class="fsz-13 mt-1">از 299 تومان</p>
+                      </div>
+                      <a
+                        class="butn px-5 py-3 bg-white color-000 rounded-pill fw-600"
+                        href="{% url 'products:product_list' %}"
+                      >
+                        <span>اکنون کشف کنید</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div
+                    class="card-overlay wow fadeInUp slow"
+                    data-wow-delay="0.2s"
+                  >
+                    <div class="img th-230">
+                      <img
+                        alt=""
+                        class="img-cover"
+                        src="{% static 'img/head/head_3.png' %}"
+                      />
+                    </div>
+                    <div class="info color-000 p-30">
+                      <div class="cont">
+                        <h3 class="fsz-30">مینی<br />2022</h3>
+                        <p class="fsz-13 mt-1 color-666">
+                          قدرت مگا در اندازه کوچک
+                        </p>
+                      </div>
+                      <a
+                        class="butn px-4 py-2 bg-dark text-white rounded-pill fw-600 fsz-12 mt-30"
+                        href="../pages/single_product.html"
+                      >
+                        <span>اکنون خرید کنید</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div
+                    class="card-overlay wow fadeInUp slow"
+                    data-wow-delay="0.4s"
+                  >
+                    <div class="img th-230">
+                      <img
+                        alt=""
+                        class="img-cover"
+                        src="{% static 'img/head/head_4.png' %}"
+                      />
+                    </div>
+                    <div class="info text-white p-30">
+                      <div class="cont">
+                        <h6 class="fsz-20">تصفیه کننده <br />هوا</h6>
+                        <small
+                          class="fsz-10 color-999 d-block text-uppercase mt-2"
+                          >از</small
+                        >
+                        <p class="fsz-20 color-lightGreen">169 تومان</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div
+                    class="card-overlay wow fadeInUp slow"
+                    data-wow-delay="0.6s"
+                  >
+                    <div class="img th-230">
+                      <img
+                        alt=""
+                        class="img-cover"
+                        src="{% static 'img/head/head_5.png' %}"
+                      />
+                    </div>
+                    <div class="info text-white p-30">
+                      <div class="cont">
+                        <small class="fsz-10 d-block text-uppercase mb-2"
+                          >ماشین لباسشویی</small
+                        >
+                        <h6 class="fsz-20">وابسته به آنتاتیک<br />حداکثر 2</h6>
+                      </div>
+                      <a
+                        class="butn px-4 py-2 bg-white color-000 rounded-pill fw-600 fsz-12 mt-50"
+                        href="../pages/single_product.html"
+                      >
+                        <span>اکنون خرید کنید</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!--  End header  -->
+      </header>
+      <!--  Start weekly-deals  -->
+      <section
+        class="tc-weekly-deals-style1 wow fadeInUp slow"
+        data-wow-delay="0.2s">
+        <div class="container">
+          <div class="content">
+            <div class="title mb-40">
+              <h3 class="fsz-30 me-lg-5">پرفروش ترین محصولات</h3>
+            </div>
+            <div class="deals-cards">
+              <div class="column-sm">
+                <div class="deal-card">
+                  
+                  <div class="top">
+                    <!-- بخش بالایی کارت -->
+                  </div>
+                  <a class="img th-140 mb-20 d-block" href="{% url 'products:product_detail' slug=top_products.0.slug %}">
+                    <img alt="" class="img-contain" src="{{top_products.0.image.url}}" />
+                  </a>
+                  
+                  <div class="info">
+                    <a class="title fsz-14 mt-15 fw-600 hover-blue1" href="{% url 'products:product_detail' slug=top_products.0.slug %}">
+                      {{top_products.0.title}}
+                    </a>
+                    
+                    <p class="price mt-2 fsz-20">
+                      {% if top_products.0.need_to_call %}
+                        <p class="fsz-12 mt-2">
+                          <i class="fas fa-phone-alt me-1"></i>
+                          <a href="#"> تماس بگیرین</a>
+                        </p>
+                      {% elif top_products.0.min_price %}
+                        {{ top_products.0.min_price}} تومان
+                      {% else %}
+                        <span class="text-danger"> عدم موجودی</span>
+                      {% endif %}
+                    </p>
+
+                    <!-- بخش نمایش آخرین تغییر موجودی توسط ادمین -->
+                    {% if top_products.0.last_stock_change_value %}
+                    <div class="stock-change-notice mt-2">
+                      <i class="fas fa-user-shield fsz-12 me-1"></i>
+                      <small class="fsz-10 text-muted">
+                        آخرین بروزرسانی موجودی: 
+                        {% if top_products.0.last_stock_change_time %}
+                          در {{ top_products.0.last_stock_change_time|date:"Y/m/d" }}
+                        {% endif %}
+                      </small>
+                    </div>
+                    {% endif %}
+
+                    <!-- نوار پیشرفت فروش -->
+                    <div class="progress mt-20">
+                      <div
+                        aria-valuemax="{{ top_products.0.last_stock_change_value }}"
+                        aria-valuemin="0"
+                        aria-valuenow="{{ top_products.0.min_price_stock }}"
+                        class="progress-bar bg-blue1"
+                        role="progressbar"
+                        style="width: {% widthratio top_products.0.min_price_stock top_products.0.last_stock_change_value 100 %}%"
+                      ></div>
+                    </div>
+                    <p class="fsz-12 mt-3">فروخته شده:{{ top_products.0.sold_count }}</p>
+                  </div>
+                  
+                  <a class="" href="#0">
+
+                    {% if top_products.0.min_price_id in cart_items %}
+                    {% endif %}
+                    <i class="la la-cart-plus me-1"></i>به سبد خرید اضافه کنید
+                  </a>
+                </div>
+
+
+
+
+
+                <div class="deal-card">
+                  <div class="top">
+                    
+                  </div>
+                  <a
+                    class="img th-140 mb-20 d-block"
+                    href="{% url 'products:product_detail' slug=top_products.1.slug %}"
+                  >
+                    <img
+                      alt=""
+                      class="img-contain"
+                      src="{{ top_products.1.image.url }}"
+                    />
+                  </a>
+                  <div class="info">
+                    <span
+                      class="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white"
+                      >5 ٪ تخفیف</span
+                    >
+                    <a
+                      class="title fsz-14 mt-15 fw-600 hover-blue1"
+                      href="{% url 'products:product_detail' slug=top_products.1.slug %}"
+                      >{{top_products.1.title}}</a
+                    >
+                    {% if top_products.1.need_to_call %}
+                      <p class="fsz-12 mt-2">
+                        <i class="fas fa-phone-alt me-1"></i>
+                        <a href="#"> تماس بگیرین</a>
+                      </p>
+                    {% elif top_products.1.min_price %}
+                      {{ top_products.1.min_price}} تومان
+                    {% else %}
+                      <span class="text-danger"> عدم موجودی</span>
+                    {% endif %}
+
+                    <!-- بخش نمایش آخرین تغییر موجودی توسط ادمین -->
+                    {% if top_products.1.last_stock_change_value %}
+                    <div class="stock-change-notice mt-2">
+                      <i class="fas fa-user-shield fsz-12 me-1"></i>
+                      <small class="fsz-10 text-muted">
+                        آخرین بروزرسانی موجودی: 
+                        {% if top_products.1.last_stock_change_time %}
+                          در {{ top_products.1.last_stock_change_time|date:"Y/m/d" }}
+                        {% endif %}
+                      </small>
+                    </div>
+                    {% endif %}
+
+
+
+                    <!-- نوار پیشرفت فروش -->
+                    <div class="progress mt-20">
+                      <div
+                        aria-valuemax="{{ top_products.1.last_stock_change_value }}"
+                        aria-valuemin="0"
+                        aria-valuenow="{{ top_products.1.min_price_stock }}"
+                        class="progress-bar bg-blue1"
+                        role="progressbar"
+                        style="width: {% widthratio top_products.1.min_price_stock top_products.1.last_stock_change_value 100 %}%"
+                      ></div>
+                    </div>
+                    <p class="fsz-12 mt-3">فروخته شده:{{ top_products.1.sold_count }}</p>
+
+
+
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+              <div class="column-lg">
+                <div class="deal-card">
+                  <div class="top">
+                    
+                  </div>
+                  <a
+                    class="img th-600 mb-20 d-block"
+                    href="{% url 'products:product_detail' slug=top_products.2.slug %}"
+                  >
+                    <img
+                      alt=""
+                      class="img-contain"
+                      src="{{ top_products.2.image.url }}"
+                    />
+                  </a>
+                  <div class="info">
+                    <span
+                      class="label fsz-11 py-1 px-3 rounded-pill bg-blue1 text-white text-uppercase"
+                      >محصولات</span
+                    >
+                    <a
+                      class="title fsz-14 mt-15 fw-600 hover-blue1"
+                      href="{% url 'products:product_detail' slug=top_products.2.slug %}"
+                      >{{top_products.2.title}}</a
+                    >
+                    
+                    {% if top_products.2.need_to_call %}
+                      <p class="fsz-12 mt-2">
+                        <i class="fas fa-phone-alt me-1"></i>
+                        <a href="#"> تماس بگیرین</a>
+                      </p>
+                    {% elif top_products.2.min_price %}
+                      {{ top_products.2.min_price}} تومان
+                    {% else %}
+                      <span class="text-danger"> عدم موجودی</span>
+                    {% endif %}
+                    
+                    {% if top_products.2.last_stock_change_value %}
+                    <div class="stock-change-notice mt-2">
+                      <i class="fas fa-user-shield fsz-12 me-1"></i>
+                      <small class="fsz-10 text-muted">
+                        آخرین بروزرسانی موجودی: 
+                        {% if top_products.2.last_stock_change_time %}
+                          در {{ top_products.2.last_stock_change_time|date:"Y/m/d" }}
+                        {% endif %}
+                      </small>
+                    </div>
+                    {% endif %}
+
+
+                    <!-- نوار پیشرفت فروش -->
+                    <div class="progress mt-20">
+                      <div
+                        aria-valuemax="{{ top_products.2.last_stock_change_value }}"
+                        aria-valuemin="0"
+                        aria-valuenow="{{ top_products.2.min_price_stock }}"
+                        class="progress-bar bg-blue1"
+                        role="progressbar"
+                        style="width: {% widthratio top_products.2.min_price_stock top_products.2.last_stock_change_value 100 %}%"
+                      ></div>
+                    </div>
+                    <p class="fsz-12 mt-3">فروخته شده:{{ top_products.2.sold_count }}</p>
+
+                  </div>
+                  
+                </div>
+
+
+
+
+              </div>
+              <div class="column-sm">
+                <div class="deal-card">
+                  <div class="top">
+                    
+                  </div>
+                  <a
+                    class="img th-140 mb-20 d-block"
+                    href="{% url 'products:product_detail' slug=top_products.3.slug %}"
+                  >
+                    <img
+                      alt=""
+                      class="img-contain"
+                      src="{{ top_products.3.image.url }}"
+                    />
+                  </a>
+                  <div class="info">
+                    <span
+                      class="label fsz-11 py-1 px-3 rounded-pill bg-green1 text-white text-uppercase"
+                      >دارای رتبه برتر</span
+                    >
+                    <a
+                      class="title fsz-14 mt-15 fw-600 hover-blue1"
+                      href="{% url 'products:product_detail' slug=top_products.3.slug %}"
+                      >{{ top_products.3.title }}</a
+                    >
+                    {% if top_products.3.need_to_call %}
+                      <p class="fsz-12 mt-2">
+                        <i class="fas fa-phone-alt me-1"></i>
+                        <a href="#"> تماس بگیرین</a>
+                      </p>
+                    {% elif top_products.3.min_price %}
+                      {{ top_products.3.min_price}} تومان
+                    {% else %}
+                      <span class="text-danger"> عدم موجودی</span>
+                    {% endif %}
+                    
+                    {% if top_products.3.last_stock_change_value %}
+                    <div class="stock-change-notice mt-2">
+                      <i class="fas fa-user-shield fsz-12 me-1"></i>
+                      <small class="fsz-10 text-muted">
+                        آخرین بروزرسانی موجودی: 
+                        {% if top_products.3.last_stock_change_time %}
+                          در {{ top_products.3.last_stock_change_time|date:"Y/m/d" }}
+                        {% endif %}
+                      </small>
+                    </div>
+                    {% endif %}
+
+                    
+                    <!-- نوار پیشرفت فروش -->
+                    <div class="progress mt-20">
+                      <div
+                        aria-valuemax="{{ top_products.3.last_stock_change_value }}"
+                        aria-valuemin="0"
+                        aria-valuenow="{{ top_products.3.min_price_stock }}"
+                        class="progress-bar bg-blue1"
+                        role="progressbar"
+                        style="width: {% widthratio top_products.3.min_price_stock top_products.3.last_stock_change_value 100 %}%"
+                      ></div>
+                    </div>
+                    <p class="fsz-12 mt-3">فروخته شده:{{ top_products.3.sold_count }}</p>
+
+
+
+
+                  </div>
+                  
+                </div>
+
+
+
+
+
+
+
+
+
+                <div class="deal-card">
+                  <div class="top">
+                  </div>
+                  <a
+                    class="img th-140 mb-20 d-block"
+                    href="{% url 'products:product_detail' slug=top_products.4.slug %}"
+                  >
+                    <img
+                      alt=""
+                      class="img-contain"
+                      src="{{ top_products.4.image.url }}"
+                    />
+                  </a>
+                  <div class="info">
+                    <span
+                      class="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white"
+                      >از پیش سفارش دادن</span
+                    >
+                    <a
+                      class="title fsz-14 mt-15 fw-600 hover-blue1"
+                      href="{% url 'products:product_detail' slug=top_products.4.slug %}"
+                      > {{ top_products.4.title }} </a
+                    >
+
+                    {% if top_products.4.need_to_call %}
+                      <p class="fsz-12 mt-2">
+                        <i class="fas fa-phone-alt me-1"></i>
+                        <a href="#"> تماس بگیرین</a>
+                      </p>
+                    {% elif top_products.4.min_price %}
+                      {{ top_products.4.min_price}} تومان
+                    {% else %}
+                      <span class="text-danger"> عدم موجودی</span>
+                    {% endif %}
+                    
+                    {% if top_products.4.last_stock_change_value %}
+                    <div class="stock-change-notice mt-2">
+                      <i class="fas fa-user-shield fsz-12 me-1"></i>
+                      <small class="fsz-10 text-muted">
+                        آخرین بروزرسانی موجودی: 
+                        {% if top_products.4.last_stock_change_time %}
+                          در {{ top_products.4.last_stock_change_time|date:"Y/m/d" }}
+                        {% endif %}
+                      </small>
+                    </div>
+                    {% endif %}
+
+
+                    <!-- نوار پیشرفت فروش -->
+                    <div class="progress mt-20">
+                      <div
+                        aria-valuemax="{{ top_products.4.last_stock_change_value }}"
+                        aria-valuemin="0"
+                        aria-valuenow="{{ top_products.4.min_price_stock }}"
+                        class="progress-bar bg-blue1"
+                        role="progressbar"
+                        style="width: {% widthratio top_products.4.min_price_stock top_products.4.last_stock_change_value 100 %}%"
+                      ></div>
+                    </div>
+                    <p class="fsz-12 mt-3">فروخته شده:{{ top_products.4.sold_count }}</p>
+                  </div>
+                  
+                </div>
+              </div>
+
+              
+
+
+
+              <div class="column-sm">
+
+
+
+
+                <div class="deal-card">
+                  <div class="top">
+                   
+                  </div>
+                  <a
+                    class="img th-140 mb-20 d-block"
+                    href="{% url 'products:product_detail' slug=top_products.5.slug %}"
+                  >
+                    <img
+                      alt=""
+                      class="img-contain"
+                      src="{{ top_products.5.image.url }}"
+                    />
+                  </a>
+                  <div class="info">
+                    <span
+                      class="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"
+                      >15 ٪ تخفیف</span
+                    >
+                    <a
+                      class="title fsz-14 mt-15 fw-600 hover-blue1"
+                      href="{% url 'products:product_detail' slug=top_products.5.slug %}"
+                      >{{ top_products.5.title }}</a
+                    >
+                    
+                    {% if top_products.5.need_to_call %}
+                      <p class="fsz-12 mt-2">
+                        <i class="fas fa-phone-alt me-1"></i>
+                        <a href="#"> تماس بگیرین</a>
+                      </p>
+                    {% elif top_products.5.min_price %}
+                      {{ top_products.5.min_price}} تومان
+                    {% else %}
+                      <span class="text-danger"> عدم موجودی</span>
+                    {% endif %}
+                    
+                    {% if top_products.5.last_stock_change_value %}
+                    <div class="stock-change-notice mt-2">
+                      <i class="fas fa-user-shield fsz-12 me-1"></i>
+                      <small class="fsz-10 text-muted">
+                        آخرین بروزرسانی موجودی: 
+                        {% if top_products.5.last_stock_change_time %}
+                          در {{ top_products.5.last_stock_change_time|date:"Y/m/d" }}
+                        {% endif %}
+                      </small>
+                    </div>
+                    {% endif %}
+
+
+                    <!-- نوار پیشرفت فروش -->
+                    <div class="progress mt-20">
+                      <div
+                        aria-valuemax="{{ top_products.5.last_stock_change_value }}"
+                        aria-valuemin="0"
+                        aria-valuenow="{{ top_products.5.min_price_stock }}"
+                        class="progress-bar bg-blue1"
+                        role="progressbar"
+                        style="width: {% widthratio top_products.5.min_price_stock top_products.5.last_stock_change_value 100 %}%"
+                      ></div>
+                    </div>
+                    <p class="fsz-12 mt-3">فروخته شده:{{ top_products.5.sold_count }}</p>
+
+                  </div>
+                  
+                </div>
+
+
+
+
+
+
+
+
+                <div class="deal-card">
+                  <div class="top">
+                    
+                  </div>
+                  <a
+                    class="img th-140 mb-20 d-block"
+                    href="{% url 'products:product_detail' slug=top_products.6.slug %}"
+                  >
+                    <img
+                      alt=""
+                      class="img-contain"
+                      src="{{ top_products.6.image.url }}"
+                    />
+                  </a>
+                  <div class="info">
+                    <span
+                      class="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white"
+                      >5 ٪ تخفیف</span
+                    >
+                    <a
+                      class="title fsz-14 mt-15 fw-600 hover-blue1"
+                      href="{% url 'products:product_detail' slug=top_products.6.slug %}"
+                      >{{ top_products.6.title }}</a
+                    >
+                    {% if top_products.6.need_to_call %}
+                      <p class="fsz-12 mt-2">
+                        <i class="fas fa-phone-alt me-1"></i>
+                        <a href="#"> تماس بگیرین</a>
+                      </p>
+                    {% elif top_products.6.min_price %}
+                      {{ top_products.6.min_price}} تومان
+                    {% else %}
+                      <span class="text-danger"> عدم موجودی</span>
+                    {% endif %}
+                    
+                    {% if top_products.5.last_stock_change_value %}
+                    <div class="stock-change-notice mt-2">
+                      <i class="fas fa-user-shield fsz-12 me-1"></i>
+                      <small class="fsz-10 text-muted">
+                        آخرین بروزرسانی موجودی: 
+                        {% if top_products.6.last_stock_change_time %}
+                          در {{ top_products.6.last_stock_change_time|date:"Y/m/d" }}
+                        {% endif %}
+                      </small>
+                    </div>
+                    {% endif %}
+
+
+                    <!-- نوار پیشرفت فروش -->
+                    <div class="progress mt-20">
+                      <div
+                        aria-valuemax="{{ top_products.6.last_stock_change_value }}"
+                        aria-valuemin="0"
+                        aria-valuenow="{{ top_products.6.min_price_stock }}"
+                        class="progress-bar bg-blue1"
+                        role="progressbar"
+                        style="width: {% widthratio top_products.6.min_price_stock top_products.6.last_stock_change_value 100 %}%"
+                      ></div>
+                    </div>
+                    <p class="fsz-12 mt-3">فروخته شده:{{ top_products.6.sold_count }}</p>
+
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <div class="text-center mt-30">
+              <a
+                class="butn px-5 py-3 bg-white color-000 rounded-pill fw-600"
+                href="{% url 'products:product_list' %}"
+              >
+                <span>همه محصولات را ببینید</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--  End weekly-deals  -->
+      <!--  Start trend-search  -->
+      <section
+        class="tc-trend-search-style1 wow fadeInUp slow"
+        data-wow-delay="0.2s"
+      >
+        <div class="container">
+          <h3 class="fsz-30 mb-30">جستجوی محصولات</h3>
+          <div class="links">
+            {% for tag in random_tags %}
+            <a class="link" href="#">{{tag.name}}</a>
+            {% endfor %}
+            
+          </div>
+        </div>
+      </section>
+      <!--  End trend-search  -->
+      <!--  Start main-banner  -->
+      <section
+        class="tc-main-banner-style1 wow fadeInUp slow"
+        data-wow-delay="0.2s"
+      >
+        <div class="container">
+          <div class="banner">
+            <div class="row align-items-center">
+              <div class="col-lg-2">
+                <h6 class="fsz-24 text-uppercase color-cyan1 lh-1">
+                  پیش سفارش
+                </h6>
+                <small class="fsz-10 color-999 text-uppercase"
+                  >اولین کسی باشد که مالکیت دارد</small
+                >
+                <p class="fsz-14 mt-2 text-white">از 399 تومان</p>
+              </div>
+              <div class="col-lg-4 order-last order-lg-0">
+                <div class="img">
+                  <img alt="" src="{% static 'img/products/banner.png' %}" />
+                </div>
+              </div>
+              <div class="col-lg-4 mt-3 mt-lg-0">
+                <small class="fsz-12 color-cyan1"
+                  >Opplo Watch Sport<br />سری 8</small
+                >
+                <h3 class="fsz-30 mt-10 fw-300 text-white">یک جهش سالم جلو</h3>
+              </div>
+              <div class="col-lg-2 mt-4 mt-lg-0">
+                <div class="text-lg-end">
+                  <a
+                    class="butn px-4 pt-10 pb-10 bg-white color-000 rounded-pill fw-600"
+                    href="../pages/single_product.html"
+                  >
+                    <span>اکنون کشف کنید</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--  End main-banner  -->
+      <!--  Start best-seller  -->
+      <section
+        class="tc-best-seller-style1 wow fadeInUp slow"
+        data-wow-delay="0.2s"
+      >
+        <div class="container">
+          <div class="title mb-40">
+            <div class="row align-items-center">
+              <div class="col-lg-8">
+                <h3 class="fsz-30">جدید ترین محصولات</h3>
+              </div>
+              <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                <a
+                  class="more-btn fsz-14 text-uppercase fw-500"
+                  href="{% url 'products:product_list' %}"
+                  >مشاهده همه<i class="fal fa-angle-left ms-1"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="tab-content" id="pills-tabContent1">
+            <div
+              aria-labelledby="pills-tab1-tab"
+              class="tab-pane fade show active"
+              id="pills-tab1"
+              role="tabpanel"
+            >
+              <div class="products-slider">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <div class="product-card">
+                      <div class="top">
+                        
+                      </div>
+                      <a
+                        class="img th-160 mb-20 d-block"
+                        href="{% url 'products:product_list' %}"
+                      >
+                        <img
+                          alt=""
+                          class="img-contain"
+                          src="{% static 'img/products/prod3.png' %}"
+                        />
+                      </a>
+                      <div class="info">
+                        <div class="tags">
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"
+                            >15 ٪ تخفیف</span
+                          >
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-blue1 text-white text-uppercase"
+                            >پرفروش</span
+                          >
+                        </div>
+                        <a
+                          class="title fsz-14 mt-15 fw-600 hover-blue1"
+                          href="../pages/single_product.html"
+                          >دستگاه اسپرسو دستی Durotan ، سازنده قهوه</a
+                        >
+                        <div class="stars fsz-13 mt-2">
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <span>(34)</span>
+                        </div>
+                        <p class="price color-red1 mt-2 fsz-20">
+                          489.00 تومان<span
+                            class="old-price color-999 text-decoration-line-through ms-2 fsz-16"
+                            >619.00 تومان</span
+                          >
+                        </p>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  {% for product in new_products %}
+                  <div class="swiper-slide">
+                    <div class="product-card">
+                      <div class="top">
+                        
+                      </div>
+                      <a
+                        class="img th-160 mb-20 d-block"
+                        href="{% url 'products:product_detail' slug=product.slug %}"
+                      >
+                        <img
+                          alt=""
+                          class="img-contain"
+                          src="{{product.image.url}}"
+                        />
+                      </a>
+                      <div class="info">
+                        <div class="tags">
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"
+                            >15 ٪ تخفیف</span
+                          >
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-blue1 text-white text-uppercase"
+                            >پرفروش</span
+                          >
+                        </div>
+                        <a
+                          class="title fsz-14 mt-15 fw-600 hover-blue1"
+                          href="../pages/single_product.html"
+                          >{{product.title}}</a
+                        >
+                        
+                        {% if product.need_to_call %}
+                          <p class="fsz-12 mt-2">
+                            <i class="fas fa-phone-alt me-1"></i>
+                            <a href="#"> تماس بگیرین</a>
+                          </p>
+                        {% elif product.min_price %}
+                          {{ product.min_price}} تومان
+                        {% else %}
+                          <span class="text-danger"> عدم موجودی</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                  
+                </div>
+                <div class="slider-controls">
+                  <div class="swiper-button-prev"></div>
+                  <div class="swiper-pagination"></div>
+                  <div class="swiper-button-next"></div>
+                </div>
+              </div>
+            </div>
+            <div
+              aria-labelledby="pills-tab2-tab"
+              class="tab-pane fade"
+              id="pills-tab2"
+              role="tabpanel"
+            >
+              <div class="products-slider">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <div class="product-card">
+                      <div class="top">
+                        <small
+                          class="fsz-11 py-1 px-3 rounded-pill color-red1 border-red1 border"
+                          >قسط 0 ٪</small
+                        >
+                        <div class="icons">
+                          <a class="icon fav" href="#0">
+                            <i class="fal fa-heart"></i>
+                          </a>
+                          <a class="icon" href="#0">
+                            <i class="fal fa-sync"></i>
+                          </a>
+                          <a
+                            class="icon"
+                            data-fancybox="deal"
+                            href="img/products/prod3.png"
+                          >
+                            <i class="fal fa-eye"></i>
+                          </a>
+                        </div>
+                      </div>
+                      <a
+                        class="img th-160 mb-20 d-block"
+                        href="../pages/single_product.html"
+                      >
+                        <img
+                          alt=""
+                          class="img-contain"
+                          src="{% static 'img/products/prod3.png' %}"
+                        />
+                      </a>
+                      <div class="info">
+                        <div class="tags">
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"
+                            >15 ٪ تخفیف</span
+                          >
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-blue1 text-white text-uppercase"
+                            >پرفروش</span
+                          >
+                        </div>
+                        <a
+                          class="title fsz-14 mt-15 fw-600 hover-blue1"
+                          href="../pages/single_product.html"
+                          >دستگاه اسپرسو دستی Durotan ، سازنده قهوه</a
+                        >
+                        <div class="stars fsz-13 mt-2">
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <span>(34)</span>
+                        </div>
+                        <p class="price color-red1 mt-2 fsz-20">
+                          489.00 تومان<span
+                            class="old-price color-999 text-decoration-line-through ms-2 fsz-16"
+                            >619.00 تومان</span
+                          >
+                        </p>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="product-card">
+                      <div class="top">
+                        <div class="icons">
+                          <a class="icon fav" href="#0">
+                            <i class="fal fa-heart"></i>
+                          </a>
+                          <a class="icon" href="#0">
+                            <i class="fal fa-sync"></i>
+                          </a>
+                          <a
+                            class="icon"
+                            data-fancybox="deal"
+                            href="img/products/prod7.png"
+                          >
+                            <i class="fal fa-eye"></i>
+                          </a>
+                        </div>
+                      </div>
+                      <a
+                        class="img th-160 mb-20 d-block"
+                        href="../pages/single_product.html"
+                      >
+                        <img
+                          alt=""
+                          class="img-contain"
+                          src="{% static 'img/products/prod7.png' %}"
+                        />
+                      </a>
+                      <div class="info">
+                        <div class="tags">
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"
+                            >15 ٪ تخفیف</span
+                          >
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-blue1 text-white text-uppercase"
+                            >پرفروش</span
+                          >
+                        </div>
+                        <a
+                          class="title fsz-14 mt-15 fw-600 hover-blue1"
+                          href="../pages/single_product.html"
+                          >دوربین Conar DSLR EOS II ، فقط بدن</a
+                        >
+                        <div class="stars fsz-13 mt-2">
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star"></i>
+                          <span>(5)</span>
+                        </div>
+                        <p class="price color-red1 mt-2 fsz-20">
+                          579.00 تومان<span
+                            class="old-price color-999 text-decoration-line-through ms-2 fsz-16"
+                            >819.00 تومان</span
+                          >
+                        </p>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="product-card">
+                      <div class="top">
+                        <div class="icons">
+                          <a class="icon fav" href="#0">
+                            <i class="fal fa-heart"></i>
+                          </a>
+                          <a class="icon" href="#0">
+                            <i class="fal fa-sync"></i>
+                          </a>
+                          <a
+                            class="icon"
+                            data-fancybox="deal"
+                            href="img/products/prod8.png"
+                          >
+                            <i class="fal fa-eye"></i>
+                          </a>
+                        </div>
+                      </div>
+                      <a
+                        class="img th-160 mb-20 d-block"
+                        href="../pages/single_product.html"
+                      >
+                        <img
+                          alt=""
+                          class="img-contain"
+                          src="{% static 'img/products/prod8.png' %}"
+                        />
+                      </a>
+                      <div class="info">
+                        <div class="tags">
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-cyan1 text-white text-uppercase"
+                            >جدید</span
+                          >
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-blue1 text-white text-uppercase"
+                            >پرفروش</span
+                          >
+                        </div>
+                        <a
+                          class="title fsz-14 mt-15 fw-600 hover-blue1"
+                          href="../pages/single_product.html"
+                          >تلویزیون LED Android 49 اینچ کلاس 49 اینچ (1080p)</a
+                        >
+                        <p class="price mt-2 fsz-20">3،029.50 تومان</p>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="product-card">
+                      <div class="top">
+                        <small
+                          class="fsz-11 py-1 px-3 rounded-pill color-red1 border-red1 border"
+                          >قسط 0 ٪</small
+                        >
+                        <div class="icons">
+                          <a class="icon fav" href="#0">
+                            <i class="fal fa-heart"></i>
+                          </a>
+                          <a class="icon" href="#0">
+                            <i class="fal fa-sync"></i>
+                          </a>
+                          <a
+                            class="icon"
+                            data-fancybox="deal"
+                            href="img/products/prod9.png"
+                          >
+                            <i class="fal fa-eye"></i>
+                          </a>
+                        </div>
+                      </div>
+                      <a
+                        class="img th-160 mb-20 d-block"
+                        href="../pages/single_product.html"
+                      >
+                        <img
+                          alt=""
+                          class="img-contain"
+                          src="{% static 'img/products/prod9.png' %}"
+                        />
+                      </a>
+                      <div class="info">
+                        <div class="tags">
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-blue1 text-white text-uppercase"
+                            >پرفروش</span
+                          >
+                        </div>
+                        <a
+                          class="title fsz-14 mt-15 fw-600 hover-blue1"
+                          href="../pages/single_product.html"
+                          >مورد بازی Gigabyte PC ، Core i7 ، 32 گیگابایت رم</a
+                        >
+                        <div class="stars fsz-13 mt-2">
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <span>(2)</span>
+                        </div>
+                        <p class="price mt-2 fsz-20">1،279.00 تومان</p>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="product-card">
+                      <div class="top">
+                        <small
+                          class="fsz-11 py-1 px-3 rounded-pill color-red1 border-red1 border"
+                          >قسط 0 ٪</small
+                        >
+                        <div class="icons">
+                          <a class="icon fav" href="#0">
+                            <i class="fal fa-heart"></i>
+                          </a>
+                          <a class="icon" href="#0">
+                            <i class="fal fa-sync"></i>
+                          </a>
+                          <a
+                            class="icon"
+                            data-fancybox="deal"
+                            href="img/products/prod10.png"
+                          >
+                            <i class="fal fa-eye"></i>
+                          </a>
+                        </div>
+                      </div>
+                      <a
+                        class="img th-160 mb-20 d-block"
+                        href="../pages/single_product.html"
+                      >
+                        <img
+                          alt=""
+                          class="img-contain"
+                          src="{% static 'img/products/prod10.png' %}"
+                        />
+                      </a>
+                      <div class="info">
+                        <div class="tags">
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-blue1 text-white text-uppercase"
+                            >پرفروش</span
+                          >
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-green1 text-white text-uppercase"
+                            >دارای رتبه برتر</span
+                          >
+                        </div>
+                        <a
+                          class="title fsz-14 mt-15 fw-600 hover-blue1"
+                          href="../pages/single_product.html"
+                          >Scepter 32 اینچی تلویزیون اینترنتی</a
+                        >
+                        <div class="stars fsz-13 mt-2">
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <i class="fas fa-star active"></i>
+                          <span>(12)</span>
+                        </div>
+                        <p class="price mt-2 fsz-20">610.00 تومان</p>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="product-card">
+                      <div class="top">
+                        <div class="icons">
+                          <a class="icon fav" href="#0">
+                            <i class="fal fa-heart"></i>
+                          </a>
+                          <a class="icon" href="#0">
+                            <i class="fal fa-sync"></i>
+                          </a>
+                          <a
+                            class="icon"
+                            data-fancybox="deal"
+                            href="img/products/prod8.png"
+                          >
+                            <i class="fal fa-eye"></i>
+                          </a>
+                        </div>
+                      </div>
+                      <a
+                        class="img th-160 mb-20 d-block"
+                        href="../pages/single_product.html"
+                      >
+                        <img
+                          alt=""
+                          class="img-contain"
+                          src="{% static 'img/products/prod8.png' %}"
+                        />
+                      </a>
+                      <div class="info">
+                        <div class="tags">
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-cyan1 text-white text-uppercase"
+                            >جدید</span
+                          >
+                          <span
+                            class="label fsz-11 py-1 px-3 rounded-pill bg-blue1 text-white text-uppercase"
+                            >پرفروش</span
+                          >
+                        </div>
+                        <a
+                          class="title fsz-14 mt-15 fw-600 hover-blue1"
+                          href="../pages/single_product.html"
+                          >تلویزیون LED Android 49 اینچ کلاس 49 اینچ (1080p)</a
+                        >
+                        <p class="price mt-2 fsz-20">3،029.50 تومان</p>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+                <div class="slider-controls">
+                  <div class="swiper-button-prev"></div>
+                  <div class="swiper-pagination"></div>
+                  <div class="swiper-button-next"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+     
+      <section class="tc-testimonials-style1 pb-60">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6">
+    <div class="advc-card card-gray overflow-hidden wow fadeInUp slow" data-wow-delay="0.2s">
+        <div class="title mb-40">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h3 class="fsz-30">خبرنامه</h3>
+                    <p class="text-muted mt-2">با عضویت در خبرنامه از آخرین مقالات و تخفیف‌ها مطلع شوید</p>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                    <a href="{% url 'blog:bloglist' %}" class="more-btn fsz-14 text-uppercase fw-500">
+                        مشاهده همه مقالات <i class="fal fa-angle-left ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- مقالات اخیر -->
+        <div class="blog-slider">
+            <h5 class="mb-3 fw-bold">مقالات اخیر</h5>
+            <div class="swiper-wrapper">
+                {% for post in post %}
+                <div class="swiper-slide">
+                    <div class="advc-item">
+                        <div class="img">
+                            <img alt="{{ post.title }}" class="img-cover" src="{{ post.image.url }}">
+                        </div>
+                        <div class="info">
+                            <h6>
+                                <a class="fsz-18 fw-bold hover-blue1" href="{% url 'blog:blogdetail' post.slug %}">
+                                    {{ post.title|truncatewords:8 }}
+                                </a>
+                            </h6>
+                            <small class="fsz-12 color-666 float-text">
+                                {{ post.jalali_publish }} در
+                                <a class="color-000 text-uppercase" href="{% url 'blog:bloglist' %}?category={{ post.category.slug }}">
+                                    {{ post.category.title }}
+                                </a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="swiper-slide">
+                    <div class="alert alert-info">مقاله‌ای یافت نشد</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </div>
+</div>
+            <div class="col-lg-6">
+              <div
+                class="testimonials-box card-gray overflow-hidden wow fadeInUp slow"
+                data-wow-delay="0.4s"
+              >
+                <div class="title mb-40">
+                  <div class="row align-items-center">
+                    <div class="col-lg-8">
+                      <h3 class="fsz-30">بلندگوهای پرفروش</h3>
+                    </div>
+                    <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                      <div class="arrows">
+                        <a class="swiper-prev" href="#0">
+                          <i class="fal fa-chevron-left"></i>
+                        </a>
+                        <a class="swiper-next" href="#0">
+                          <i class="fal fa-chevron-right"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="testi-card">
+                  <div class="rate mb-20">
+                    <div class="stars">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                    </div>
+                    <h6 class="fsz-18 fw-bold">
+                      حمل و نقل سریع و قیمت انعطاف پذیر!
+                    </h6>
+                  </div>
+                  <div class="text fsz-14 mb-50">
+                    من قبلاً تجربه خرید را در سکوی زیادی به عنوان Amozon ، Eboy
+                    ، Esto و غیره تجربه می کردم و آن بازار Swoo را واقعاً عالی
+                    می دیدم. این اولین انتخاب من برای هر تجربه خرید خواهد بود.
+                    قیمت رقابتی ، حمل و نقل سریع و پشتیبانی 24/7. بسیار توصیه می
+                    شود!
+                  </div>
+                  <div class="btm-items">
+                    <div class="user-info">
+                      <div class="img">
+                        <img alt="" src="{% static 'img/user.jpg ' %}" />
+                        <span class="icon"> <i class="fas fa-check"></i> </span>
+                      </div>
+                      <div class="inf">
+                        <h6 class="fsz-18 fw-bold">
+                          Drake N.<small
+                            class="fsz-10 color-green1 ms-1 text-uppercase"
+                            >خریدار تأیید شده</small
+                          >
+                        </h6>
+                        <p class="fsz-12 color-666">بروکلین ، لس آنجلس</p>
+                      </div>
+                    </div>
+                    <a
+                      class="text-capitalize color-blue1 text-decoration-underline fsz-11 fw-600"
+                      href="#"
+                      >بلندگو Marshall Standmore / سیاه</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--  End testimonials  -->
+      <!--  Start subscribe  -->
+      <section class="tc-subscribe-style1">
+        <div class="container">
+          <div class="row align-items-center justify-content-between">
+            <div class="col-lg-6">
+              <h3 class="fsz-30 fw-400">
+                <strong class="fw-700">مشترک شدن </strong>در <span
+                  class="color-cyan1"
+                  >خبرنامه  </span
+                >  
+              </h3>
+            </div>
+            <div class="col-lg-4 mt-4 mt-lg-0">
+              <div class="form-group">
+                <span class="icon"> <i class="far fa-envelope"></i> </span>
+                <input placeholder="آدرس ایمیل خود را وارد کنید" type="text" />
+                <button>ارسال</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <img alt="" class="plane" src="{% static 'img/plane.png' %}" />
+      </section>
+      <!--  End subscribe  -->
+</main>
+
+
+{% endblock %}

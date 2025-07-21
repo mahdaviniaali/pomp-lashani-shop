@@ -1,0 +1,361 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}تکمیل خرید | Djangocenter{% endblock %}
+
+{% block css %}
+<link href="{% static 'pages/css/inner_pages.rtl.css' %}" rel="stylesheet" />
+<link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+<style>
+    /* استایل‌های مینیمال */
+    body {
+        background-color: #f8f9fa;
+    }
+    .checkout-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+    }
+    .checkout-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+    .checkout-header {
+        background-color: transparent;
+        border-bottom: 1px solid #eee;
+        padding: 1.25rem 1.5rem;
+    }
+    .checkout-body {
+        padding: 1.5rem;
+    }
+    .step-indicator-delicate {
+        display: flex;
+        position: relative;
+        margin: 2.5rem 0 3rem;
+        padding: 0 1rem;
+    }
+    
+    .step-line {
+        position: absolute;
+        top: 10px;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background-color: #e0e0e0;
+        z-index: 0;
+    }
+    
+    .step {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .step-marker {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #e0e0e0;
+        margin-bottom: 0.8rem;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .step.active .step-marker {
+        background-color: transparent;
+    }
+    
+    .step.active .step-marker::before {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        border: 1px solid #4a6cf7;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+    
+    .step.active .step-marker::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 8px;
+        height: 8px;
+        background-color: #4a6cf7;
+        border-radius: 50%;
+    }
+    
+    .step-label {
+        font-size: 0.85rem;
+        color: #9e9e9e;
+        font-weight: 400;
+        transition: all 0.3s ease;
+        text-align: center;
+        padding: 0 0.5rem;
+    }
+    
+    .step.active .step-label {
+        color: #4a6cf7;
+        font-weight: 500;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.1); opacity: 0.7; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    .step.active .step-connector {
+        background-color: #4a6cf7;
+    }
+    .shipping-method-card {
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        height: 100%;
+    }
+    .shipping-method-card:hover {
+        border-color: #4a6cf7;
+        box-shadow: 0 5px 15px rgba(74, 108, 247, 0.1);
+    }
+    .shipping-method-card.selected {
+        border-color: #4a6cf7;
+        background-color: rgba(74, 108, 247, 0.03);
+    }
+    .summary-item {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #f1f1f1;
+    }
+    .btn-continue {
+        background-color: #4a6cf7;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    .btn-continue:hover {
+        background-color: #3a5ce4;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(74, 108, 247, 0.2);
+    }
+    .form-control {
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e9ecef;
+    }
+    .form-control:focus {
+        border-color: #4a6cf7;
+        box-shadow: 0 0 0 0.2rem rgba(74, 108, 247, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="checkout-container">
+    <div class="row g-4">
+        <!-- بخش اصلی فرم -->
+        <div class="col-lg-8">
+            <div class="checkout-card">
+                <div class="checkout-header">
+                    <div class="checkout-body">
+                        <div class="step-indicator-delicate">
+                            <div class="step-line"></div>
+                            <div class="step active">
+                                <div class="step-marker"></div>
+                                <div class="step-label">اطلاعات ارسال</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-marker"></div>
+                                <div class="step-label">پرداخت</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-marker"></div>
+                                <div class="step-label">اتمام خرید و ارسال</div>
+                            </div>
+                        </div>
+    
+                        <form id="checkout-form" method="POST" action="{% url 'payments:checkout' %}">
+                            {% csrf_token %}
+                            {{ wizard.management_form }}
+    
+                            {% if wizard.form.errors %}
+                            <div class="alert alert-light border mb-4">
+                                <h6 class="fw-500 mb-2">خطاهای فرم</h6>
+                                <ul class="mb-0 ps-3">
+                                    {% for field, errors in wizard.form.errors.items %}
+                                        {% for error in errors %}
+                                            <li class="text-danger">{{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+    
+                            <!-- بخش اطلاعات کاربر -->
+                            <div class="checkout-card mb-4">
+                                <div class="checkout-header d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0 fw-500">اطلاعات کاربر</h6>
+                                    <button class="btn btn-sm btn-outline-secondary border rounded-pill"
+                                        hx-get="{% url 'users:compleateprofile' %}" 
+                                        hx-target="#userprofile" 
+                                        hx-swap="innerHTML">
+                                        <i class="fas fa-edit me-1"></i> ویرایش
+                                    </button>
+                                </div>
+                                <div class="checkout-body" id="userprofile">
+                                    <div hx-get="{% url 'home:userinfo' %}" hx-trigger="load" hx-target="#userprofile" hx-swap="innerHTML">
+                                        <div class="text-center py-3">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <!-- بخش آدرس کاربر -->
+                            <div class="checkout-card mb-4">
+                                <div class="checkout-header">
+                                    <h6 class="mb-0 fw-500">آدرس تحویل</h6>
+                                </div>
+                                <div class="checkout-body" id="user-address">
+                                    <div hx-get="{% url 'home:address' %}" 
+                                        hx-trigger="load" 
+                                        hx-target="#user-address" 
+                                        hx-swap="innerHTML">
+                                        <div class="text-center py-3">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <!-- بخش توضیحات سفارش -->
+                            <div class="checkout-card mb-4">
+                                <div class="checkout-header">
+                                    <h6 class="mb-0 fw-500">توضیحات سفارش (اختیاری)</h6>
+                                </div>
+                                <div class="checkout-body">
+                                    <textarea class="form-control" rows="3" name="step1-description"
+                                        placeholder="هر گونه توضیحات یا نکات خاص درباره سفارش خود را اینجا بنویسید..."></textarea>
+                                    <small class="text-muted mt-1 d-block">مثلاً ساعت مناسب برای تحویل، رنگ مورد نظر و ...</small>
+                                </div>
+                            </div>
+    
+                            <!-- بخش روش‌های ارسال -->
+                            <div class="checkout-card mb-4">
+                                <div class="checkout-header">
+                                    <h6 class="mb-0 fw-500">روش ارسال</h6>
+                                </div>
+                                <div class="checkout-body" id="shipping-methods-container"
+                                    hx-get="{% url 'payments:load_shipping_methods' %}"
+                                    hx-trigger="load, shippingMethodChanged from:body">
+                                    <div class="text-center py-3">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <input type="hidden" name="step1-shipping_cost" id="shipping-cost" value="">
+                                <input type="hidden" name="step1-shipping_name" id="shipping-name" value="">
+                                <input type="hidden" name="step1-shipping_method_id" id="shipping-method-id" value="">
+                                <input type="hidden" name="step1-shipping_is_postpaid" id="shipping-is-postpaid" value="false">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- بخش خلاصه سفارش -->
+        <div class="col-lg-4">
+            <div class="checkout-card sticky-top" style="top: 20px;">
+                <div class="checkout-header">
+                    <h5 class="mb-0 fw-500">خلاصه سفارش</h5>
+                </div>
+                <div class="checkout-body">
+
+                    <div class="mb-3">
+                        <div class="summary-item d-flex justify-content-between">
+                            <span>جمع کل محصولات</span>
+                            <span 
+                                hx-get="{% url 'carts:get_cart_total' %}" 
+                                hx-trigger="load, cartUpdated from:body"  
+                                hx-swap="innerHTML"                       
+                            >
+                                0 تومان  
+                            </span>
+                        </div>
+                        <div class="summary-item d-flex justify-content-between">
+                            <span>هزینه ارسال</span>
+                            <span class="text-success" id="shipping-cost-display">رایگان</span>
+                        </div>
+                        
+                    </div>
+
+                    <div class="d-flex justify-content-between fw-500 fs-5 mb-4">
+                        <span>مبلغ قابل پرداخت</span>
+                        <span class="text-primary" id="total-price">1,109,000 تومان</span>
+                    </div>
+
+                    <button type="submit" form="checkout-form" class="btn btn-continue w-100 text-white">
+                        ادامه فرایند خرید
+                    </button>
+
+                    <div class="alert alert-light border mt-3 mb-0">
+                        <small class="d-block mb-1"><i class="fas fa-info-circle me-2"></i> هزینه نهایی پس از تأیید نهایی محاسبه می‌شود</small>
+                        <small><i class="fas fa-shield-alt me-2"></i> پرداخت امن از طریق درگاه بانکی</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // تابع انتخاب روش ارسال با پشتیبانی از پس‌کرایه
+    function selectShipping(id, cost, name, isPostpaid = false) {
+        // حذف کلاس selected از همه کارت‌ها
+        document.querySelectorAll('.shipping-method-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        
+        // اضافه کردن کلاس selected به کارت انتخاب شده
+        event.currentTarget.classList.add('selected');
+        
+        // آپدیت رادیو باتن انتخاب شده
+        document.querySelector(`input[value="${id}"]`).checked = true;
+        
+        // آپدیت فیلدهای مخفی
+        document.getElementById('shipping-cost').value = isPostpaid ? 0 : cost;
+        document.getElementById('shipping-name').value = name;
+        document.getElementById('shipping-is-postpaid').value = isPostpaid;
+        
+        // آپدیت نمایش هزینه ارسال
+        const shippingDisplay = document.getElementById('shipping-cost-display');
+        if(isPostpaid) {
+            shippingDisplay.textContent = 'پس‌کرایه';
+            shippingDisplay.className = 'text-info';
+        } else if(cost === 0) {
+            shippingDisplay.textContent = 'رایگان';
+            shippingDisplay.className = 'text-success';
+        } else {
+            shippingDisplay.textContent = cost.toLocaleString() + ' تومان';
+            shippingDisplay.className = 'text-warning';
+        }
+    }
+</script>
+
+{% endblock %}

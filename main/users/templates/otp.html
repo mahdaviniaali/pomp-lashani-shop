@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تایید کد OTP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .auth-card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .otp-input {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 5px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            transition: all 0.3s;
+            direction: ltr; /* نمایش اعداد از راست به چپ */
+        }
+        .otp-input:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        .btn-primary {
+            background-color: #0d6efd;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+        }
+        .timer {
+            color: #0d6efd;
+            font-weight: bold;
+        }
+        .phone-number {
+            direction: ltr;
+            display: inline-block;
+        }
+        /* استایل برای راست‌چین کردن محتوا */
+        .rtl-content {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-5 col-lg-4">
+                <div class="auth-card card">
+                    <div class="card-body p-4 rtl-content">
+                        <!-- لوگو یا آیکون -->
+                        <div class="text-center mb-4">
+                            <i class="bi bi-shield-lock text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        
+                        <!-- عنوان و توضیحات -->
+                        <div class="text-center mb-4">
+                            <h3 class="fw-bold mb-3">تأیید شماره موبایل</h3>
+                            <p class="text-muted">کد تأیید به شماره زیر ارسال شد:</p>
+                            <p class="fw-bold text-dark mb-4">
+                                <span class="phone-number">{{ phone_number|slice:":4" }}•••{{ phone_number|slice:"7:" }}</span>
+                            </p>
+                        </div>
+
+                        <!-- نمایش پیام‌های خطا -->
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <!-- فرم OTP -->
+                        <form method="post" id="otpForm">
+                            {% csrf_token %}
+                            <input type="hidden" name="phone_number" value="{{ phone_number }}">
+                            <input type="hidden" name="next" value="{{ next }}">
+                            
+                            <div class="mb-4">
+                                <label class="form-label mb-3">کد ۵ رقمی را وارد کنید</label>
+                                <div class="d-flex justify-content-center mb-3">
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required name="otp5" autofocus>
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required name="otp4">
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required name="otp3">
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required name="otp2">
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required name="otp1">
+                                </div>
+                                <div class="text-center mt-2">
+                                    <p class="text-muted small">زمان باقیمانده: <span id="countdown" class="timer">02:00</span></p>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 mb-3">
+                                تأیید و ادامه
+                            </button>
+
+                            <div class="text-center mt-3">
+                                <p class="text-muted small mb-2">کد را دریافت نکرده‌اید؟</p>
+                                <button type="button" id="resendBtn" class="btn btn-link text-decoration-none p-0" disabled>
+                                    ارسال مجدد کد (<span id="resendTimer">60</span> ثانیه)
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-4 pt-3 border-top">
+                            <a href="{% url 'users:login' %}" class="text-decoration-none text-primary fw-500">
+                                <i class="bi bi-arrow-right"></i> تغییر شماره موبایل
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // اسکریپت برای مدیریت فیلدهای OTP
+        document.addEventListener('DOMContentLoaded', function() {
+            const otpInputs = document.querySelectorAll('.otp-input');
+            
+            // تغییر ترتیب فیلدها برای نمایش از راست به چپ
+            const orderedInputs = Array.from(otpInputs).reverse();
+            
+            // حرکت خودکار بین فیلدها
+            orderedInputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    if (e.target.value.length === 1) {
+                        if (index < orderedInputs.length - 1) {
+                            orderedInputs[index + 1].focus();
+                        }
+                    }
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && e.target.value.length === 0) {
+                        if (index > 0) {
+                            orderedInputs[index - 1].focus();
+                        }
+                    }
+                });
+            });
+            
+            // شمارش معکوس
+            function startCountdown() {
+                let timeLeft = 120;
+                const countdownElement = document.getElementById('countdown');
+                const resendBtn = document.getElementById('resendBtn');
+                const resendTimer = document.getElementById('resendTimer');
+                
+                const timer = setInterval(() => {
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    
+                    countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    resendTimer.textContent = timeLeft > 60 ? Math.floor(timeLeft - 60) : timeLeft;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        resendBtn.disabled = false;
+                        resendBtn.innerHTML = 'ارسال مجدد کد';
+                    }
+                    
+                    timeLeft--;
+                }, 1000);
+            }
+            
+            startCountdown();
+            
+            // ارسال مجدد کد
+            document.getElementById('resendBtn').addEventListener('click', function() {
+                // اینجا می‌توانید درخواست AJAX برای ارسال مجدد کد اضافه کنید
+                alert('کد جدید ارسال شد!');
+                this.disabled = true;
+                startCountdown();
+            });
+            
+            // ترکیب فیلدهای OTP هنگام ارسال فرم
+            document.getElementById('otpForm').addEventListener('submit', function(e) {
+                const otpCode = Array.from(otpInputs).reverse().map(input => input.value).join('');
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'otp_code';
+                hiddenInput.value = otpCode;
+                this.appendChild(hiddenInput);
+            });
+        });
+    </script>
+</body>
+</html>

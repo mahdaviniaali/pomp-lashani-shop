@@ -1,0 +1,356 @@
+{% load static %}
+
+<!doctype html>
+<html lang="fa">
+
+<head>
+  <!-- Metas -->
+  <meta charset="utf-8" />
+  <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" />
+  <meta content="HTML5 Template swoo Multi-Purpose themeforest" name="keywords" />
+  <meta content="لورم ایپسوم متن ساختگی با تولید ساد" name="description" />
+  <meta content="" name="author" />
+  <!-- Title  -->
+  <title>
+    {% block title %}
+    {% endblock %}
+  </title>
+  <!-- Favicon -->
+  <link href="assets/img/fav.png" rel="shortcut icon" sizes="16x16" title="Favicon" />
+  <!-- bootstrap 5 -->
+  <link href="{% static 'common/css/lib/bootstrap.min.rtl.css' %}" rel="stylesheet" />
+  <!-- font family -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&amp;display=swap"
+    rel="stylesheet" />
+  <!-- line fontawesome icons  -->
+  <link href="{% static 'common/css/lib/all.min.css' %}" rel="stylesheet" />
+  <!-- fontawesome icons  -->
+  <link href="{% static 'common/css/lib/line-awesome.css' %}" rel="stylesheet" />
+  <!-- ionicons icons  -->
+  <link href="{% static 'common/css/lib/ionicons.css' %}" rel="stylesheet" />
+  <!-- animate css  -->
+  <link href="{% static 'common/css/lib/animate.css' %}" rel="stylesheet" />
+  <!-- fancybox popup  -->
+  <link href="{% static 'common/css/lib/jquery.fancybox.rtl.css' %}" rel="stylesheet" />
+  <!-- lity popup  -->
+  <link href="{% static 'common/css/lib/lity.rtl.css' %}" rel="stylesheet" />
+  <!-- swiper slider  -->
+  <link href="{% static 'common/css/lib/swiper8.min.rtl.css' %}" rel="stylesheet" />
+  <!-- izi toast  -->
+  <link href="{% static 'common/css/lib/iziToast.min.rtl.css' %}" rel="stylesheet" />
+  <!-- common style -->
+  <link href="{% static 'common/css/common_style.rtl.css' %}" rel="stylesheet" />
+
+  {% block css %} {% endblock %}
+</head>
+
+
+<body class="{% block bodystyle %}{% endblock %}">
+  <!--  Start loader  -->
+  <div class="loader-wrap">
+    <svg preserveaspectratio="none" viewbox="0 0 1000 1000">
+      <path d="M0,1005S175,995,500,995s500,5,500,5V0H0Z" id="svg"></path>
+    </svg>
+    <div class="loader-wrap-heading">
+      <div class="load-text">
+        <span>در حال بارگزاری</span>
+      </div>
+    </div>
+  </div>
+  <!--  End loader  -->
+  <!--  Start navbar  -->
+  <nav class="navbar tc-navbar-style1 navbar-expand-lg navbar-light border-nav">
+  <div class="container-fluid">
+    <div class="content w-100 d-flex justify-content-between align-items-center">
+  <!-- بخش چپ (لوگو و جستجو) -->
+  <div class="d-flex align-items-center">
+    <a class="navbar-brand me-4" href="{% url 'home:home' %}">
+      <img alt="" class="logo" src="{% static 'img/logo.png' %}">
+    </a>
+    
+    <div class="search-cat d-none d-lg-block">
+      <div class="search-cat d-none d-lg-block">
+  <form method="get" action="{% url 'products:product_list' %}" class="input-group">
+    <input 
+      class="form-control" 
+      placeholder="هر چیزی را جستجو کنید ..." 
+      type="text"
+      name="search"  
+      value="{{ request.GET.q }}" 
+    >
+    <button type="submit" class="search-btn">
+      <i class="fal fa-search"></i>
+    </button>
+  </form>
+</div>
+    </div>
+  </div>
+  
+  <!-- بخش راست (منو و اطلاعات تماس) -->
+  <div class="d-flex align-items-center">
+    <div class="hot-line d-none d-lg-block me-4">
+      <span class="icon"><i class="las la-tty"></i></span>
+      <div class="inf">
+        <small class="fsz-13 d-block">خط تلفن 24/7</small>
+        <h6 class="fsz-20 color-blue1 fw-bold">
+          <a href="tel:(025)36862516">(025) 3686 25 16</a>
+        </h6>
+      </div>
+    </div>
+    
+    <div class="icons d-none d-lg-block me-3">
+      <a href="{% url 'users:profile' %}" class="me-3"><i class="la la-user"></i></a>
+      <a href="{% url 'carts:cart_detail' %}">
+        <i class="la la-shopping-cart"></i>
+      </a>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</div>
+    
+    <!-- منوی اصلی -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- محتوای منو -->
+    </div>
+  </div>
+</nav>
+  <!--  End navbar  -->
+  <!--  Start links-nav  -->
+  <div class="tc-links-nav-style1 d-none d-lg-block">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="links">
+            <ul class="links-ul">
+              <li class="nav-item dropdown">
+                <a class="" href="">دسته بندی محصولات</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="" href="{% url 'home:home' %}">خانه</a>
+              </li>
+              <li class="nav-item">
+                <a class="" href="{% url 'products:product_list' %}">محصولات</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="" href="{% url 'home:about_us' %}">درباره ما </a>
+              </li>
+              <li class="nav-item">
+                <a class="" href="{% url 'home:conect_us' %}">تماس با ما</a>
+              </li>
+              <li class="nav-item">
+                <a class="" href="{% url 'blog:bloglist' %}">ولاگ</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!--  End links-nav  -->
+  <!--Contents-->
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+  <!--End-Contents-->
+  <!--  Start footer  -->
+  <footer class="tc-footer-style1">
+    <div class="container">
+      <div class="foot-icons py-5 border-1 border-bottom">
+        <div class="row">
+          <div class="col-lg-3 border-1 border-end">
+            <p class="fsz-14 text-uppercase">
+              <span class="icon color-blue1 me-3">
+                <i class="fal fa-shipping-fast"></i> </span>حمل و نقل رایگان بیش از 99 تومان
+            </p>
+          </div>
+          <div class="col-lg-3 border-1 border-end">
+            <p class="fsz-14 text-uppercase ps-lg-3">
+              <span class="icon color-blue1 me-3">
+                <i class="fal fa-redo"></i> </span>30 روز بازگشت پول
+            </p>
+          </div>
+          <div class="col-lg-3 border-1 border-end">
+            <p class="fsz-14 text-uppercase ps-lg-3">
+              <span class="icon color-blue1 me-3">
+                <i class="fal fa-shield"></i> </span>100 ٪ پرداخت ایمن
+            </p>
+          </div>
+          <div class="col-lg-3">
+            <p class="fsz-14 text-uppercase ps-lg-3">
+              <span class="icon color-blue1 me-3">
+                <i class="fal fa-comments-alt"></i> </span>پشتیبانی اختصاصی 24/7
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="foot-content">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="foot-info">
+              <h6 class="fw-bold mb-30 text-capitalize">
+                Swoo - بازار الکترونیکی آنلاین
+              </h6>
+              <small class="fsz-12 text-uppercase">خط تلفن 24/7</small>
+              <h5 class="fw-bold color-blue1 mb-20">(025) 3686 25 16</h5>
+              <a href="#">257 خیابان جاده تاچر ، بروکلین ، منهتن ،<br />NY 10092</a>
+              <a href="#">contact@swateletro.com</a>
+              <div class="foot-social mt-40">
+                <a href="#"> <i class="fab fa-twitter"></i> </a>
+                <a href="#"> <i class="fab fa-facebook-f"></i> </a>
+                <a href="#"> <i class="fab fa-instagram"></i> </a>
+                <a href="#"> <i class="fab fa-youtube"></i> </a>
+                <a href="#"> <i class="fab fa-behance"></i> </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <div class="links-item mt-5 mt-lg-0">
+              <h6 class="fsz-18 mb-30">دسته های برتر</h6>
+              <ul class="links">
+                <li><a href="#">تلویزیون/تلویزیون</a></li>
+                <li><a href="#">رایانه</a></li>
+                <li><a href="#">لپ تاپ</a></li>
+                <li><a href="#">موبایل و تبلت</a></li>
+                <li><a href="#">قصور</a></li>
+                <li><a href="#">دوربین</a></li>
+                <li><a href="#">اسباب</a></li>
+                <li><a href="#">تجهیزات ورزشی</a></li>
+                <li><a href="#">دفتر</a></li>
+                <li><a href="#">خانه هوشمند</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <div class="links-item mt-5 mt-lg-0">
+              <h6 class="fsz-18 mb-30">شرکت</h6>
+              <ul class="links">
+                <li><a href="#">درباره Swoo</a></li>
+                <li><a href="#">تماس</a></li>
+                <li><a href="#">شغلی</a></li>
+                <li><a href="#">وبلاگ</a></li>
+                <li><a href="#">نقشه سایت</a></li>
+                <li><a href="#">مکان های ذخیره سازی</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <div class="links-item mt-5 mt-lg-0">
+              <h6 class="fsz-18 mb-30">مرکز کمک</h6>
+              <ul class="links">
+                <li><a href="#">خدمات مشتری</a></li>
+                <li><a href="#">سیاست</a></li>
+                <li><a href="#">شرایط و ضوابط</a></li>
+                <li><a href="#">سفارش پیگیری</a></li>
+                <li><a href="#">متداول</a></li>
+                <li><a href="#">حساب من</a></li>
+                <li><a href="#">پشتیبانی محصول</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <div class="links-item mt-5 mt-lg-0">
+              <h6 class="fsz-18 mb-30">شریک</h6>
+              <ul class="links">
+                <li><a href="#">فروشنده شوید</a></li>
+                <li><a href="#">وابسته</a></li>
+                <li><a href="#">تبلیغ کردن</a></li>
+                <li><a href="#">مشارکت</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 text-center text-lg-start">
+            <p class="color-666">
+              © 1403<a class="fw-bold color-000" href="#">علی مهدوی نیا</a>کلیه حقوق محفوظ است
+            </p>
+          </div>
+
+          <div class="col-lg-4">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if not request.path|slice:":10" == "/products/" %}
+    <div class="mob-navigation d-flex d-lg-none" id="nav-mobile">
+      <ul>
+        <li id="compare" class="list {% if request.path == '/compare' %}active{% endif %}">
+          <a href="/compare">
+            <span class="icon"> <i class="las la-sync-alt"></i> </span>
+            <span class="text">مقایسه کردن</span>
+          </a>
+        </li>
+        <li id="favorite" class="list {% if request.path == '/favorate' %}active{% endif %}">
+          <a href="/favorate">
+            <span class="icon"> <i class="lar la-heart"></i> </span>
+            <span class="text">مورد علاقه</span>
+          </a>
+        </li>
+        <li id="home" class="list {% if request.path == '/' %}active{% endif %}">
+          <a href="/">
+            <span class="icon"> <i class="las la-home"></i> </span>
+            <span class="text">خانه</span>
+          </a>
+        </li>
+        <li id="cart" class="list {% if request.path == '/orders/cart/' %}active{% endif %}">
+          <a href="/orders/cart/">
+            <span class="icon"> <i class="las la-shopping-bag"></i> </span>
+            <span class="text">سبد خرید</span>
+          </a>
+        </li>
+        <li id="profile" class="list {% if request.path == '/users/profile/' %}active{% endif %}">
+          <a href="/users/profile">
+            <span class="icon"> <i class="las la-user"></i> </span>
+            <span class="text">مشخصات</span>
+          </a>
+        </li>
+        <li class="indicator"></li>
+      </ul>
+    </div>
+    {% endif %}
+  </footer>
+  <!--  End footer  -->
+  <!--  Start to top button  -->
+  <a class="to_top" href="#">
+    <i class="la la-angle-up"></i>
+  </a>
+  <!--  End to top button  -->
+  <!--  request  -->
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <script src="{% static 'common/js/lib/jquery-3.0.0.min.js' %}"></script>
+  <script src="{% static 'common/js/lib/jquery-migrate-3.0.0.min.js' %}"></script>
+  <script src="{% static 'common/js/lib/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'common/js/lib/wow.min.js' %}"></script>
+  <script src="{% static 'common/js/lib/jquery.fancybox.js' %}"></script>
+  <script src="{% static 'common/js/lib/lity.js' %}"></script>
+  <script src="{% static 'common/js/lib/swiper8-bundle.min.js' %}"></script>
+  <script src="{% static 'common/js/lib/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'common/js/lib/jquery.counterup.js' %}"></script>
+  <script src="{% static 'common/js/lib/parallaxie.js' %}"></script>
+  <script src="{% static 'common/js/lib/iziToast.min.js' %}"></script>
+  <!-- ===== gsap scripts ===== -->
+  <script src="{% static 'common/js/gsap_lib/gsap.min.js' %}"></script>
+  <!-- <script src="{% static 'common/js/gsap_lib/ScrollSmoother.min.js' %}"></script>
+    <script src="{% static 'common/js/gsap_lib/ScrollTrigger.min.js' %}"></script>
+    <script src="{% static 'common/js/gsap_lib/SplitText.min.js' %}"></script> -->
+  <script src="{% static 'common/js/common_js.js' %}"></script>
+  <!-- ===== home scripts ===== -->
+
+
+  {% block js %} {% endblock %}
+</body>
+</body>
+
+</html>

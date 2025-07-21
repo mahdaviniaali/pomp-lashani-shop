@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Djangocenter Blog List{% endblock %}
+
+
+{% block css %}
+<link href="{% static 'pages/css/inner_pages.rtl.css' %}" rel="stylesheet" />
+<link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block bodystyle %}
+home-style3 sin-prod-pg-1
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'pages/js/inner_pages.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<body class="home-style3">
+    <div class="body-container">
+      <div class="container container-llgg">
+        <main>
+          <!--  Start breadcrumb  -->
+          <section
+            class="tc-breadcrumb-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp"
+          >
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb fw-bold mb-0">
+                <li class="breadcrumb-item color-999"><a href="#">خانه</a></li>
+                <li class="breadcrumb-item color-999">
+                  <a href="#">فروشگاه</a>
+                </li>
+                <li
+                  aria-current="page"
+                  class="breadcrumb-item active color-000"
+                >
+                  {{ catname.title }}
+                </li>
+              </ol>
+            </nav>
+          </section>
+          <!--  End breadcrumb  -->
+         
+         
+          <!--  Start products  -->
+          <section
+            class="tc-products-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp"
+          >
+            <div class="row">
+              <div class="col-lg-3">
+                <div class="filters">
+                  <div class="category-box">
+                    <h6 class="fsz-18 fw-bold text-uppercase mb-20">دسته</h6>
+                    <a
+                      class="cat-btn fsz-12 fw-bold py-2 px-3 bg-white radius-3 hover-bg-green2"
+                      href="{% url 'products:product_list' %}"
+                    >
+                      <i class="la la-angle-left me-2"></i>همه دسته بندی ها</a
+                    >
+                    <div class="cat-list pt-20">
+                      <h6 class="fsz-14 fw-bold mb-20">{{ catname.title }}</h6>
+                      <ul>
+                        <li>
+                          <a href="{% url 'products:product_list' %}"
+                            ><i class="la la-angle-left">همه محصولات</i></a
+                          >
+                        </li>
+                        {% for cat in categories %}
+                        <li><a href="{% url 'products:product_list_by_category' slug=cat.slug %}">{{ cat.title }}</a></li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="filter-box mt-10">
+                   
+                    <div class="filter-groups">
+                      <div class="filter-group">
+                        <div class="group-title">
+                          <strong class="fsz-14">  برند ها</strong>
+                          <span class="arrow">
+                            <i class="la la-angle-up"></i>
+                          </span>
+                        </div>
+                        <div class="group-body">
+                          
+                          <div class="scroll-cont">
+                            <div class="check-group check-brands">
+                              {% for brand in brands %}
+                            <div class="form-check">
+                              <input
+                                class="form-check-input brand-checkbox"
+                                id="brand-{{ brand.id }}"
+                                type="checkbox"
+                                name="brand"
+                                value="{{ brand.name }}"
+                                hx-trigger="change"
+                              />
+                              <label class="form-check-label" for="brand-{{ brand.id }}">
+                                <span>{{ brand.name }}</span>
+                              </label>
+                            </div>
+                            {% endfor %}
+                  
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="filter-group">
+                        <div class="group-title">
+                          <strong class="fsz-14">با قیمت</strong>
+                          <span class="arrow">
+                            <i class="la la-angle-up"></i>
+                          </span>
+                        </div>
+                        <div class="group-body">
+                          <div class="price-card">
+                            <div class="slider">
+                              <div class="progress"></div>
+                            </div>
+                            <div class="range-input">
+                              <input 
+                                name="min_price"  
+                                class="range-min" 
+                                max="99999990" 
+                                min="0" 
+                                step="100" 
+                                type="range" 
+                                value="0"
+                                hx-trigger="change"  
+                              />
+                              <input 
+                                name="max_price"  
+                                class="range-max" 
+                                max="100000000" 
+                                min="0" 
+                                step="100" 
+                                type="range" 
+                                value="100000000"
+                                hx-trigger="change" 
+                              />
+                            </div>
+                            <div class="row mt-20 align-items-center gx-0">
+                              <div class="col-9">
+                                <div class="price-input">
+                                  <div class="field">
+                                    <span class="sympol">تومان</span>
+                                    <input
+                                      name="min_price"  
+                                      class="input-min"
+                                      type="number"
+                                      value="0"
+                                      hx-trigger="change, keyup delay:500ms"  
+                                    />
+                                  </div>
+                                  <div class="separator"></div>
+                                  <div class="field">
+                                    <span class="sympol">تومان</span>
+                                    <input
+                                      name="max_price"  
+                                      class="input-max"
+                                      type="number"
+                                      value="10000000"
+                                      hx-trigger="change, keyup delay:500ms"  
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-3 text-end">
+                                <button 
+                                  type="button" 
+                                  class="bttn"
+                                  hx-get="{% url 'products:product_partial' %}"
+                                  hx-include="[name='min_price'], [name='max_price']"
+                                  hx-target="#product-list"
+                                >
+                                  رفتن
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>                   
+                    </div>
+                  </div>                  
+                </div>
+              </div>
+              <div class="col-lg-9">
+                <div class="products-content">
+                  <div class="prod-filter color-666">
+                    <div class="row align-items-center">
+                      <div class="col-lg-4 mt-3 mt-lg-0">
+                        <div class="sort-item">
+                        <span class="s-title">ترتیب</span>
+                        <select class="form-control form-select" name="order"
+                                hx-get="{% url 'products:product_partial' %}"
+                                hx-target="#product-list"
+                                hx-trigger="change"
+                                hx-include="[name='min_price'], [name='max_price'], [name='brand'], [name='category']"
+                                hx-indicator="#loading-spinner">
+                          
+                          <option value="">پیش فرض</option>
+                          <option value="-sold_count" {% if request.GET.order == '-sold_count' %}selected{% endif %}>پرفروش‌ترین</option>
+                          <option value="-create_at" {% if request.GET.order == '-create_at' %}selected{% endif %}>جدیدترین</option>
+                          <option value="price" {% if request.GET.order == 'price' %}selected{% endif %}>ارزان‌ترین</option>
+                          <option value="-price" {% if request.GET.order == '-price' %}selected{% endif %}>گران‌ترین</option>
+                          
+                        </select>
+                      </div>
+                      </div>
+                      <div class="col-lg-2 text-lg-end mt-3 mt-lg-0">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="products">
+                    <div class="row">
+                      {% if catname %}
+                      <input type="hidden" id="cat_slug" name="category" value="{{catname}}">
+                      {% endif %}
+                      <div id="product-list" 
+                        hx-get="{% url 'products:product_partial' %}" 
+                        hx-include="[name='min_price'], [name='max_price'], [name='brand'], [name='category'], [name='order'], [name='search']  " 
+                        hx-target="#product-list" 
+                        hx-trigger="change from:input"
+                        hx-indicator="#loading-spinner">
+                        
+                        {% include 'product_cards.html' %}
+                      </div>
+                      <div id="loading-spinner" class="htmx-indicator text-center my-5">
+                        <div class="custom-spinner"></div>
+                        <p class="text-muted mt-2">در حال بارگذاری محصولات...</p>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!--  End products  -->
+          <!--  Start recently  -->
+        
+          <!--  End recently  -->
+        </main>
+        <!--End-Contents-->
+      </div>
+    </div>
+  </body>
+
+{% endblock %}

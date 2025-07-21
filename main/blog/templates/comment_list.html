@@ -1,0 +1,12 @@
+
+{% for comment in comments %}
+<div class="comment mb-4 pb-4 {% if not forloop.last %}border-bottom{% endif %}" id="comment-{{ comment.id }}">
+    <div class="d-flex align-items-center mb-2">
+        <h6 class="mb-0 me-2">{{ comment.user.fullname }}</h6>
+        <small class="text-muted">{{ comment.created_at }}</small>
+    </div>
+    <p class="mb-0">{{ comment.content }}</p>
+</div>
+{% empty %}
+<div class="alert alert-light text-center">هنوز نظری ثبت نشده است!</div>
+{% endfor %}
