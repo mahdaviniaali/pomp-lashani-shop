@@ -1,0 +1,27 @@
+name: Deploy via FTP
+
+on:
+  push:
+    branches: [ main ]  # فقط روی branch اصلی اجرا شود
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies (if needed)
+        run: npm install  # اگر پروژه Node.js دارد
+
+      - name: Build project (if needed)
+        run: npm run build  # اگر نیاز به build دارد
+
+      - name: Upload files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}      # آدرس سرور FTP (مثلاً ftp.example.com)
+          username: ${{ secrets.FTP_USERNAME }}  # نام کاربری FTP
+          password: ${{ secrets.FTP_PASSWORD }}  # رمز عبور FTP
+          server-dir: /public_html/             # مسیر مقصد در سرور FTP
