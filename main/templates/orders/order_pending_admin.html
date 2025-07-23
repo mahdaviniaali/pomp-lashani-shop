@@ -3,253 +3,325 @@
 
 <style>
     /* استایل‌های پایه */
-    .invoice-container {
+    .payment-container {
         max-width: 800px;
         margin: 2rem auto;
         font-family: 'Yekan', 'Segoe UI', Tahoma, sans-serif;
     }
     
-    .invoice-card {
+    .payment-card {
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
         background: white;
     }
     
-    /* هدر سفارش */
-    .invoice-header {
+    /* هدر پرداخت */
+    .payment-header {
         padding: 1.5rem;
         color: white;
-        background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+        background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
     }
     
-    .invoice-title {
+    .payment-title {
         font-size: 1.6rem;
         font-weight: 700;
         margin-bottom: 0.5rem;
     }
     
-    .invoice-subtitle {
+    .payment-subtitle {
         font-size: 0.9rem;
         opacity: 0.9;
     }
     
-    .invoice-status {
-        display: inline-block;
-        padding: 0.35rem 1rem;
-        border-radius: 50px;
-        font-weight: 500;
-        font-size: 0.85rem;
-        background-color: rgba(179, 229, 252, 0.3);
-        border: 1px solid rgba(179, 229, 252, 0.5);
-    }
-    
     /* بخش بدنه */
-    .invoice-body {
+    .payment-body {
         padding: 2rem;
     }
     
-    .invoice-section {
+    .payment-section {
         margin-bottom: 2rem;
     }
     
     .section-title {
         font-size: 1.2rem;
         font-weight: 600;
-        color: #00796b;
+        color: #2E7D32;
         margin-bottom: 1.5rem;
         padding-bottom: 0.75rem;
-        border-bottom: 1px solid #e0f2f1;
+        border-bottom: 1px solid #C8E6C9;
     }
     
     /* بخش اطلاع‌رسانی */
     .alert {
         border-radius: 8px;
         padding: 1rem 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .alert-success {
+        background-color: #E8F5E9;
+        border: 1px solid #C8E6C9;
+        color: #1B5E20;
     }
     
     .alert-info {
-        background-color: #e1f5fe;
-        border-color: #b3e5fc;
+        background-color: #E1F5FE;
+        border: 1px solid #B3E5FC;
         color: #006064;
     }
     
-    .alert-light {
-        background-color: #f5f5f5;
-        border-color: #eee;
+    /* کارت بانکی */
+    .bank-card {
+        background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);
+        color: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
     }
     
-    /* تایم‌لاین */
-    .timeline {
-        position: relative;
-        padding-right: 30px;
+    .bank-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+    }
+    
+    .bank-card-title {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        opacity: 0.8;
+    }
+    
+    .bank-card-number {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+    }
+    
+    .bank-card-details {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    /* دکمه‌ها */
+    .btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .btn-success {
+        background-color: #4CAF50;
+        color: white;
+    }
+    
+    .btn-success:hover {
+        background-color: #388E3C;
+    }
+    
+    .btn-outline-success {
+        background-color: transparent;
+        color: #4CAF50;
+        border: 1px solid #4CAF50;
+    }
+    
+    .btn-outline-success:hover {
+        background-color: #4CAF50;
+        color: white;
+    }
+    
+    .btn-whatsapp {
+        background-color: #25D366;
+        color: white;
+    }
+    
+    .btn-whatsapp:hover {
+        background-color: #128C7E;
+    }
+    
+    .btn-telegram {
+        background-color: #0088cc;
+        color: white;
+    }
+    
+    .btn-telegram:hover {
+        background-color: #005580;
+    }
+    
+    .btn-group {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1rem;
+    }
+    
+    /* فرم آپلود رسید */
+    .upload-receipt {
+        border: 2px dashed #BDBDBD;
+        border-radius: 8px;
+        padding: 1.5rem;
+        text-align: center;
         margin-top: 1.5rem;
     }
     
-    .timeline-item {
-        position: relative;
-        padding-bottom: 25px;
-    }
-    
-    .timeline-badge {
-        position: absolute;
-        right: -15px;
-        top: 0;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #cfd8dc;
-        z-index: 2;
-        border: 2px solid white;
-    }
-    
-    .timeline-item.active .timeline-badge {
-        background: #00bcd4;
-        box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2);
-    }
-    
-    .timeline-content {
-        padding-right: 30px;
-        position: relative;
-    }
-    
-    .timeline-content h6 {
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 0.25rem;
-    }
-    
-    .timeline-content small {
-        color: #78909c;
-        font-size: 0.85rem;
-    }
-    
-    .timeline-content::before {
-        content: '';
-        position: absolute;
-        right: 5px;
-        top: 0;
-        height: 100%;
-        width: 2px;
-        background: #e0e0e0;
-    }
-    
-    .timeline-item:last-child .timeline-content::before {
+    .upload-receipt input {
         display: none;
     }
     
-    /* آیکون‌ها */
-    .fa-clock {
-        color: #00bcd4;
+    .upload-receipt-label {
+        display: block;
+        cursor: pointer;
+        color: #616161;
     }
     
-    .fa-info-circle {
-        color: #00796b;
+    .upload-icon {
+        font-size: 2rem;
+        color: #9E9E9E;
+        margin-bottom: 0.5rem;
     }
     
     /* رسپانسیو */
     @media (max-width: 768px) {
-        .invoice-header {
+        .payment-header {
             padding: 1rem;
         }
         
-        .invoice-title {
+        .payment-title {
             font-size: 1.3rem;
         }
         
-        .invoice-body {
+        .payment-body {
             padding: 1.5rem;
         }
         
-        .alert {
+        .bank-card-number {
+            font-size: 1.2rem;
+        }
+        
+        .btn-group {
             flex-direction: column;
-            text-align: center;
         }
-        
-        .alert i {
-            margin-bottom: 0.5rem;
-            margin-right: 0;
-        }
-        
-        .timeline {
-            padding-right: 20px;
-        }
-        
-        .timeline-badge {
-            right: -10px;
-        }
+    }
+    .bank-card-number {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        direction: ltr; /* جهت متن از چپ به راست */
+        unicode-bidi: bidi-override; /* اجبار به جهت تعیین شده */
+        text-align: right; /* تراز متن به راست */
+        letter-spacing: 2px;
     }
 </style>
 
-<div class="invoice-container">
-    <div class="invoice-card">
-        <div class="invoice-header" style="background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="invoice-title">فاکتور خرید #{{ order.order_number }}</h1>
-                    <p class="invoice-subtitle">تاریخ ثبت: {{ order.created_at|date:"Y/m/d H:i" }}</p>
-                </div>
-                <div>
-                    <span class="invoice-status" style="background-color: #b3e5fc; color: #006064;">
-                        در انتظار تایید ادمین
-                    </span>
-                </div>
+<div class="payment-container">
+    <div class="payment-card">
+        <div class="payment-header">
+            <div>
+                <h1 class="payment-title">پرداخت و ارسال رسید</h1>
+                <p class="payment-subtitle">لطفا مبلغ را واریز کرده و رسید پرداخت را ارسال نمایید</p>
             </div>
         </div>
         
-        <div class="invoice-body">
-            <!-- بخش‌های مشترک از order_detail.html -->
-            
-            <!-- بخش وضعیت سفارش -->
-            <div class="invoice-section">
-                <h3 class="section-title">وضعیت سفارش</h3>
-                <div class="alert alert-info">
+        <div class="payment-body">
+            <!-- اطلاعات پرداخت -->
+            <div class="payment-section">
+                <h3 class="section-title">اطلاعات پرداخت</h3>
+                
+                <div class="alert alert-success">
                     <div class="d-flex align-items-center">
-                        <i class="fas fa-clock fa-2x me-3"></i>
+                        <i class="fas fa-info-circle fa-2x me-3"></i>
                         <div>
-                            <h5 class="mb-1">سفارش در حال بررسی است</h5>
-                            <p class="mb-0">سفارش شما توسط تیم پشتیبانی در حال بررسی می‌باشد. نتیجه بررسی به ایمیل و پیامک ارسال خواهد شد.</p>
+                            <h5 class="mb-1">مبلغ قابل پرداخت: {{ order.total_price|intcomma }} تومان</h5>
+                            <p class="mb-0">لطفا دقیقا همین مبلغ را به شماره کارت زیر واریز نمایید.</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="timeline mt-4">
-                    <div class="timeline-item active">
-                        <div class="timeline-badge"></div>
-                        <div class="timeline-content">
-                            <h6>ثبت سفارش</h6>
-                            <small class="text-muted">{{ order.created_at|date:"Y/m/d H:i" }}</small>
+                <div class="bank-card">
+                    <div class="bank-card-title">شماره کارت مقصد</div>
+                    <div class="bank-card-number"> {{cart_number.number}} </div>
+                    <div class="bank-card-details">
+                        <div>
+                            <div class="bank-card-title">به نام</div>
+                            <div>{{cart_number.cart_name}} </div>
                         </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-badge"></div>
-                        <div class="timeline-content">
-                            <h6>تایید ادمین</h6>
-                            <small class="text-muted">در حال انتظار</small>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-badge"></div>
-                        <div class="timeline-content">
-                            <h6>آماده‌سازی</h6>
-                            <small class="text-muted">بعد از تایید</small>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-badge"></div>
-                        <div class="timeline-content">
-                            <h6>تحویل</h6>
-                            <small class="text-muted">مرحله نهایی</small>
+                        <div>
+                            <div class="bank-card-title">بانک</div>
+                            <div>{{cart_number.bank_name}}</div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- بخش پشتیبانی -->
-            <div class="alert alert-light mt-4">
-                <h6><i class="fas fa-info-circle me-2"></i> اطلاعات تماس</h6>
-                <p class="mb-1">برای پیگیری سفارش می‌توانید با پشتیبانی تماس بگیرید:</p>
-                <p class="mb-0"><strong>تلفن پشتیبانی:</strong> ۰۲۱-۱۲۳۴۵۶۷۸</p>
+            <!-- ارسال رسید -->
+            <div class="payment-section">
+                <h3 class="section-title">ارسال رسید پرداخت</h3>
+                
+                <div class="alert alert-info">
+                    <p>پس از واریز مبلغ، لطفا تصویر رسید پرداخت را از طریق یکی از روش‌های زیر ارسال نمایید:</p>
+                    
+                    <div class="btn-group">
+                        <a href="https://wa.me/{{company_info.contact_phone}}" class="btn btn-whatsapp">
+                            <i class="fab fa-whatsapp me-2"></i> ارسال از طریق واتساپ
+                        </a>
+                        <a href="https://t.me/{{company_info.contact_phone}}" class="btn btn-telegram">
+                            <i class="fab fa-telegram me-2"></i> ارسال از طریق تلگرام
+                        </a>
+                    </div>
+                    
+                    <!--<p class="mt-3 mb-0">یا می‌توانید رسید پرداخت را در اینجا آپلود کنید:</p>-->
+                </div>
+                {% comment "" %}
+                <form class="upload-receipt">
+                    <input type="file" id="receipt-upload" accept="image/*">
+                    <label for="receipt-upload" class="upload-receipt-label">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <h5>رسید پرداخت را اینجا رها کنید یا برای انتخاب کلیک کنید</h5>
+                        <p class="text-muted">فرمت‌های قابل قبول: JPG, PNG (حداکثر 5MB)</p>
+                    </label>
+                </form>
+                {% endcomment %}
+            </div>
+            
+            <!-- اطلاعات تماس -->
+            <div class="payment-section">
+                <h3 class="section-title">اطلاعات تماس پشتیبانی</h3>
+                
+                <div class="alert alert-info">
+                    <p>در صورت بروز هرگونه مشکل می‌توانید با پشتیبانی تماس بگیرید:</p>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <p class="mb-1"><strong>شماره تماس:</strong> {{company_info.contact_phone}}</p>
+                            <p class="mb-0"><strong>ساعات پاسخگویی:</strong> ۹ صبح تا ۵ بعدازظهر</p>
+                        </div>
+                        
+                        <div class="btn-group">
+                            <a href="tel:{{company_info.contact_phone}}" class="btn btn-success">
+                                <i class="fas fa-phone me-2"></i> تماس
+                            </a>
+                            <a href="sms:{{company_info.contact_phone}}" class="btn btn-outline-success">
+                                <i class="fas fa-sms me-2"></i> پیامک
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

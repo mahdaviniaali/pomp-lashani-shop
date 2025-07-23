@@ -1,11 +1,15 @@
+import logging
+import json
+from django.db import transaction
+from django.db.models import F, Case, When
+from django.contrib.sessions.backends.db import SessionStore
+from django.shortcuts import get_object_or_404
+
 from .models import Order, OrderItem, OrderShippingMethod, ShippingMethod
 from carts.models import Cart, CartItem
-from django.db import transaction
 from products.models import ProductVariant, Product
-from django.contrib.sessions.backends.db import SessionStore
-import json
-from django.db.models import F, Case, When
 
+logger = logging.getLogger(__name__)
 
 class OrderService:
     def __init__(self, order):
@@ -13,160 +17,135 @@ class OrderService:
 
     @staticmethod
     def create_order(user, **data):
-        """ایجاد یک سفارش جدید"""
-        with transaction.atomic():
-            cart = Cart.objects.filter(user=user).first()
-            if not cart:
-                raise ValueError("سبد خرید وجود ندارد.")
-                
-            cart_items = CartItem.objects.filter(cart=cart).select_related('product')
-            if not cart_items.exists():
-                raise ValueError("سبد خرید خالی است.")
-                
-            shipping_method = ShippingMethod.objects.get(id=data.get('shippingmethod'))
-            
-            # ساخت سفارش
-            cart.update_total_price()
-            order_shipping = OrderShippingMethod.objects.create_from_dict(
-                name=shipping_method.name,
-                price=shipping_method.price,
-                is_postpaid=shipping_method.is_postpaid
-            )
-            order = Order.objects.create_order(user, order_shipping, **data)
-            
-            # ایجاد آیتم‌های سفارش
-            order_items = [
-                OrderItem(
-                    order=order,
-                    product_name=item.product.title,
-                    price=item.price,
-                    quantity=item.quantity,
+        try:
+            with transaction.atomic():
+                cart = Cart.objects.filter(user=user).first()
+                if not cart:
+                    logger.warning(f"⛔ سبد خرید برای کاربر {user.id} یافت نشد.")
+                    raise ValueError("سبد خرید یافت نشد.")
+
+                cart_items = CartItem.objects.filter(cart=cart).select_related('product')
+                if not cart_items.exists():
+                    logger.warning(f"⚠️ سبد خرید کاربر {user.id} خالی است.")
+                    raise ValueError("سبد خرید خالی است.")
+
+                shipping_method_id = data.get('shippingmethod')
+                shipping_method = get_object_or_404(ShippingMethod, id=shipping_method_id)
+                logger.info(f"🚚 روش ارسال انتخاب شده برای کاربر {user.id}: {shipping_method.name} ({shipping_method.price} تومان)")
+
+                cart.update_total_price()
+
+                order_shipping = OrderShippingMethod.objects.create_from_dict(
+                    name=shipping_method.name,
+                    price=shipping_method.price,
+                    is_postpaid=shipping_method.is_postpaid
                 )
-                for item in cart_items
-            ]
-            OrderItem.objects.bulk_create(order_items)
-            
-            # به‌روزرسانی موجودی به صورت اتمیک
-            variant_updates = []
-            for item in cart_items:
-                if hasattr(item, 'variant'):
-                    variant_updates.append(item.variant)
-                    
-            if variant_updates:
-                ProductVariant.objects.filter(
-                    id__in=[v.id for v in variant_updates]
-                ).update(stock=F('stock') - 1)  # مقدار مناسب را قرار دهید
-            
-            # پاک کردن سبد خرید
-            cart_items.delete()
-            order.update_total_price()
-            return order.id
 
+                order = Order.objects.create_order(user, order_shipping, **data)
+                logger.info(f"✅ سفارش جدید برای کاربر {user.id} با شناسه {order.id} ایجاد شد.")
 
+                order_items = []
+                for item in cart_items:
+                    order_items.append(OrderItem(
+                        order=order,
+                        product_name=item.product.title,
+                        price=item.price,
+                        quantity=item.quantity,
+                    ))
+                    logger.debug(f"📦 آیتم سفارش: {item.product.title} × {item.quantity} | قیمت: {item.price}")
 
+                OrderItem.objects.bulk_create(order_items)
+                logger.info(f"🛒 مجموعاً {len(order_items)} آیتم برای سفارش {order.id} ذخیره شد.")
+
+                # آپدیت موجودی
+                variants_to_update = [
+                    (item.variant.id, item.quantity)
+                    for item in cart_items
+                    if hasattr(item, 'variant') and item.variant
+                ]
+
+                if variants_to_update:
+                    ProductVariant.objects.filter(
+                        id__in=[vid for vid, _ in variants_to_update]
+                    ).update(
+                        stock=F('stock') - Case(
+                            *[When(id=vid, then=quantity) for vid, quantity in variants_to_update],
+                            default=0
+                        )
+                    )
+                    logger.info(f"📉 موجودی {len(variants_to_update)} واریانت به‌روزرسانی شد.")
+
+                cart_items.delete()
+                logger.info(f"🧹 آیتم‌های سبد خرید کاربر {user.id} حذف شد.")
+
+                order.update_total_price()
+                logger.info(f"💰 قیمت نهایی سفارش {order.id} محاسبه شد.")
+                return order.id
+
+        except Exception as e:
+            logger.exception(f"🔥 خطا در ساخت سفارش برای کاربر {user.id}: {str(e)}")
+            raise
+
+    @staticmethod
     def stock_manage(session_key):
         try:
             session = SessionStore(session_key=session_key)
-            
             if 'pending_stock_updates' not in session:
-                
-                raise ValueError("اطلاعات سبد خرید یافت نشد")
-            
+                logger.warning(f"❌ هیچ اطلاعاتی برای آپدیت موجودی در سشن {session_key} یافت نشد.")
+                raise ValueError("اطلاعات موجودی در سشن یافت نشد.")
+
             cart_data = json.loads(session['pending_stock_updates'])
-            
-            # جمع‌آوری داده‌ها
+
             variant_updates = {}
             product_updates = {}
-            valid_variant_ids = set()
-            
+
             for item in cart_data:
                 variant_id = item['variant_id']
                 product_id = item['product_id']
                 quantity = item['quantity']
                 current_stock = item['current_stock']
-                
+
                 variant_updates[variant_id] = {
                     'quantity': quantity,
                     'current_stock': current_stock
                 }
                 product_updates[product_id] = product_updates.get(product_id, 0) + quantity
-            
-            # 1. قفل و بررسی موجودی‌ها در یک کوئری
+
+                logger.debug(f"📊 برای واریانت {variant_id} → موجودی فعلی: {current_stock}، کسر: {quantity}")
+
             with transaction.atomic():
-                # کوئری اول: قفل کردن و بررسی موجودی
                 variants = ProductVariant.objects.select_for_update().filter(
                     id__in=variant_updates.keys()
                 )
-                
-                # فیلتر واریانت‌های معتبر
+
                 valid_variant_ids = {
-                    v.id for v in variants 
+                    v.id for v in variants
                     if v.stock == variant_updates[v.id]['current_stock']
                 }
-                
-                # کوئری دوم: به‌روزرسانی دسته‌جمعی واریانت‌های معتبر
+
                 if valid_variant_ids:
                     ProductVariant.objects.filter(id__in=valid_variant_ids).update(
                         stock=F('stock') - Case(
-                            *[When(id=vid, then=variant_updates[vid]['quantity']) 
-                            for vid in valid_variant_ids],
+                            *[When(id=vid, then=variant_updates[vid]['quantity'])
+                              for vid in valid_variant_ids],
                             default=0
                         )
                     )
-                
-                # کوئری سوم: به‌روزرسانی محصولات
+                    logger.info(f"📦 موجودی واریانت‌های معتبر ({len(valid_variant_ids)}) آپدیت شد.")
+
                 Product.objects.filter(id__in=product_updates.keys()).update(
                     sold_count=F('sold_count') + Case(
-                        *[When(id=pid, then=quantity) 
-                        for pid, quantity in product_updates.items()],
+                        *[When(id=pid, then=quantity)
+                          for pid, quantity in product_updates.items()],
                         default=0
                     )
                 )
-            
-            # پاک کردن سشن
+                logger.info(f"📈 تعداد فروش محصولات ({len(product_updates)}) به‌روزرسانی شد.")
+
             del session['pending_stock_updates']
             session.save()
-            
+            logger.info(f"🧹 سشن {session_key} برای آپدیت موجودی پاک‌سازی شد.")
+
         except Exception as e:
-            print(f"خطا: {str(e)}")
+            logger.exception(f"🔥 خطا در مدیریت موجودی سشن {session_key}: {str(e)}")
             raise
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

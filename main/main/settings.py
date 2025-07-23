@@ -36,23 +36,6 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 
 
 
-# یسری دیتا برای تنظیمات
-ADMIN_PHONE = str(env("ADMIN_PHONE"))
-# تنظیمات SMS.ir
-SMSIR_API_KEY = "jdhldxSf9E3sr83k0Oa6UvwxrfEvMkCCu2uW2BqX6koVo4y5"  # کلید API از پنل
-SMSIR_LINE_NUMBER = "30007487124945"  # شماره خط ارسال
-SMSIR_VERIFY_TEMPLATE_ID = 123456  # شناسه قالب تأیید
-
-
-
-
-
-
-
-
-
-
-
 # Application definition
 INSTALLED_APPS = [
     'jazzmin',
@@ -89,6 +72,7 @@ INSTALLED_APPS = [
     'django_admin_listfilter_dropdown',
     'rangefilter',
     'admin_auto_filters',
+    'meta',
 ]
 
 MIDDLEWARE = [
@@ -120,6 +104,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'main.context_processors.global_context',
             ],
             'libraries': {
                 'main_filters' : 'main.templatetags.global_filters',
@@ -145,8 +130,6 @@ DATABASES = {
     }
 }
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -164,6 +147,17 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+
+# یسری دیتا برای تنظیمات
+ADMIN_PHONE = str(env("ADMIN_PHONE"))
+# تنظیمات SMS.ir
+SMSIR_API_KEY = str(env("SMSIR_API_KEY"))  # کلید API از پنل
+SMSIR_LINE_NUMBER = str(env("SMSIR_LINE_NUMBER"))  # شماره خط ارسال
+SMSIR_VERIFY_TEMPLATE_ID = str(env("SMSIR_VERIFY_TEMPLATE_ID"))  # شناسه قالب تأیید
+
+
 
 # اجازه استفاده از یونیکد در SlugField
 SLUGIFY_ALLOW_UNICODE = True
@@ -193,8 +187,6 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-
-
 AUTH_USER_MODEL = 'users.User'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -211,8 +203,6 @@ NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 SANDBOX = True
 MERCHANT = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
 
-
-
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
@@ -223,7 +213,6 @@ CACHES = {
 # تنظیمات سفارشی برای کش‌های شرطی
 UPDATE_NEW_PRODUCTS = True
 ENABLE_NEWSLETTER = True
-
 
 '''
 #arvan
@@ -239,7 +228,6 @@ AWS_S3_FILE_OVERWRITE = False
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
 '''
-
 
 # CKEditor 5 Configuration
 # settings.py
@@ -261,18 +249,11 @@ CKEDITOR_5_CONFIGS = {
 # For file uploads
 CKEDITOR_5_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
-
-
-
-
 # تنظیمات پیشفرض برای محدودیت تعداد درخواست‌ها
 GLOBAL_RATE_LIMIT = {
     'RATE_LIMIT': 100000,  # 100 درخواست
     'TIME_WINDOW': 60 , 
 }
-
-
-
 
 # لاگ گیری
 LOGGING = {

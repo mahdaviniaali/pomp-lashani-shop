@@ -23,12 +23,24 @@ def generate_invoice_number():
 
 
 class CartNumber(models.Model):
-    cart_name = models.CharField(_("نام سبد"), max_length=50)
-    number = models.CharField(_("شماره سبد"), max_length=20, unique=True)
+    cart_name = models.CharField(_("نام کارت"), max_length=50)
+    number = models.CharField(_("شماره کارت"), max_length=30, unique=True)
+    bank_name = models.CharField(_("نام بانک"), max_length=20)
     available = models.BooleanField(_("فعال"), default=True)
     def __str__(self):
-        return f"Cart #{self.cart_name.pk} - Number: {self.number}"
+        return f"Cart #{self.cart_name} - Number: {self.number}"
 
+    def save(self, *args, **kwargs):
+        # اگر این کارت قرار است فعال شود (available=True)
+        if self.available:
+            # تمام کارت‌های دیگر را غیرفعال می‌کنیم
+            CartNumber.objects.exclude(pk=self.pk).update(available=False)
+        # اگر کارت غیرفعال شود و در حال حاضر تنها کارت فعال باشد، اجازه نمی‌دهیم
+        elif not self.available and CartNumber.objects.filter(available=True).count() <= 1:
+            raise ValueError("حداقل یک کارت باید فعال باشد!")
+        super().save(*args, **kwargs)
+
+        
     class Meta:
         verbose_name = _("شماره کارت")
         verbose_name_plural = _("شماره‌های کارت")

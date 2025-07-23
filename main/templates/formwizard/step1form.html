@@ -3,160 +3,17 @@
 {% block title %}تکمیل خرید | Djangocenter{% endblock %}
 
 {% block css %}
+<link href="{% static 'pages/css/step1form.css' %}" rel="stylesheet" />
 <link href="{% static 'pages/css/inner_pages.rtl.css' %}" rel="stylesheet" />
 <link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
-<style>
-    /* استایل‌های مینیمال */
-    body {
-        background-color: #f8f9fa;
-    }
-    .checkout-container {
-        max-width: 1200px;
-        margin: 2rem auto;
-    }
-    .checkout-card {
-        border: none;
-        border-radius: 12px;
-        box-shadow: 0 2px 16px rgba(0,0,0,0.05);
-        overflow: hidden;
-        margin-bottom: 1.5rem;
-    }
-    .checkout-header {
-        background-color: transparent;
-        border-bottom: 1px solid #eee;
-        padding: 1.25rem 1.5rem;
-    }
-    .checkout-body {
-        padding: 1.5rem;
-    }
-    .step-indicator-delicate {
-        display: flex;
-        position: relative;
-        margin: 2.5rem 0 3rem;
-        padding: 0 1rem;
-    }
-    
-    .step-line {
-        position: absolute;
-        top: 10px;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background-color: #e0e0e0;
-        z-index: 0;
-    }
-    
-    .step {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative;
-        z-index: 1;
-    }
-    
-    .step-marker {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background-color: #e0e0e0;
-        margin-bottom: 0.8rem;
-        transition: all 0.3s ease;
-        position: relative;
-    }
-    
-    .step.active .step-marker {
-        background-color: transparent;
-    }
-    
-    .step.active .step-marker::before {
-        content: '';
-        position: absolute;
-        top: -3px;
-        left: -3px;
-        right: -3px;
-        bottom: -3px;
-        border: 1px solid #4a6cf7;
-        border-radius: 50%;
-        animation: pulse 2s infinite;
-    }
-    
-    .step.active .step-marker::after {
-        content: '';
-        position: absolute;
-        top: 2px;
-        left: 2px;
-        width: 8px;
-        height: 8px;
-        background-color: #4a6cf7;
-        border-radius: 50%;
-    }
-    
-    .step-label {
-        font-size: 0.85rem;
-        color: #9e9e9e;
-        font-weight: 400;
-        transition: all 0.3s ease;
-        text-align: center;
-        padding: 0 0.5rem;
-    }
-    
-    .step.active .step-label {
-        color: #4a6cf7;
-        font-weight: 500;
-    }
-    
-    @keyframes pulse {
-        0% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.1); opacity: 0.7; }
-        100% { transform: scale(1); opacity: 1; }
-    }
-    .step.active .step-connector {
-        background-color: #4a6cf7;
-    }
-    .shipping-method-card {
-        border: 1px solid #e9ecef;
-        border-radius: 10px;
-        transition: all 0.2s ease;
-        cursor: pointer;
-        height: 100%;
-    }
-    .shipping-method-card:hover {
-        border-color: #4a6cf7;
-        box-shadow: 0 5px 15px rgba(74, 108, 247, 0.1);
-    }
-    .shipping-method-card.selected {
-        border-color: #4a6cf7;
-        background-color: rgba(74, 108, 247, 0.03);
-    }
-    .summary-item {
-        padding: 0.75rem 0;
-        border-bottom: 1px solid #f1f1f1;
-    }
-    .btn-continue {
-        background-color: #4a6cf7;
-        border: none;
-        border-radius: 8px;
-        padding: 0.75rem;
-        font-weight: 500;
-        transition: all 0.2s ease;
-    }
-    .btn-continue:hover {
-        background-color: #3a5ce4;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(74, 108, 247, 0.2);
-    }
-    .form-control {
-        border-radius: 8px;
-        padding: 0.75rem 1rem;
-        border: 1px solid #e9ecef;
-    }
-    .form-control:focus {
-        border-color: #4a6cf7;
-        box-shadow: 0 0 0 0.2rem rgba(74, 108, 247, 0.1);
-    }
-</style>
+
 {% endblock %}
+
+
+{% block js %}
+<script src="{% static 'pages/js/step1form.js' %}"></script>
+{% endblock %}
+
 
 {% block content %}
 
@@ -323,39 +180,5 @@
         </div>
     </div>
 </div>
-
-<script>
-    // تابع انتخاب روش ارسال با پشتیبانی از پس‌کرایه
-    function selectShipping(id, cost, name, isPostpaid = false) {
-        // حذف کلاس selected از همه کارت‌ها
-        document.querySelectorAll('.shipping-method-card').forEach(card => {
-            card.classList.remove('selected');
-        });
-        
-        // اضافه کردن کلاس selected به کارت انتخاب شده
-        event.currentTarget.classList.add('selected');
-        
-        // آپدیت رادیو باتن انتخاب شده
-        document.querySelector(`input[value="${id}"]`).checked = true;
-        
-        // آپدیت فیلدهای مخفی
-        document.getElementById('shipping-cost').value = isPostpaid ? 0 : cost;
-        document.getElementById('shipping-name').value = name;
-        document.getElementById('shipping-is-postpaid').value = isPostpaid;
-        
-        // آپدیت نمایش هزینه ارسال
-        const shippingDisplay = document.getElementById('shipping-cost-display');
-        if(isPostpaid) {
-            shippingDisplay.textContent = 'پس‌کرایه';
-            shippingDisplay.className = 'text-info';
-        } else if(cost === 0) {
-            shippingDisplay.textContent = 'رایگان';
-            shippingDisplay.className = 'text-success';
-        } else {
-            shippingDisplay.textContent = cost.toLocaleString() + ' تومان';
-            shippingDisplay.className = 'text-warning';
-        }
-    }
-</script>
 
 {% endblock %}

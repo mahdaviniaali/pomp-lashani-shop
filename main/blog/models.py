@@ -4,11 +4,9 @@ from django_ckeditor_5.fields import CKEditor5Field
 from auditlog.models import AuditlogHistoryField
 from auditlog.registry import auditlog
 from django.utils.translation import gettext_lazy as _
+from meta.models import ModelMeta
 
-
-# Create your models here.
-
-class Post(models.Model):
+class Post(ModelMeta, models.Model):
     title = models.CharField(_("عنوان"), max_length=255)
     slug = models.SlugField(_("اسلاگ"), unique=True)
     content = CKEditor5Field(_("محتوا"), config_name='default')
@@ -32,6 +30,20 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_meta_title(self):
+        return f"{self.title} | مقالات پمپ‌شاپ"
+
+    def get_meta_description(self):
+        import re
+        plain = re.sub('<[^<]+?>', '', self.content)
+        return plain.strip()[:160]
+
+    def get_meta_image(self):
+        return self.image.url if self.image else None
+
+    def get_meta_url(self):
+        return self.get_absolute_url()
 
     class Meta:
         verbose_name = _("پست")

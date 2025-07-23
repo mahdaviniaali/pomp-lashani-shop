@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 import requests
 import json
-from .models import ShippingMethod, Order, Payment, PaymentMethod, PaymentStatus
-from .forms import Step1Form, Step2Form, ManualPaymentForm, PaymentformInOrder
+from .models import ShippingMethod, Order, Payment, PaymentMethod, PaymentStatus, CartNumber
+from .forms import Step1Form, Step2Form, PaymentMethodForm
 from carts.models import Cart
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,18 +13,24 @@ from django.http import Http404
 from formtools.wizard.views import SessionWizardView
 from .servise import OrderService
 from common.utils import SendSMS 
+from django.shortcuts import get_object_or_404
+
 
 ZP_API_REQUEST = 'https://sandbox.zarinpal.com/pg/v4/payment/request.json'
 ZP_API_VERIFY = 'https://sandbox.zarinpal.com/pg/v4/payment/verify.json'
 ZP_API_STARTPAY = 'https://sandbox.zarinpal.com/pg/StartPay/'
 
-print(settings.ADMIN_PHONE)
+
+
+#############
+#---------- مدیریت پرداخت ----------#
+#############
 
 #ویو مدیریت درخواست برای پرداخت 
 class PaymentProcessView(LoginRequiredMixin, View):
     def post(self, request):
         try:
-            form = PaymentformInOrder(request.POST)
+            form = PaymentMethodForm(request.POST)
             
             if not form.is_valid():
                 print("خطای فرم:", form.errors)
@@ -37,7 +43,7 @@ class PaymentProcessView(LoginRequiredMixin, View):
             print(f"پرداخت شروع شد - سفارش: {order_id} - روش: {payment_method}")
 
             if payment_method == 'gateway':
-                return redirect(reverse('payments:cartpayment_start', kwargs={'order_id': order_id}))
+                return redirect('payment_error_page') #redirect(reverse('payments:cartpayment_start', kwargs={'order_id': order_id}))
             elif payment_method == 'manual':
                 return redirect(reverse('payments:manual_payment', kwargs={'order_id': order_id}))
             else:
@@ -48,8 +54,15 @@ class PaymentProcessView(LoginRequiredMixin, View):
             print("خطای سیستمی:", str(e))
             return redirect('payment_error_page')
 
+
+#############
+#----------  پرداخت کارت به کارت ----------#
+#############
+
+
+
 # ویو پرداخت کارت به کارت 
-class PhotoPaymentRequestView(LoginRequiredMixin, View):
+'''class PhotoPaymentRequestView(LoginRequiredMixin, View):
     def post(self, request):
         form = ManualPaymentForm(request.POST, request.FILES)
         if form.is_valid():
@@ -74,55 +87,54 @@ class PhotoPaymentRequestView(LoginRequiredMixin, View):
         else:
             form = ManualPaymentForm()
         return render(request, 'manual_payment.html', {'form': form})
+'''
+
+
+
 
 
 
 class ManualPayment(LoginRequiredMixin, View):
     def get(self, request, order_id):
         user = request.user
-        order_id = order_id
         session_key = request.session.session_key
-        order = Order.objects.get(id=order_id, status="pending")
+        order = order = get_object_or_404(Order, id=order_id, user=request.user, status='pending')
+        cart_number = CartNumber.objects.filter(available=True).first()
         order.status = 'waiting_approval'
         order.save()
         order.update_total_price()
-        
+
         try:
             OrderService.stock_manage(session_key)
-            
-            # ارسال پیامک به کاربر
-            massage = SendSMS.send_sms(
-                number=request.user.phone_number,
-                message="درخواست پرداخت کارت به کارت شما ثبت شد و در انتظار تایید است"
+
+            msuccess= SendSMS.send_sms(
+                number=self.request.user.phone_number,
+                message=f"برای پرداخت سفارش {order.order_number} مبلغ {order.total_price} تومان به شماره کارت {cart_number.number} واریز نمایید"
             )
 
-            print(massage)
-            # ارسال پیامک به ادمین
-            admin_massage = SendSMS.send_sms(
+            msuccess = SendSMS.send_sms(
                 number=settings.ADMIN_PHONE,
-                message=f"درخواست پرداخت کارت به کارت جدید از {request.user.fullname}"
+                message=f"درخواست پرداخت کارت به کارت جدید از {request.user.fullname} با مبلغ {order.total_price} به شماره حساب {cart_number.number} . \n شماره فاکتور:{order.order_number}"
             )
 
-            print(admin_massage)
+            messages.success(request, "درخواست شما با موفقیت ثبت شد و در انتظار تایید است.")
+            return redirect(reverse('users:user_order', kwargs={'order_id': order.id}))
 
         except Exception as e:
-            order.status = 'canceled'
-            order.save()
             
-            # ارسال پیامک خطا به کاربر
-            massage = SendSMS.send_sms(
+            msuccess = SendSMS.send_sms(
                 number=user.phone_number,
-                message="متأسفانه سفارش شما به دلیل مشکل در موجودی لغو شد"
+                message="متأسفانه سفارش شما به دلیل مشکل در برسی موجودی حالت تعلیق قرار گرفت لطفا با پشتیبانی تماس بگیرین "
             )
-            
-            return render(request, 'payment_error.html', {'message': 'خطا در مدیریت موجودی! لطفاً دوباره تلاش کنید.'})
+
+            messages.error(request, "متأسفانه سفارش شما به دلیل مشکل در برسی موجودی حالت تعلیق قرار گرفت لطفا با پشتیبانی تماس بگیرین")
+            return redirect(reverse('users:user_order_detail', kwargs={'order_id': order.id}))
         
-        context = {
-            'user': user,
-            'order': order,
-            'message':'مشخص نیست'
-        }
-        return render(request, 'orders/factor_detail.html', context)
+
+#############
+#---------- پرداخت با درگاه بانکی ----------#
+#############
+
 
 class CartPaymentRequestView(LoginRequiredMixin, View):
     def get(self, request, order_id):
@@ -160,17 +172,6 @@ class CartPaymentRequestView(LoginRequiredMixin, View):
                 result = response.json()
                 data = result.get('data', {})
                 if data.get('code') == 100:
-                    cart.payment_authority = data['authority']
-                    address = request.POST.get('address')
-                    cart.address = address
-                    cart.save()
-                    
-                    # ارسال پیامک به کاربر
-                    SendSMS.send_sms(
-                        number=request.user.phone_number,
-                        message=f"لینک پرداخت برای سفارش {cart.order_number} ایجاد شد. مبلغ: {amount} تومان"
-                    )
-                    
                     return redirect(ZP_API_STARTPAY + str(data['authority']))
 
                 return render(request, 'payment_error.html', {'message': f"خطا در پرداخت: {result.get('message')}"})
@@ -179,6 +180,9 @@ class CartPaymentRequestView(LoginRequiredMixin, View):
 
         except requests.exceptions.RequestException as e:
             return render(request, 'payment_error.html', {'message': str(e)})
+
+
+
 
 class CartPaymentVerifyView(LoginRequiredMixin, View):
     def get(self, request, order_id):
@@ -347,6 +351,12 @@ class CartPaymentVerifyView(LoginRequiredMixin, View):
         }
         return errors.get(error_code, f"خطای پرداخت با کد {error_code}")
 
+
+
+#############
+#---------- مدیریت مراحل پرداخت ----------#
+#############
+
 class PaymentWizard(LoginRequiredMixin, SessionWizardView):
     form_list = [
         ("step1", Step1Form),
@@ -365,18 +375,12 @@ class PaymentWizard(LoginRequiredMixin, SessionWizardView):
         user = self.request.user
         form_data = self.process_forms(form_list)
         cart = self.get_user_cart(user)
-        
+        cart_number = CartNumber.objects.get(available=True)
         if not cart:
             return self.handle_empty_cart()
             
         self.prepare_cart_data(cart)
         order = OrderService.create_order(user, **form_data)
-        
-        # ارسال پیامک ایجاد سفارش
-        SendSMS.send_sms(
-            number=user.phone_number,
-            message=f"سفارش شما با کد {order} ایجاد شد. مبلغ کل: {cart.get_total_price()} تومان"
-        )
         
         return self.handle_payment_flow(form_data, order, cart)
     
@@ -416,11 +420,7 @@ class PaymentWizard(LoginRequiredMixin, SessionWizardView):
             }))
         
         if form_data.get('payment_method') == 'manual':
-            # ارسال پیامک راهنمای پرداخت کارت به کارت
-            SendSMS.send_sms(
-                number=self.request.user.phone_number,
-                message=f"برای پرداخت سفارش {order} مبلغ {cart.get_total_price()} تومان به شماره کارت XXXX-XXXX-XXXX-XXXX واریز نمایید"
-            )
+            
             return redirect(reverse('payments:manual_payment', kwargs={
                 'order_id': order,
             }))
@@ -444,3 +444,42 @@ def load_shipping_methods(request):
     return render(request, 'partials/shipping_methods_partial.html', {
         'shipping_methods': methods
     })
+
+
+
+
+
+#############
+#---------- مدیریت هدایت بعد از پرداخت  ----------#
+#############
+
+class PaymentRedirect():
+    # کلاس پر از توابع برای هدایت بعد از پرداخت
+    @staticmethod
+    def manual_redirect_success(order_id):
+        redirect(reverse('users:user_order', order_id))
+        
+
+
+class CartPaymentSuccess:
+    
+    def get (self, request):
+        context = {
+
+        }
+        return render(request, 'payment_success.html', context)
+
+
+class CartPaymentError:
+    
+    def get (self, request):
+        context = {
+            
+        }
+        return render(request, 'payment_success.html', context)
+
+
+
+
+
+

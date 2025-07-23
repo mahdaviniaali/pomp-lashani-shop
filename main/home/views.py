@@ -13,36 +13,6 @@ from users.models import Address
 
 class Home(View):
     def get(self, request):
-        user = request.user
-        # گرفتن ایتم های کاربر
-        if user.is_authenticated:
-            # برای کاربران لاگین شده
-            cart = Cart.objects.filter(user=user).with_related().first()
-            if cart:
-                cart_items = {}
-                for item in cart.items.all():
-                    cart_items[item.product.id] = item.quantity  # یا هر فیلدی که مقدار تعداد را نگه می‌دارد
-                print(cart_items)
-            else:
-                cart_items = {}
-        else:
-            # برای کاربران مهمان (مدیریت با session)
-            session_cart = request.session.get('cart', {})
-            variant_ids = [int(id) for id in session_cart.keys()]
-            
-            # دریافت واریانت‌ها با prefetch_related برای بهینه‌سازی
-            variants = ProductVariant.objects.filter(
-                id__in=variant_ids
-            ).select_related('product')
-            
-            cart_items = {}
-            for variant in variants:
-                quantity = session_cart.get(str(variant.id), 0)
-                cart_items[variant.id] = {
-                    'variant': variant,  # ابجکت کامل واریانت
-                    'quantity': quantity,
-                    'price': variant.price,
-                }
         # 1. کش دسته‌بندی‌ها (هفته‌ای یکبار آپدیت)
         categories = cache.get_or_set(
             'home_categories',
@@ -81,10 +51,12 @@ class Home(View):
             'random_tags': random_tags,
             'new_products': new_products,
             'post': post,
-            'cart_items': cart_items,
         }
         
         return render(request, 'home.html', context)
+
+
+
 
 
 class HomeSample(View):

@@ -215,21 +215,22 @@ home-style3 sin-prod-pg-1
                   </div>
                   <div class="products">
                     <div class="row">
-                      {% if catname %}
-                      <input type="hidden" id="cat_slug" name="category" value="{{catname}}">
-                      {% endif %}
-                      <div id="product-list" 
-                        hx-get="{% url 'products:product_partial' %}" 
-                        hx-include="[name='min_price'], [name='max_price'], [name='brand'], [name='category'], [name='order'], [name='search']  " 
-                        hx-target="#product-list" 
-                        hx-trigger="change from:input"
-                        hx-indicator="#loading-spinner">
+                        {% if catname %}
+                          <input type="hidden" id="cat_slug" name="category" value="{{catname}}">
+                        {% endif %}
                         
-                        {% include 'product_cards.html' %}
-                      </div>
-                      <div id="loading-spinner" class="htmx-indicator text-center my-5">
-                        <div class="custom-spinner"></div>
-                        <p class="text-muted mt-2">در حال بارگذاری محصولات...</p>
+                        <div id="product-list" 
+                            hx-get="{% url 'products:product_partial' %}" 
+                            hx-trigger="load, change from:input, change from:select"
+                            hx-include="[name='min_price'], [name='max_price'], [name='brand'], [name='category'], [name='order'], [name='search']"
+                            hx-indicator="#loading-spinner">
+                          {% include 'product_cards.html' %}
+                        </div>
+                        
+                        <div id="loading-spinner" class="htmx-indicator text-center my-5">
+                          <div class="custom-spinner"></div>
+                          <p class="text-muted mt-2">در حال بارگذاری محصولات...</p>
+                        </div>
                       </div>
                     </div>
                     

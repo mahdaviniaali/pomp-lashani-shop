@@ -218,6 +218,7 @@
     
     <div class="gateway-options">
         <input class="form-check-input" type="hidden" name="order_id" value="{{order.id}}" checked required>
+        {% comment "پرداخت زرین پال" %}
         <!-- زرین‌پال -->
         <div class="form-check mb-3 gateway-option">
 
@@ -232,7 +233,7 @@
                 </div>
             </label>
         </div>
-        
+        {% endcomment %}
         <!-- کارت به کارت -->
         <div class="form-check mb-3 gateway-option">
             <input class="form-check-input" type="radio" name="payment_method" id="gateway2" value="manual" required>

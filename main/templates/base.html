@@ -1,56 +1,58 @@
 {% load static %}
 
+
 <!doctype html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 
 <head>
-  <!-- Metas -->
-  <meta charset="utf-8" />
-  <meta content="IE=edge" http-equiv="X-UA-Compatible" />
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" />
-  <meta content="HTML5 Template swoo Multi-Purpose themeforest" name="keywords" />
-  <meta content="لورم ایپسوم متن ساختگی با تولید ساد" name="description" />
-  <meta content="" name="author" />
-  <!-- Title  -->
+  
+  <!-- متا تگ‌های اصلی -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="HTML5 Template swoo Multi-Purpose themeforest">
+  <meta name="description" content="لورم ایپسوم متن ساختگی با تولید ساد">
+  <meta name="author" content="">
+  
+  <!-- عنوان صفحه -->
   <title>
     {% block title %}
+      فروشگاه اینترنتی
     {% endblock %}
   </title>
-  <!-- Favicon -->
-  <link href="assets/img/fav.png" rel="shortcut icon" sizes="16x16" title="Favicon" />
-  <!-- bootstrap 5 -->
-  <link href="{% static 'common/css/lib/bootstrap.min.rtl.css' %}" rel="stylesheet" />
-  <!-- font family -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&amp;display=swap"
-    rel="stylesheet" />
-  <!-- line fontawesome icons  -->
-  <link href="{% static 'common/css/lib/all.min.css' %}" rel="stylesheet" />
-  <!-- fontawesome icons  -->
-  <link href="{% static 'common/css/lib/line-awesome.css' %}" rel="stylesheet" />
-  <!-- ionicons icons  -->
-  <link href="{% static 'common/css/lib/ionicons.css' %}" rel="stylesheet" />
-  <!-- animate css  -->
-  <link href="{% static 'common/css/lib/animate.css' %}" rel="stylesheet" />
-  <!-- fancybox popup  -->
-  <link href="{% static 'common/css/lib/jquery.fancybox.rtl.css' %}" rel="stylesheet" />
-  <!-- lity popup  -->
-  <link href="{% static 'common/css/lib/lity.rtl.css' %}" rel="stylesheet" />
-  <!-- swiper slider  -->
-  <link href="{% static 'common/css/lib/swiper8.min.rtl.css' %}" rel="stylesheet" />
-  <!-- izi toast  -->
-  <link href="{% static 'common/css/lib/iziToast.min.rtl.css' %}" rel="stylesheet" />
-  <!-- common style -->
-  <link href="{% static 'common/css/common_style.rtl.css' %}" rel="stylesheet" />
-
-  {% block css %} {% endblock %}
+  
+  <!-- فاوآیکون -->
+  <link rel="shortcut icon" href="assets/img/fav.png" sizes="16x16" title="Favicon">
+  
+  <!-- استایل‌های اصلی -->
+  <link href="{% static 'common/css/lib/bootstrap.min.rtl.css' %}" rel="stylesheet">
+  
+  <!-- فونت‌ها -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+  
+  <!-- آیکون‌ها -->
+  <link href="{% static 'common/css/lib/all.min.css' %}" rel="stylesheet">
+  <link href="{% static 'common/css/lib/line-awesome.css' %}" rel="stylesheet">
+  <link href="{% static 'common/css/lib/ionicons.css' %}" rel="stylesheet">
+  
+  <!-- کتابخانه‌های جانبی -->
+  <link href="{% static 'common/css/lib/animate.css' %}" rel="stylesheet">
+  <link href="{% static 'common/css/lib/jquery.fancybox.rtl.css' %}" rel="stylesheet">
+  <link href="{% static 'common/css/lib/lity.rtl.css' %}" rel="stylesheet">
+  <link href="{% static 'common/css/lib/swiper8.min.rtl.css' %}" rel="stylesheet">
+  <link href="{% static 'common/css/lib/iziToast.min.rtl.css' %}" rel="stylesheet">
+  
+  <!-- استایل مشترک -->
+  <link href="{% static 'common/css/common_style.rtl.css' %}" rel="stylesheet">
+  
+  <!-- استایل‌های اختصاصی صفحه -->
+  {% block css %}{% endblock %}
 </head>
 
-
 <body class="{% block bodystyle %}{% endblock %}">
-  <!--  Start loader  -->
+  <!-- لودر صفحه -->
   <div class="loader-wrap">
-    <svg preserveaspectratio="none" viewbox="0 0 1000 1000">
+    <svg preserveAspectRatio="none" viewBox="0 0 1000 1000">
       <path d="M0,1005S175,995,500,995s500,5,500,5V0H0Z" id="svg"></path>
     </svg>
     <div class="loader-wrap-heading">
@@ -59,275 +61,312 @@
       </div>
     </div>
   </div>
-  <!--  End loader  -->
-  <!--  Start navbar  -->
+
+  <!-- نوار ناوبری اصلی -->
   <nav class="navbar tc-navbar-style1 navbar-expand-lg navbar-light border-nav">
-  <div class="container-fluid">
-    <div class="content w-100 d-flex justify-content-between align-items-center">
-  <!-- بخش چپ (لوگو و جستجو) -->
-  <div class="d-flex align-items-center">
-    <a class="navbar-brand me-4" href="{% url 'home:home' %}">
-      <img alt="" class="logo" src="{% static 'img/logo.png' %}">
-    </a>
-    
-    <div class="search-cat d-none d-lg-block">
-      <div class="search-cat d-none d-lg-block">
-  <form method="get" action="{% url 'products:product_list' %}" class="input-group">
-    <input 
-      class="form-control" 
-      placeholder="هر چیزی را جستجو کنید ..." 
-      type="text"
-      name="search"  
-      value="{{ request.GET.q }}" 
-    >
-    <button type="submit" class="search-btn">
-      <i class="fal fa-search"></i>
-    </button>
-  </form>
-</div>
-    </div>
-  </div>
-  
-  <!-- بخش راست (منو و اطلاعات تماس) -->
-  <div class="d-flex align-items-center">
-    <div class="hot-line d-none d-lg-block me-4">
-      <span class="icon"><i class="las la-tty"></i></span>
-      <div class="inf">
-        <small class="fsz-13 d-block">خط تلفن 24/7</small>
-        <h6 class="fsz-20 color-blue1 fw-bold">
-          <a href="tel:(025)36862516">(025) 3686 25 16</a>
-        </h6>
+    <div class="container-fluid">
+      <div class="content w-100 d-flex justify-content-between align-items-center">
+        <!-- بخش چپ: لوگو و جستجو -->
+        <div class="d-flex align-items-center">
+          <a class="navbar-brand me-4" href="{% url 'home:home' %}">
+            <img alt="لوگو" class="logo" src="{% static 'img/logo.png' %}">
+          </a>
+          
+          <div class="search-cat d-none d-lg-block">
+            <form method="get" action="{% url 'products:product_list' %}" class="input-group" name="search" >
+              <input 
+                class="form-control" 
+                placeholder="هر چیزی را جستجو کنید ..." 
+                type="text"
+                name="search"  
+                value="{{ request.GET.search }}" 
+              >
+              <button type="submit" class="search-btn">
+                <i class="fal fa-search"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+        
+        <!-- بخش راست: منو و اطلاعات تماس -->
+        <div class="d-flex align-items-center">
+          <div class="hot-line d-none d-lg-block me-4">
+            <span class="icon"><i class="las la-tty"></i></span>
+            <div class="inf">
+              <small class="fsz-13 d-block">خط تلفن 24/7</small>
+              <h6 class="fsz-20 color-blue1 fw-bold">
+                <a href="tel:(025)36862516">{{company_info.contact_phone}}</a>
+              </h6>
+            </div>
+          </div>
+          
+          <div class="icons d-none d-lg-block me-3">
+              <a href="{% url 'users:profile' %}" class="me-3"><i class="la la-user"></i></a>
+              <a href="{% url 'carts:cart_detail' %}" class="position-relative">
+                  <i class="la la-shopping-cart"></i>
+                  <span class="cart-count-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      {{ cart_count|default:0 }}
+                  </span>
+              </a>
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- منوی اصلی -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- محتوای منو -->
       </div>
     </div>
-    
-    <div class="icons d-none d-lg-block me-3">
-      <a href="{% url 'users:profile' %}" class="me-3"><i class="la la-user"></i></a>
-      <a href="{% url 'carts:cart_detail' %}">
-        <i class="la la-shopping-cart"></i>
-      </a>
-    </div>
-    
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  </div>
-</div>
-    
-    <!-- منوی اصلی -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <!-- محتوای منو -->
-    </div>
-  </div>
-</nav>
-  <!--  End navbar  -->
-  <!--  Start links-nav  -->
+  </nav>
+
+  <!-- منوی لینک‌ها -->
   <div class="tc-links-nav-style1 d-none d-lg-block">
     <div class="container">
       <div class="row">
         <div class="col-lg-6">
           <div class="links">
             <ul class="links-ul">
-              <li class="nav-item dropdown">
-                <a class="" href="">دسته بندی محصولات</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="" href="{% url 'home:home' %}">خانه</a>
+              <li class="nav-item dropdown dropdown-hover">
+  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    دسته‌بندی محصولات
+  </a>
+  <ul class="dropdown-menu dropdown-menu-end p-3" style="width: 800px;">
+    <div class="row">
+      {% for category in categories %}
+        <div class="col-md-4">
+          <div class="mb-3">
+            <h6 class="fw-bold border-bottom pb-2">
+              <a href="{{ category.get_absolute_url }}" class="text-dark">{{ category.title }}</a>
+            </h6>
+            {% if category.children.all %}
+              <ul class="list-unstyled mt-2">
+                {% for child in category.children.all %}
+                  <li class="mb-1">
+                    <a href="{{ child.get_absolute_url }}" class="text-muted">
+                      <i class="fas fa-angle-left me-1"></i> {{ child.title }}
+                    </a>
+                    {% if child.children.all %}
+                      <ul class="list-unstyled ps-3 mt-1">
+                        {% for subchild in child.children.all %}
+                          <li class="mb-1">
+                            <a href="{{ subchild.get_absolute_url }}" class="text-muted">
+                              <i class="far fa-circle me-1"></i> {{ subchild.title }}
+                            </a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </ul>
+</li>
+              <li class="nav-item">
+                <a href="{% url 'home:home' %}">خانه</a>
               </li>
               <li class="nav-item">
-                <a class="" href="{% url 'products:product_list' %}">محصولات</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="" href="{% url 'home:about_us' %}">درباره ما </a>
+                <a href="{% url 'products:product_list' %}">محصولات</a>
               </li>
               <li class="nav-item">
-                <a class="" href="{% url 'home:conect_us' %}">تماس با ما</a>
+                <a href="{% url 'home:about_us' %}">درباره ما</a>
               </li>
               <li class="nav-item">
-                <a class="" href="{% url 'blog:bloglist' %}">ولاگ</a>
+                <a href="{% url 'home:conect_us' %}">تماس با ما</a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'blog:bloglist' %}">بلاگ</a>
               </li>
             </ul>
           </div>
         </div>
-
       </div>
     </div>
   </div>
-  <!--  End links-nav  -->
-  <!--Contents-->
+
+  <!-- محتوای اصلی -->
   <main>
     {% block content %}
     {% endblock %}
   </main>
-  <!--End-Contents-->
-  <!--  Start footer  -->
-  <footer class="tc-footer-style1">
+
+  <!-- پاورقی -->
+  <!-- پاورقی -->
+<footer class="tc-footer-style1 bg-dark text-white pt-5">
     <div class="container">
-      <div class="foot-icons py-5 border-1 border-bottom">
-        <div class="row">
-          <div class="col-lg-3 border-1 border-end">
-            <p class="fsz-14 text-uppercase">
-              <span class="icon color-blue1 me-3">
-                <i class="fal fa-shipping-fast"></i> </span>حمل و نقل رایگان بیش از 99 تومان
-            </p>
-          </div>
-          <div class="col-lg-3 border-1 border-end">
-            <p class="fsz-14 text-uppercase ps-lg-3">
-              <span class="icon color-blue1 me-3">
-                <i class="fal fa-redo"></i> </span>30 روز بازگشت پول
-            </p>
-          </div>
-          <div class="col-lg-3 border-1 border-end">
-            <p class="fsz-14 text-uppercase ps-lg-3">
-              <span class="icon color-blue1 me-3">
-                <i class="fal fa-shield"></i> </span>100 ٪ پرداخت ایمن
-            </p>
-          </div>
-          <div class="col-lg-3">
-            <p class="fsz-14 text-uppercase ps-lg-3">
-              <span class="icon color-blue1 me-3">
-                <i class="fal fa-comments-alt"></i> </span>پشتیبانی اختصاصی 24/7
-            </p>
-          </div>
+        <!-- بخش مزایا -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3 col-6">
+                <div class="d-flex align-items-center">
+                    <div class="icon-box bg-primary rounded-circle p-3 me-3">
+                        <i class="fas fa-truck text-white"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1">تحویل سریع</h6>
+                        <p class="mb-0 text-muted">تحویل در تهران 24 ساعته</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="d-flex align-items-center">
+                    <div class="icon-box bg-primary rounded-circle p-3 me-3">
+                        <i class="fas fa-shield-alt text-white"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1">پرداخت امن</h6>
+                        <p class="mb-0 text-muted">پرداخت آنلاین مطمئن</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="d-flex align-items-center">
+                    <div class="icon-box bg-primary rounded-circle p-3 me-3">
+                        <i class="fas fa-headset text-white"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1">پشتیبانی 24/7</h6>
+                        <p class="mb-0 text-muted">تماس در تمام ساعات</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="d-flex align-items-center">
+                    <div class="icon-box bg-primary rounded-circle p-3 me-3">
+                        <i class="fas fa-undo-alt text-white"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1">بازگشت 7 روزه</h6>
+                        <p class="mb-0 text-muted">ضمانت بازگشت کالا</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="foot-content">
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="foot-info">
-              <h6 class="fw-bold mb-30 text-capitalize">
-                Swoo - بازار الکترونیکی آنلاین
-              </h6>
-              <small class="fsz-12 text-uppercase">خط تلفن 24/7</small>
-              <h5 class="fw-bold color-blue1 mb-20">(025) 3686 25 16</h5>
-              <a href="#">257 خیابان جاده تاچر ، بروکلین ، منهتن ،<br />NY 10092</a>
-              <a href="#">contact@swateletro.com</a>
-              <div class="foot-social mt-40">
-                <a href="#"> <i class="fab fa-twitter"></i> </a>
-                <a href="#"> <i class="fab fa-facebook-f"></i> </a>
-                <a href="#"> <i class="fab fa-instagram"></i> </a>
-                <a href="#"> <i class="fab fa-youtube"></i> </a>
-                <a href="#"> <i class="fab fa-behance"></i> </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-2">
-            <div class="links-item mt-5 mt-lg-0">
-              <h6 class="fsz-18 mb-30">دسته های برتر</h6>
-              <ul class="links">
-                <li><a href="#">تلویزیون/تلویزیون</a></li>
-                <li><a href="#">رایانه</a></li>
-                <li><a href="#">لپ تاپ</a></li>
-                <li><a href="#">موبایل و تبلت</a></li>
-                <li><a href="#">قصور</a></li>
-                <li><a href="#">دوربین</a></li>
-                <li><a href="#">اسباب</a></li>
-                <li><a href="#">تجهیزات ورزشی</a></li>
-                <li><a href="#">دفتر</a></li>
-                <li><a href="#">خانه هوشمند</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-2">
-            <div class="links-item mt-5 mt-lg-0">
-              <h6 class="fsz-18 mb-30">شرکت</h6>
-              <ul class="links">
-                <li><a href="#">درباره Swoo</a></li>
-                <li><a href="#">تماس</a></li>
-                <li><a href="#">شغلی</a></li>
-                <li><a href="#">وبلاگ</a></li>
-                <li><a href="#">نقشه سایت</a></li>
-                <li><a href="#">مکان های ذخیره سازی</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-2">
-            <div class="links-item mt-5 mt-lg-0">
-              <h6 class="fsz-18 mb-30">مرکز کمک</h6>
-              <ul class="links">
-                <li><a href="#">خدمات مشتری</a></li>
-                <li><a href="#">سیاست</a></li>
-                <li><a href="#">شرایط و ضوابط</a></li>
-                <li><a href="#">سفارش پیگیری</a></li>
-                <li><a href="#">متداول</a></li>
-                <li><a href="#">حساب من</a></li>
-                <li><a href="#">پشتیبانی محصول</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-2">
-            <div class="links-item mt-5 mt-lg-0">
-              <h6 class="fsz-18 mb-30">شریک</h6>
-              <ul class="links">
-                <li><a href="#">فروشنده شوید</a></li>
-                <li><a href="#">وابسته</a></li>
-                <li><a href="#">تبلیغ کردن</a></li>
-                <li><a href="#">مشارکت</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="foot">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-4 text-center text-lg-start">
-            <p class="color-666">
-              © 1403<a class="fw-bold color-000" href="#">علی مهدوی نیا</a>کلیه حقوق محفوظ است
-            </p>
-          </div>
 
-          <div class="col-lg-4">
+        <!-- محتوای اصلی فوتر -->
+        <div class="row g-4">
+            <!-- اطلاعات تماس -->
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-about">
+                    <img src="{{company_info.logo.url}}" alt="لوگو" class="logo mb-3" width="120">
+                    <p class="mb-3">{{ company_info.short_description|default:"فروشگاه اینترنتی با کیفیت ترین محصولات" }}</p>
+                    
+                    <div class="contact-info mb-3">
+                        <div class="d-flex mb-2">
+                            <i class="fas fa-map-marker-alt mt-1 me-2"></i>
+                            <span>{{ company_info.address|default:"تهران، خیابان نمونه، پلاک 123" }}</span>
+                        </div>
+                        <div class="d-flex mb-2">
+                            <i class="fas fa-phone-alt mt-1 me-2"></i>
+                            <span>{{ company_info.contact_phone|default:"021-12345678" }}</span>
+                        </div>
+                        <div class="d-flex">
+                            <i class="fas fa-envelope mt-1 me-2"></i>
+                            <span>{{ company_info.contact_email|default:"info@example.com" }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <h6 class="mb-3">ما را دنبال کنید</h6>
+                        <div class="d-flex">
+                            <a href="{{ company_info.instagram|default:'#' }}" class="social-icon me-2">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="{{ company_info.telegram|default:'#' }}" class="social-icon me-2">
+                                <i class="fab fa-telegram"></i>
+                            </a>
+                            <a href="{{ company_info.whatsapp|default:'#' }}" class="social-icon me-2">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-          </div>
+            <!-- لینک های سریع -->
+            <div class="col-lg-2 col-md-6">
+                <div class="footer-links">
+                    <h5 class="mb-3">لینک های سریع</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'home:home' %}"><i class="fas fa-angle-left me-2"></i> صفحه اصلی</a></li>
+                        <li class="mb-2"><a href="{% url 'products:product_list' %}"><i class="fas fa-angle-left me-2"></i> محصولات</a></li>
+                        <li class="mb-2"><a href="{% url 'blog:bloglist' %}"><i class="fas fa-angle-left me-2"></i> وبلاگ</a></li>
+                        <li class="mb-2"><a href="{% url 'home:about_us' %}"><i class="fas fa-angle-left me-2"></i> درباره ما</a></li>
+                        <li class="mb-2"><a href="{% url 'home:conect_us' %}"><i class="fas fa-angle-left me-2"></i> تماس با ما</a></li>
+                        <li><a href="{% url 'users:profile' %}"><i class="fas fa-angle-left me-2"></i> حساب کاربری</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- دسته بندی محصولات -->
+            <div class="col-lg-2 col-md-6">
+                <div class="footer-links">
+                    <h5 class="mb-3">دسته بندی ها</h5>
+                    <ul class="list-unstyled">
+                        {% for category in categories|slice:":6" %}
+                        <li class="mb-2">
+                            <a href="{{ category.get_absolute_url }}">
+                                <i class="fas fa-angle-left me-2"></i> {{ category.title }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                        <li>
+                            <a href="{% url 'products:product_list' %}">
+                                <i class="fas fa-angle-left me-2"></i> مشاهده همه
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- خبرنامه -->
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-newsletter">
+                    <h5 class="mb-3">عضویت در خبرنامه</h5>
+                    <p class="mb-3">با عضویت در خبرنامه از آخرین تخفیف‌ها و محصولات جدید مطلع شوید</p>
+                    
+                    <form class="newsletter-form">
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="آدرس ایمیل شما" required>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="far fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                    
+                    
+                </div>
+            </div>
         </div>
-      </div>
+        
+        <!-- کپی رایت -->
+        <div class="footer-bottom py-4 mt-5 border-top">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="mb-0">
+                        © {% now "Y" %} تمام حقوق برای <a href="{% url 'home:home' %}" class="text-white">{{ company_info.name|default:"فروشگاه اینترنتی" }}</a> محفوظ است.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="footer-links">
+                        <a href="" class="me-3">حریم خصوصی</a>
+                        <a href="">قوانین و شرایط</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    {% if not request.path|slice:":10" == "/products/" %}
-    <div class="mob-navigation d-flex d-lg-none" id="nav-mobile">
-      <ul>
-        <li id="compare" class="list {% if request.path == '/compare' %}active{% endif %}">
-          <a href="/compare">
-            <span class="icon"> <i class="las la-sync-alt"></i> </span>
-            <span class="text">مقایسه کردن</span>
-          </a>
-        </li>
-        <li id="favorite" class="list {% if request.path == '/favorate' %}active{% endif %}">
-          <a href="/favorate">
-            <span class="icon"> <i class="lar la-heart"></i> </span>
-            <span class="text">مورد علاقه</span>
-          </a>
-        </li>
-        <li id="home" class="list {% if request.path == '/' %}active{% endif %}">
-          <a href="/">
-            <span class="icon"> <i class="las la-home"></i> </span>
-            <span class="text">خانه</span>
-          </a>
-        </li>
-        <li id="cart" class="list {% if request.path == '/orders/cart/' %}active{% endif %}">
-          <a href="/orders/cart/">
-            <span class="icon"> <i class="las la-shopping-bag"></i> </span>
-            <span class="text">سبد خرید</span>
-          </a>
-        </li>
-        <li id="profile" class="list {% if request.path == '/users/profile/' %}active{% endif %}">
-          <a href="/users/profile">
-            <span class="icon"> <i class="las la-user"></i> </span>
-            <span class="text">مشخصات</span>
-          </a>
-        </li>
-        <li class="indicator"></li>
-      </ul>
-    </div>
-    {% endif %}
-  </footer>
-  <!--  End footer  -->
-  <!--  Start to top button  -->
+</footer>
+  <!-- دکمه بازگشت به بالا -->
   <a class="to_top" href="#">
     <i class="la la-angle-up"></i>
   </a>
-  <!--  End to top button  -->
-  <!--  request  -->
+
+  <!-- اسکریپت‌های جاوااسکریپت -->
   <script src="https://unpkg.com/htmx.org@1.9.10"></script>
   <script src="{% static 'common/js/lib/jquery-3.0.0.min.js' %}"></script>
   <script src="{% static 'common/js/lib/jquery-migrate-3.0.0.min.js' %}"></script>
@@ -340,17 +379,15 @@
   <script src="{% static 'common/js/lib/jquery.counterup.js' %}"></script>
   <script src="{% static 'common/js/lib/parallaxie.js' %}"></script>
   <script src="{% static 'common/js/lib/iziToast.min.js' %}"></script>
-  <!-- ===== gsap scripts ===== -->
+  
+  <!-- GSAP -->
   <script src="{% static 'common/js/gsap_lib/gsap.min.js' %}"></script>
-  <!-- <script src="{% static 'common/js/gsap_lib/ScrollSmoother.min.js' %}"></script>
-    <script src="{% static 'common/js/gsap_lib/ScrollTrigger.min.js' %}"></script>
-    <script src="{% static 'common/js/gsap_lib/SplitText.min.js' %}"></script> -->
+  
+  <!-- اسکریپت مشترک -->
   <script src="{% static 'common/js/common_js.js' %}"></script>
-  <!-- ===== home scripts ===== -->
-
-
-  {% block js %} {% endblock %}
+  
+  <!-- اسکریپت‌های اختصاصی صفحه -->
+  {% block js %}{% endblock %}
+  
 </body>
-</body>
-
 </html>

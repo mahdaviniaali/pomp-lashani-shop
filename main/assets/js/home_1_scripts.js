@@ -1,32 +1,65 @@
 $(function() {
 
+   $(document).ready(function(){
+  // تاخیر در نمایش منو برای جلوگیری از باز و بسته شدن ناخواسته
+  $('.dropdown-hover').hover(
+    function() {
+      $(this).find('.dropdown-menu').stop(true, true).fadeIn(200);
+    },
+    function() {
+      $(this).find('.dropdown-menu').stop(true, true).fadeOut(200);
+    }
+  );
+  
+  // نمایش زیرمنوها در موبایل با کلیک
+  if ($(window).width() < 992) {
+    $('.dropdown-toggle').on('click', function(e) {
+      e.preventDefault();
+      $(this).next('.dropdown-menu').toggle();
+    });
+  }
+
+
+});
     // ------------ countdown -----------
     $(document).ready(function() {
-        const second = 1000,
-            minute = second * 60,
-            hour = minute * 60,
-            day = hour * 24,
-            week = hour * 24 * 7;
+    const second = 1000,
+        minute = second * 60,
+        hour = minute * 60,
+        day = hour * 24;
 
-        let countDown = new Date('Oct 29, 2023 11:30').getTime(),
-            x = setInterval(function() {
+    // تاریخ آینده (مثال: 1 ماه بعد از امروز)
+    let countDown = new Date();
+    countDown.setMonth(countDown.getMonth() + 1);
+    countDown = countDown.getTime();
 
-                let now = new Date().getTime(),
-                    distance = countDown - now;
+    let x = setInterval(function() {
+        let now = new Date().getTime(),
+            distance = countDown - now;
 
-                document.getElementById('days').innerText = Math.floor(distance / (day)),
-                    document.getElementById('hours').innerText = Math.floor((distance % (day)) / (hour)),
-                    document.getElementById('minutes').innerText = Math.floor((distance % (hour)) / (minute)),
-                    document.getElementById('seconds').innerText = Math.floor((distance % (minute)) / second);
+        // بررسی وجود عناصر قبل از آپدیت
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
 
-                //do something later when date is reached
-                //if (distance < 0) {
-                //  clearInterval(x);
-                //  'IT'S MY BIRTHDAY!;
-                //}
+        if(daysEl && hoursEl && minutesEl && secondsEl) {
+            daysEl.innerText = Math.floor(distance / day);
+            hoursEl.innerText = Math.floor((distance % day) / hour);
+            minutesEl.innerText = Math.floor((distance % hour) / minute);
+            secondsEl.innerText = Math.floor((distance % minute) / second);
+        }
 
-            }, second)
-    });
+        if (distance < 0) {
+            clearInterval(x);
+            if(daysEl) daysEl.innerText = '0';
+            if(hoursEl) hoursEl.innerText = '0';
+            if(minutesEl) minutesEl.innerText = '0';
+            if(secondsEl) secondsEl.innerText = '0';
+            console.log('Countdown finished!');
+        }
+    }, second);
+});
 
 });
 
@@ -202,4 +235,37 @@ $(document).ready(function() {
     });
 
 
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  // تابع برای دریافت پارامترهای URL
+  function getUrlParams() {
+    const params = new URLSearchParams(window.location.search);
+    const result = {};
+    
+    for (const [key, value] of params) {
+      if (key !== 'search') { // پارامتر جستجو جداگانه مدیریت می‌شود
+        result[key] = value;
+      }
+    }
+    
+    return result;
+  }
+
+  // افزودن پارامترهای URL به درخواست‌های HTMX
+  document.body.addEventListener('htmx:configRequest', function(evt) {
+    const urlParams = getUrlParams();
+    Object.keys(urlParams).forEach(key => {
+      if (!evt.detail.parameters[key]) {
+        evt.detail.parameters[key] = urlParams[key];
+      }
+    });
+  });
+
+  // مدیریت ارسال فرم
+  document.getElementById('search-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // HTMX به صورت خودکار فرم را مدیریت می‌کند
+  });
 });

@@ -11,8 +11,8 @@ from .forms import AddressForm , AddUserInfoForm
 from django.contrib import messages
 from users.models import Address
 from payments.models import Order
-
-
+from django.conf import settings
+from payments.models import CartNumber
 
 
 
@@ -112,7 +112,7 @@ class UserRegister(View):
         
         success = SendSMS.send_verify_code(
             number = phone_number,
-            template_id = 123456,
+            template_id = settings.SMSIR_VERIFY_TEMPLATE_ID,
             parameters = [
                 {
                     "name": "Code",
@@ -234,9 +234,12 @@ class UserOrderDetailView(LoginRequiredMixin, View):
     def get (self, request, order_id):
         user = request.user
         order = Order.objects.get(user=user, id=order_id)
+        cart_number = CartNumber.objects.filter(available=True).first()
+
         context = {
-            'order': order,
-            'user': user,
+        'user': user,
+        'order': order,
+        'cart_number':cart_number,
         }
         return render(request, 'orders/factor_detail.html', context)
 
@@ -313,7 +316,8 @@ class EditUserView(LoginRequiredMixin , View):
 def factor_detail(request, order_id):
     user = request.user
     order = Order.objects.get(id=order_id, user=user)
-    
+    cart_number = CartNumber.objects.filter(available=True).first()
+    print(cart_number)
     if not order:
         messages.error(request, "سفارش یافت نشد.")
         return redirect('users:profile')
@@ -321,6 +325,7 @@ def factor_detail(request, order_id):
     context = {
         'user': user,
         'order': order,
+        'cart_number':cart_number,
     }
     
     return render(request, 'orders/factor_detail.html', context)

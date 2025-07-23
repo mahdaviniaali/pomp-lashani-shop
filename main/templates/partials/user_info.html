@@ -1,11 +1,11 @@
 {% if user.fullname %}
 <div class="row">
-  <!-- فیلد نام کامل -->
+  <!-- فیلد نام کامل (اجباری) -->
   <div class="col-md-6 mb-3">
     <div class="d-flex align-items-center">
       <i class="fas fa-user-circle me-2 text-primary"></i>
       <div class="w-100">
-        <small class="text-muted d-block">نام کامل</small>
+        <small class="text-muted d-block">نام کامل <span class="text-danger">*</span></small>
         <input type="text" class="form-control" 
                name="step1-user_fullname" 
                value="{% firstof form_data.user_fullname user.fullname '' %}" 
@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <!-- فیلد کد ملی -->
+  <!-- فیلد کد ملی (اختیاری) -->
   <div class="col-md-6 mb-3">
     <div class="d-flex align-items-center">
       <i class="fas fa-id-card me-2 text-primary"></i>
@@ -22,13 +22,12 @@
         <small class="text-muted d-block">کد ملی</small>
         <input type="text" class="form-control" 
                name="step1-user_nationalcode" 
-               value="{% firstof form_data.user_nationalcode user.nationalcode '' %}" 
-               required>
+               value="{% firstof form_data.user_nationalcode user.nationalcode '' %}">
       </div>
     </div>
   </div>
 
-  <!-- فیلد شماره تماس -->
+  <!-- فیلد شماره تماس (اختیاری) -->
   <div class="col-md-6 mb-3">
     <div class="d-flex align-items-center">
       <i class="fas fa-phone me-2 text-primary"></i>
@@ -36,13 +35,12 @@
         <small class="text-muted d-block">شماره تماس</small>
         <input type="text" class="form-control" 
                name="step1-user_phone_number" 
-               value="{% firstof form_data.user_phone_number user.phone_number '' %}" 
-               required>
+               value="{% firstof form_data.user_phone_number user.phone_number '' %}">
       </div>
     </div>
   </div>
 
-  <!-- فیلد ایمیل -->
+  <!-- فیلد ایمیل (اختیاری) -->
   <div class="col-md-6 mb-3">
     <div class="d-flex align-items-center">
       <i class="fas fa-envelope me-2 text-primary"></i>
@@ -50,8 +48,7 @@
         <small class="text-muted d-block">ایمیل</small>
         <input type="email" class="form-control" 
                name="step1-user_email" 
-               value="{% firstof form_data.user_email user.email '' %}" 
-               required>
+               value="{% firstof form_data.user_email user.email '' %}">
       </div>
     </div>
   </div>

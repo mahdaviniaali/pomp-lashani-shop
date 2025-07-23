@@ -18,7 +18,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(_("مدیر کل"), default=False)  # دسترسی کامل
     created_at = models.DateTimeField(_("تاریخ ایجاد"), auto_now_add=True)  # زمان ایجاد حساب
     updated_at = models.DateTimeField(_("آخرین به‌روزرسانی"), auto_now=True)  # زمان آخرین تغییرات
-    nationalcode = models.CharField(_("کد ملی"), max_length=10, unique=True, blank=True)
+    nationalcode = models.CharField(_("کد ملی"), max_length=10, blank=True)
     
     objects = UserManager()  
     history = AuditlogHistoryField(null=True, blank=True)
@@ -49,6 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             setattr(self, field, value)
             
         self.save()
+        
     def save(self, *args, **kwargs):
         """اگر نام کاربری خالی باشد، از شماره تلفن ساخته شود"""
         if not self.username:

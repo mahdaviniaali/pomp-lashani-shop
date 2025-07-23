@@ -86,7 +86,7 @@ class ProductDetailView(View):
                     .values('price')[:1]
                 )
             )
-            .order_by('?')[:10]
+            .order_by('id')[:10]
         )
         tags = product.tags.all()[:3]
         context = {

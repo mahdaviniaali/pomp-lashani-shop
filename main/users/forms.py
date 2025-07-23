@@ -48,5 +48,12 @@ class AddUserInfoForm(forms.Form):
     nationalcode = forms.CharField(label='کد ملی',max_length=11, required=False)
 
 
+
+class AddUserInfoForm2(forms.Form):
+    fullname = forms.CharField(label='نام کامل', max_length=50, required=True)
+    email = forms.EmailField(label='ایمیل', required=False)
+    nationalcode = forms.CharField(label='کد ملی',max_length=11, required=False)
+    phone_number = forms.CharField(max_length=50, required=False)
+
 class PhoneNumberForm(forms.Form):
     phone_number = forms.CharField(max_length=50, required=True)

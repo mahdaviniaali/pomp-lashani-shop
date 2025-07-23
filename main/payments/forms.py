@@ -4,7 +4,7 @@ from users.models import Address
 from django.utils.translation import gettext_lazy as _
 
 
-class PaymentformInOrder(forms.Form):
+class PaymentMethodForm(forms.Form):
     GATEWAY = 'gateway'
     MANUAL = 'manual'
     

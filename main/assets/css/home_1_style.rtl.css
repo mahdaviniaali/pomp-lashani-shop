@@ -1,6 +1,23 @@
+.cart-count-badge {
+    font-size: 0.6rem;
+    padding: 3px 5px;
+}
+
+.position-relative {
+    position: relative;
+}
 
 
 
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  right: 100%;
+  margin-top: -1px;
+}
 /* ========= [ * swoo-home-style1 ]  =========*/
 
 /* --------------- navbar style1 --------------- */
@@ -1797,46 +1814,216 @@
     border: 0;
 }
 
-.home-style1 .card-gray {
-    padding: 30px;
-    border-radius: 20px;
-    background-color: #ebeef6;
+.h.home-style1 .mob-navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
 }
 
-.home-style1 .loader-wrap svg {
-    fill: var(--color-blue1);
+.home-style1 .mob-navigation ul {
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
-.home-style1 .mob-navigation ul li.active a .icon {
-    color: var(--color-blue1);
+.home-style1 .mob-navigation ul li {
+    flex: 1;
+    text-align: center;
+}
+
+.home-style1 .mob-navigation ul li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #666;
+    text-decoration: none;
+    padding: 5px 0;
+    font-size: 12px;
+}
+
+.home-style1 .mob-navigation ul li a .icon {
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: #666; /* رنگ پیش‌فرض آیکون */
+    transition: all 0.3s ease;
 }
 
 .home-style1 .mob-navigation ul li a .text {
-    background-color: var(--color-blue1);
+    background-color: transparent; /* حذف پس‌زمینه آبی */
+    color: #666; /* رنگ پیش‌فرض متن */
+    transition: all 0.3s ease;
 }
 
+.home-style1 .mob-navigation ul li.active a .icon {
+    color: var(--color-blue1); /* رنگ آیکون فعال */
+}
+
+.home-style1 .mob-navigation ul li.active a .text {
+    color: var(--color-blue1); /* رنگ متن فعال */
+    background-color: transparent;
+}
+
+.home-style1 .mob-navigation ul li a:hover .icon {
+    color: var(--color-blue1);
+    transform: translateY(-3px);
+}
+
+.home-style1 .mob-navigation ul li a:hover .text {
+    color: var(--color-blue1);
+}
+/* بهبود موقعیت دکمه بازگشت به بالا در موبایل */
 @media screen and (max-width: 991px) {
-    .home-style1 br {
-        display: none;
-    }
-    .home-style1 .fsz-50 {
-        font-size: 30px !important;
-    }
-    .home-style1 .fsz-40 {
-        font-size: 25px !important;
-    }
-    .home-style1 .mb-90 {
-        margin-bottom: 40px !important;
-    }
-    .home-style1 .fsz-30 {
-        font-size: 18px !important;
-    }
     .home-style1 .to_top.show {
         left: 15px;
-        bottom: 80px;
+        bottom: 80px !important; /* افزایش فاصله از منوی موبایل */
         opacity: 1;
     }
+    
     .home-style1 .tc-footer-style1 .foot {
         padding-bottom: 130px;
     }
+    
+    /* بهبود خوانایی در دستگاه‌های کوچک */
+    @media (max-width: 360px) {
+        .home-style1 .mob-navigation ul li a .text {
+            font-size: 10px;
+        }
+        .home-style1 .mob-navigation ul li a .icon {
+            font-size: 18px;
+        }
+    }
+}
+
+.home-style1 .mob-navigation ul li a .cart-count {
+    position: absolute;
+    top: -5px;
+    right: 50%;
+    transform: translateX(50%);
+    background: var(--color-blue1);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+/* مگا منو */
+.mega-dropdown .mega-menu {
+  width: 100%;
+  left: 0;
+  right: 0;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.mega-dropdown:hover .mega-menu {
+  display: block !important;
+}
+
+.mega-menu-category h6 a {
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 5px;
+}
+
+.mega-menu-category h6 a:hover {
+  color: var(--bs-primary) !important;
+  border-bottom-color: var(--bs-primary);
+}
+
+.mega-menu-category ul li a {
+  transition: all 0.2s ease;
+}
+
+.mega-menu-category ul li a:hover {
+  color: var(--bs-primary) !important;
+  padding-right: 8px;
+}
+
+/* نمایش در حالت hover */
+@media (min-width: 992px) {
+  .mega-dropdown:hover .dropdown-menu {
+    display: block;
+  }
+}
+/* استایل برای منوی بازشونده با هاور */
+@media (min-width: 992px) {
+  .dropdown-hover:hover .dropdown-menu {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+  }
+  
+  .dropdown-menu {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .dropdown-hover:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  
+  /* استایل برای زیرمنوها */
+  .dropdown-menu .dropdown-menu {
+    position: static !important;
+    transform: none !important;
+    border: none;
+    box-shadow: none;
+    margin-left: 0;
+    padding-left: 15px;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+/* استایل عمومی منو */
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.dropdown-menu .list-unstyled {
+  margin-bottom: 0;
+}
+
+.dropdown-menu a {
+  transition: all 0.2s ease;
+  display: block;
+  padding: 5px 0;
+}
+
+.dropdown-menu a:hover {
+  color: var(--bs-primary) !important;
+  padding-right: 5px;
+}
+
+/* آیکون‌ها */
+.fa-angle-left {
+  font-size: 12px;
+}
+
+.far.fa-circle {
+  font-size: 8px;
 }

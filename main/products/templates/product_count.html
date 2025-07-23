@@ -20,7 +20,7 @@
     {% endfor %}
 {% endif %}
 
-{% if variant.price %}  {# فقط اگر قیمت دارد دکمه‌های کم و زیاد را نمایش بده #}
+{% if variant.price %}  
     {% if 0 < quantity %}
     <div class="add-more">
         <button class="qt-minus" hx-post="{% url 'carts:cart_decrease' %}"

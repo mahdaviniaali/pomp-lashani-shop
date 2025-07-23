@@ -7,10 +7,13 @@ from django.utils.translation import gettext_lazy as _
 from django_ckeditor_5.fields import CKEditor5Field
 from auditlog.models import AuditlogHistoryField
 from auditlog.registry import auditlog
+from meta.models import ModelMeta
 
 from django.contrib.auth import get_user_model
 
-class Product(models.Model):
+
+
+class Product(ModelMeta, models.Model):
     title = models.CharField(_("عنوان محصول"), max_length=255)
     slug = models.CharField(_("اسلاگ"), max_length=255, unique=True, blank=True)
     category = TreeForeignKey('categories.Category', on_delete=models.PROTECT, verbose_name=_("دسته‌بندی"))
@@ -28,18 +31,48 @@ class Product(models.Model):
     history = AuditlogHistoryField(_("تاریخچه"), null=True, blank=True)
     objects = ProductManager()
 
+
+
+
+    def get_meta_content(self):
+        import re
+        plain = re.sub('<[^<]+?>', '', self.description)
+        return plain.strip()[:160]
+
+
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title, allow_unicode=True)
+        super().save(*args, **kwargs)
+
+    def get_meta_title(self):
+        return f"{self.title} | فروشگاه پمپ‌شاپ"
+
+    def get_meta_description(self):
+        import re
+        plain = re.sub('<[^<]+?>', '', self.description)
+        return plain.strip()[:160]
+
+    def get_meta_url(self):
+        return self.get_absolute_url()
+
+    def get_meta_image(self):
+        return self.image.url if self.image else None
+
     def get_price(self):
-        """پایین‌ترین قیمت در بین واریانت‌ها را برمی‌گرداند"""
         if self.variants.exists():
             return self.variants.order_by('price').first().price
-        return 0  # یا مقدار پیش‌فرض مناسب
+        return 0
 
     def get_last_stock_change_by_admin(self):
         last_admin_change = self.history.filter(
             changes_dict__has_key='stock',
             actor__is_staff=True
         ).order_by('-timestamp').first()
-        
         if last_admin_change:
             return {
                 'stock': last_admin_change.changes['stock'][1],
@@ -47,15 +80,7 @@ class Product(models.Model):
                 'time': last_admin_change.timestamp
             }
         return None
-    
-    def __str__(self):
-        return self.title
-    
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title, allow_unicode=True)
-        super().save(*args, **kwargs)
-    
+
     class Meta:
         verbose_name = _("محصول")
         verbose_name_plural = _("محصولات")
