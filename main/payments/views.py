@@ -118,7 +118,7 @@ class ManualPayment(LoginRequiredMixin, View):
             )
 
             messages.success(request, "درخواست شما با موفقیت ثبت شد و در انتظار تایید است.")
-            return redirect(reverse('users:user_order', kwargs={'order_id': order.id}))
+            return redirect(reverse('users:user_order_detail', kwargs={'order_id': order.id}))
 
         except Exception as e:
             

@@ -208,7 +208,7 @@ home-style3 profile-pg-1
                   <div class="tab-pane fade show active" id="pills-prof1">
                             <div class="acount-tab">
                               
-
+                              
                               <!-- بخش آدرس‌های کاربر -->
                               <h4 class="fw-bold text-capitalize mb-30 mt-40">آدرس‌های من</h4>
                               <div class="content">
@@ -244,7 +244,8 @@ home-style3 profile-pg-1
                                 </div>
                                 {% endfor %}
                                 
-                                <button class="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase mt-20 py-3 px-5" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                                <button class="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase mt-20 py-3 px-5" hx-get="{% url 'users:add_address' %}" 
+                                        hx-target="#user-address"  >
                                   <span>افزودن آدرس جدید</span>
                                 </button>
                               </div>
@@ -252,64 +253,18 @@ home-style3 profile-pg-1
                   </div>
 
                   <!-- مودال افزودن آدرس جدید -->
-                  <div class="modal fade" id="addAddressModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title">افزودن آدرس جدید</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div  id="user-address" >
+                    
+                              </div>
+                            </div>
+                            
+                          </div>
                         </div>
-                        <form method="post" action="">
-                          {% csrf_token %}
-                          <div class="modal-body">
-                            <div class="form-group mb-3">
-                              <label>عنوان آدرس<span class="color-red1">*</span></label>
-                              <input name="title" class="form-control" required>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                  <label>استان<span class="color-red1">*</span></label>
-                                  <input name="province" class="form-control" required>
-                                </div>
-                              </div>
-                              <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                  <label>شهر<span class="color-red1">*</span></label>
-                                  <input name="city" class="form-control" required>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="form-group mb-3">
-                              <label>کد پستی<span class="color-red1">*</span></label>
-                              <input name="postal_code" class="form-control" required>
-                            </div>
-                            <div class="form-group mb-3">
-                              <label>آدرس دقیق<span class="color-red1">*</span></label>
-                              <textarea name="address" class="form-control" rows="3" required></textarea>
-                            </div>
-                            <div class="form-check mb-3">
-                              <input name="is_default" type="checkbox" class="form-check-input" id="setAsDefault">
-                              <label class="form-check-label" for="setAsDefault">تنظیم به عنوان آدرس پیش‌فرض</label>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
-                            <button type="submit" class="btn btn-primary">ذخیره آدرس</button>
-                          </div>
-                        </form>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                
-              </div>
-            </div>
-          </div>
-        </section>
-        <!--  End profile  -->
-      </main>
-      <!--End-Contents-->
+                    </section>
+                    <!--  End profile  -->
+                  </main>
+                  <!--End-Contents-->
     </div>
   </div>
 {% endblock %}
