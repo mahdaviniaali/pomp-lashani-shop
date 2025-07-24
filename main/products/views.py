@@ -73,7 +73,7 @@ class ProductDetailView(View):
 
         if product.slug != slug:
             return HttpResponsePermanentRedirect(
-                reverse('product_detail', kwargs={'pk': product.pk, 'slug': product.slug})
+                reverse('products:product_detail', kwargs={'pk': product.pk, 'slug': product.slug})
             )
 
         related_products = (

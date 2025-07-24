@@ -19,16 +19,19 @@ from django.urls import path , include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import register_converter
+import re
 
 
 class PersianSlugConverter:
-    regex = r'[-\w\u0600-\u06FF]+'
-
+    # الگوی بهبود یافته برای اسلاگ‌های فارسی/انگلیسی
+    regex = r'[\w\-_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]+'
+    
     def to_python(self, value):
         return value
-
+    
     def to_url(self, value):
-        return value
+        # اطمینان از URL-safe بودن مقدار
+        return re.sub(r'[^\w\-_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]', '', value)
 
 # Register the PersianSlugConverter
 register_converter(PersianSlugConverter, 'persianslug')
