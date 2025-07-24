@@ -1,12 +1,7 @@
 from .base import *
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
+#from sentry_sdk.integrations.django import DjangoIntegration
+#import sentry_sdk
 
-
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 
@@ -29,13 +24,15 @@ EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")'''
 
+
+'''
 # Sentry Configuration
 sentry_sdk.init(
     dsn=env("SENTRY_DSN"),
     integrations=[DjangoIntegration()],
     traces_sample_rate=1.0,
     send_default_pii=True
-)
+)'''
 
 # Static files with WhiteNoise
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -45,28 +42,27 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': '/var/log/django/error.log',
-        },
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file', 'mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'myapp': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
         },
     },
 }
 
 # Production payment settings
 SANDBOX = False
-MERCHANT = env("ZARINPAL_MERCHANT")
+MERCHANT = env("GETWAY_MERCHANT")
 
 
 
