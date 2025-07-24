@@ -20,13 +20,6 @@ SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-# Cache
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/var/tmp/django_cache',
-    }
-}
 
 # Email settings
 '''EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -80,3 +73,15 @@ MERCHANT = env("ZARINPAL_MERCHANT")
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'pomp-lashani-shop/main/static/'
 MEDIA_URL = 'pomp-lashani-shop/main/madia/'
+
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "unix:/home/waterris/redis/redis.sock?db=0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
