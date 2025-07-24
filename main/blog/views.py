@@ -52,7 +52,6 @@ class Coments (View):
 @require_http_methods(["GET"])
 def comment_list(request, post_id):
     comments = Comment.objects.filter(post_id=post_id, available=True)
-    print(comments)
     return render(request, 'comment_list.html', {
         'comments': comments
     })

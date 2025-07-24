@@ -33,25 +33,21 @@ class PaymentProcessView(LoginRequiredMixin, View):
             form = PaymentMethodForm(request.POST)
             
             if not form.is_valid():
-                print("خطای فرم:", form.errors)
                 return redirect('payment_error_page')
 
             cleaned_data = form.cleaned_data
             order_id = cleaned_data.get('order_id')
             payment_method = cleaned_data.get('payment_method')
             
-            print(f"پرداخت شروع شد - سفارش: {order_id} - روش: {payment_method}")
 
             if payment_method == 'gateway':
                 return redirect('payment_error_page') #redirect(reverse('payments:cartpayment_start', kwargs={'order_id': order_id}))
             elif payment_method == 'manual':
                 return redirect(reverse('payments:manual_payment', kwargs={'order_id': order_id}))
             else:
-                print("روش پرداخت نامعتبر:", payment_method)
                 return redirect('payment_error_page')
 
         except Exception as e:
-            print("خطای سیستمی:", str(e))
             return redirect('payment_error_page')
 
 

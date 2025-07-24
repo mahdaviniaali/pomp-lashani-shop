@@ -130,9 +130,7 @@ class ProductQuantityInCart(View):
                 quantity = item.quantity
             else:
                 cart = request.session.get('cart', {})
-                print(variant_id)
                 quantity = cart.get(str(variant_id), 0)
-                print(quantity)
 
 
         except Exception as e:
@@ -163,9 +161,7 @@ class ProductQuantityInCartJustNumber(View):
                 quantity = item.quantity
             else:
                 cart = request.session.get('cart', {})
-                print(variant_id)
                 quantity = cart.get(str(variant_id), 0)
-                print(quantity)
 
 
         except Exception as e:
@@ -290,9 +286,7 @@ class CartDecrease(View):
                 session_cart = request.session.get('cart', {})
                 variant_key = variant_id
                 current_quantity = session_cart.get(str(variant_key), 0)
-                print(session_cart)
-                print(variant_key)
-                print(current_quantity)
+              
 
                 if current_quantity < 1:
                     quantity = 0
@@ -329,10 +323,7 @@ class CartDecreaseJustNumber(View):
                 session_cart = request.session.get('cart', {})
                 variant_key = variant_id
                 current_quantity = session_cart.get(str(variant_key), 0)
-                print(session_cart)
-                print(variant_key)
-                print(current_quantity)
-
+            
                 if current_quantity < 1:
                     quantity = 0
                 else:
@@ -410,9 +401,7 @@ class CartAdd(View):
                 session_cart = request.session.get('cart', {})
                 variant_key = variant_id
                 current_quantity = session_cart.get(str(variant_key), 0)
-                print(session_cart)
-                print(variant_key)
-                print(current_quantity)
+              
 
                 if current_quantity + 1 > product_variant.stock:
                     message = f'موجودی کافی نیست. حداکثر موجودی: {product_variant.stock}'
@@ -469,9 +458,7 @@ class CartAddJustNumber(View):
                 session_cart = request.session.get('cart', {})
                 variant_key = variant_id
                 current_quantity = session_cart.get(str(variant_key), 0)
-                print(session_cart)
-                print(variant_key)
-                print(current_quantity)
+              
 
                 if current_quantity + 1 > product_variant.stock:
                     message = f'موجودی کافی نیست. حداکثر موجودی: {product_variant.stock}'

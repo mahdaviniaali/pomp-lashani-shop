@@ -35,7 +35,6 @@ class UserRegister(View):
             return render(request, 'login.html', {'next': next_url})
 
         code = OTP.objects.create_otp_code(phone_number)
-        print(code)
         if not code:
             messages.error(request, "خطا در ایجاد کد OTP.")
             return render(request, 'login.html', {'next': next_url})
@@ -50,10 +49,7 @@ class UserRegister(View):
                 }
             ]
         )
-        if success:
-            print("کد تأیید ارسال شد")
-        else:
-            print("خطا در ارسال")
+       
         
         # ذخیره شماره تلفن در session برای استفاده در مرحله بعد
         request.session['otp_phone'] = phone_number
@@ -69,7 +65,7 @@ class OTPVerify(View):
         next_url = request.session.get('otp_next', '')
         
         if not phone_number:
-            return redirect('user_register')
+            return redirect('users:login')
             
         return render(request, 'otp.html', {
             'phone_number': phone_number,
@@ -192,11 +188,9 @@ class AddAddress(LoginRequiredMixin, View):
             # پردازش داده‌ها...
             address, create = Address.objects.add_address(user, **cleaned_data)  # ذخیره آدرس در دیتابیس
             address = Address.objects.get(id=address)
-            print(address)
             return render(request, 'partials/address_list.html', {'addresses': address, 'create':create})
         else:
             errors = form.errors  # خطاهای اعتبارسنجی
-            print(errors)
             return render(request, 'partials/add_address_form.html', {'errors': errors})
 
 
@@ -231,12 +225,10 @@ class EditUserView(LoginRequiredMixin , View):
 
         if form.is_valid(): 
             cleaned_data = form.cleaned_data
-            print(cleaned_data)
             user.add_and_edit_user_info(cleaned_data)
             return render(request, 'partials/user_info.html', {'user':user})    
         else:
             errors = form.errors  # خطاهای اعتبارسنجی
-            print(errors)
             return render(request, 'partials/add_user_info_form.html', {'errors': errors})    
         
 
@@ -247,7 +239,6 @@ def factor_detail(request, order_id):
     user = request.user
     order = Order.objects.get(id=order_id, user=user)
     cart_number = CartNumber.objects.filter(available=True).first()
-    print(cart_number)
     if not order:
         messages.error(request, "سفارش یافت نشد.")
         return redirect('users:profile')

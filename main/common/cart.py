@@ -9,10 +9,8 @@ def merge_cart (user , session_cart):
 
     cart, _ = Cart.objects.get_or_create(user=user)
     variant = ProductVariant.objects.filter(id__in=session_cart).select_related('product')
-    print(variant)
     for variant_id, quantity in session_cart.items():
         variant_cart = variant.get(id=variant_id)
-        print(variant_cart)
         if not variant:
             continue 
 
