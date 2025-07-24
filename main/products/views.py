@@ -5,7 +5,8 @@ from categories.models import Category, Brand
 from .models import Product, ProductVariant
 from django.shortcuts import get_object_or_404
 from django.db.models import OuterRef, Subquery
-
+from django.http import HttpResponsePermanentRedirect
+from django.urls import reverse
 
 
 class ProductBaseView(View):
@@ -41,14 +42,14 @@ class ProductPartials(ProductBaseView):
 class ProductListView(ProductBaseView):
     """ویو اصلی برای نمایش لیست محصولات"""
     
-    def get(self, request, slug=None):
+    def get(self, request, pk=None, slug=None):
         products = self.get_filtered_products(request)
         
         # فیلتر بر اساس دسته‌بندی اگر اسلاگ وجود دارد
-        if slug:
-            parent_category = Category.objects.get(slug=slug)
+        if pk:
+            parent_category = Category.objects.get(id=pk)
             categories = parent_category.get_descendants()
-            products = products.filter(category__slug=slug)
+            products = products.filter(category__id=pk)
         else:
             categories = Category.objects.all()
         
@@ -67,31 +68,29 @@ class ProductListView(ProductBaseView):
 
 # views.py
 class ProductDetailView(View):
-    def get(self, request, slug):
-        product = get_object_or_404(
-            Product.objects.select_related('category').with_related(),slug=slug)
-        
+    def get(self, request, pk, slug):
+        product = get_object_or_404(Product.objects.select_related('category').with_related(), pk=pk)
 
+        if product.slug != slug:
+            return HttpResponsePermanentRedirect(
+                reverse('product_detail', kwargs={'pk': product.pk, 'slug': product.slug})
+            )
 
         related_products = (
-            Product.objects.filter(
-                category=product.category
-            )
+            Product.objects.filter(category=product.category)
             .exclude(id=product.id)
             .annotate(
                 product_price=Subquery(
-                    ProductVariant.objects.filter(
-                        product=OuterRef('pk')
-                    ).order_by('price')
-                    .values('price')[:1]
+                    ProductVariant.objects.filter(product=OuterRef('pk')).order_by('price').values('price')[:1]
                 )
             )
             .order_by('id')[:10]
         )
+
         tags = product.tags.all()[:3]
         context = {
             'product': product,
             'related_products': related_products,
-            'tags' : tags,
+            'tags': tags,
         }
         return render(request, 'product_detail.html', context)

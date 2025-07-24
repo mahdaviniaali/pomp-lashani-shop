@@ -55,7 +55,7 @@ home-style1
             </div>
             <div class="cat-content">
               {% for cat in categories %}
-              <a class="cat-card" href="{% url 'products:product_list_by_category' slug=cat.slug %}">
+              <a class="cat-card" href="{% url 'products:product_list_by_category' pk=cat.id slug=cat.slug %}">
                 <div class="img">
                   <img alt="" src="{{cat.logo}}" />
                 </div>
@@ -263,12 +263,12 @@ home-style1
                   <div class="top">
                     <!-- بخش بالایی کارت -->
                   </div>
-                  <a class="img th-140 mb-20 d-block" href="{% url 'products:product_detail' slug=top_products.0.slug %}">
+                  <a class="img th-140 mb-20 d-block" href="{% url 'products:product_detail' pk=top_products.0.id slug=top_products.0.slug %}">
                     <img alt="" class="img-contain" src="{{top_products.0.image.url}}" />
                   </a>
                   
                   <div class="info">
-                    <a class="title fsz-14 mt-15 fw-600 hover-blue1" href="{% url 'products:product_detail' slug=top_products.0.slug %}">
+                    <a class="title fsz-14 mt-15 fw-600 hover-blue1" href="{% url 'products:product_detail' pk=top_products.0.id slug=top_products.0.slug %}">
                       {{top_products.0.title}}
                     </a>
                     
@@ -328,7 +328,7 @@ home-style1
                   </div>
                   <a
                     class="img th-140 mb-20 d-block"
-                    href="{% url 'products:product_detail' slug=top_products.1.slug %}"
+                    href="{% url 'products:product_detail' pk=top_products.1.id slug=top_products.1.slug %}"
                   >
                     <img
                       alt=""
@@ -343,7 +343,7 @@ home-style1
                     >
                     <a
                       class="title fsz-14 mt-15 fw-600 hover-blue1"
-                      href="{% url 'products:product_detail' slug=top_products.1.slug %}"
+                      href="{% url 'products:product_detail' pk=top_products.1.id slug=top_products.1.slug %}"
                       >{{top_products.1.title}}</a
                     >
                     {% if top_products.1.need_to_call %}
@@ -402,7 +402,7 @@ home-style1
                   </div>
                   <a
                     class="img th-600 mb-20 d-block"
-                    href="{% url 'products:product_detail' slug=top_products.2.slug %}"
+                    href="{% url 'products:product_detail' pk=top_products.2.id slug=top_products.2.slug %}"
                   >
                     <img
                       alt=""
@@ -417,7 +417,7 @@ home-style1
                     >
                     <a
                       class="title fsz-14 mt-15 fw-600 hover-blue1"
-                      href="{% url 'products:product_detail' slug=top_products.2.slug %}"
+                      href="{% url 'products:product_detail' pk=top_products.2.id slug=top_products.2.slug %}"
                       >{{top_products.2.title}}</a
                     >
                     
@@ -473,7 +473,7 @@ home-style1
                   </div>
                   <a
                     class="img th-140 mb-20 d-block"
-                    href="{% url 'products:product_detail' slug=top_products.3.slug %}"
+                    href="{% url 'products:product_detail' pk=top_products.3.id slug=top_products.3.slug %}"
                   >
                     <img
                       alt=""
@@ -488,7 +488,7 @@ home-style1
                     >
                     <a
                       class="title fsz-14 mt-15 fw-600 hover-blue1"
-                      href="{% url 'products:product_detail' slug=top_products.3.slug %}"
+                      href="{% url 'products:product_detail' pk=top_products.3.id slug=top_products.3.slug %}"
                       >{{ top_products.3.title }}</a
                     >
                     {% if top_products.3.need_to_call %}
@@ -548,7 +548,7 @@ home-style1
                   </div>
                   <a
                     class="img th-140 mb-20 d-block"
-                    href="{% url 'products:product_detail' slug=top_products.4.slug %}"
+                    href="{% url 'products:product_detail' pk=top_products.4.id slug=top_products.4.slug %}"
                   >
                     <img
                       alt=""
@@ -563,7 +563,7 @@ home-style1
                     >
                     <a
                       class="title fsz-14 mt-15 fw-600 hover-blue1"
-                      href="{% url 'products:product_detail' slug=top_products.4.slug %}"
+                      href="{% url 'products:product_detail' pk=top_products.4.id slug=top_products.4.slug %}"
                       > {{ top_products.4.title }} </a
                     >
 
@@ -623,7 +623,7 @@ home-style1
                   </div>
                   <a
                     class="img th-140 mb-20 d-block"
-                    href="{% url 'products:product_detail' slug=top_products.5.slug %}"
+                    href="{% url 'products:product_detail' pk=top_products.5.id slug=top_products.5.slug %}"
                   >
                     <img
                       alt=""
@@ -638,7 +638,7 @@ home-style1
                     >
                     <a
                       class="title fsz-14 mt-15 fw-600 hover-blue1"
-                      href="{% url 'products:product_detail' slug=top_products.5.slug %}"
+                      href="{% url 'products:product_detail' pk=top_products.5.id slug=top_products.5.slug %}"
                       >{{ top_products.5.title }}</a
                     >
                     
@@ -696,7 +696,7 @@ home-style1
                   </div>
                   <a
                     class="img th-140 mb-20 d-block"
-                    href="{% url 'products:product_detail' slug=top_products.6.slug %}"
+                    href="{% url 'products:product_detail' pk=top_products.6.id slug=top_products.6.slug %}"
                   >
                     <img
                       alt=""
@@ -711,7 +711,7 @@ home-style1
                     >
                     <a
                       class="title fsz-14 mt-15 fw-600 hover-blue1"
-                      href="{% url 'products:product_detail' slug=top_products.6.slug %}"
+                      href="{% url 'products:product_detail' pk=top_products.6.id slug=top_products.6.slug %}"
                       >{{ top_products.6.title }}</a
                     >
                     {% if top_products.6.need_to_call %}
@@ -914,7 +914,7 @@ home-style1
                       </div>
                       <a
                         class="img th-160 mb-20 d-block"
-                        href="{% url 'products:product_detail' slug=product.slug %}"
+                        href="{% url 'products:product_detail' pk=product.id slug=product.slug %}"
                       >
                         <img
                           alt=""

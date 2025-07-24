@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.contrib.admin import DateFieldListFilter
 from rangefilter.filters import DateRangeFilter
 from import_export.admin import ImportExportModelAdmin
 from .models import Product, ProductImage, ProductAttributeValue, ProductVariant

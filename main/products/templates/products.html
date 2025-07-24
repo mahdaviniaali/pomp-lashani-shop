@@ -67,7 +67,7 @@ home-style3 sin-prod-pg-1
                           >
                         </li>
                         {% for cat in categories %}
-                        <li><a href="{% url 'products:product_list_by_category' slug=cat.slug %}">{{ cat.title }}</a></li>
+                        <li><a href="{% url 'products:product_list_by_category' pk=cat.id slug=cat.slug %}">{{ cat.title }}</a></li>
                         {% endfor %}
                       </ul>
                     </div>
