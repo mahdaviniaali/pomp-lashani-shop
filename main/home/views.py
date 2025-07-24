@@ -3,8 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.core.cache import cache
 from django.conf import settings
-from products.models import Product, ProductVariant
-from carts.models import Cart
+from products.models import Product
 from categories.models import Category
 from blog.models import Post
 from taggit.models import Tag
@@ -31,18 +30,16 @@ class Home(View):
         )
 
         # 4. کش جدیدترین محصولات (شرطی با تنظیمات)
-        if getattr(settings, 'UPDATE_NEW_PRODUCTS', False):
-            new_products = Product.objects.order_by('-create_at').with_related_for_home().filter(available=True)[:6]
-            cache.set('home_new_products', new_products, 60 * 60 * 24)  # 1 روز
-        else:
-            new_products = cache.get('home_new_products', Product.objects.none())
+       
+        new_products = Product.objects.order_by('-create_at').with_related_for_home().filter(available=True)[:6]
+        cache.set('home_new_products', new_products, 60 * 60 * 24)  # 1 روز
+        
 
         # 5. کش خبرنامه (شرطی با تنظیمات)
-        if getattr(settings, 'ENABLE_NEWSLETTER', False):
-            post = Post.objects.all()
-            cache.set('Post', post, 60 * 60 * 24)  # 1 روز
-        else:
-            post = cache.get('post', "")
+        
+        post = Post.objects.all()
+        cache.set('Post', post, 60 * 60 * 24)  # 1 روز
+       
 
         # محتوای نهایی
         context = {

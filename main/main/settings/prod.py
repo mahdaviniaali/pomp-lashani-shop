@@ -78,14 +78,3 @@ MERCHANT = env("GETWAY_MERCHANT")
 STATIC_URL = 'pomp-lashani-shop/main/static/'
 MEDIA_URL = 'pomp-lashani-shop/main/madia/'
 
-
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "unix:/home/waterris/redis/redis.sock?db=0",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}

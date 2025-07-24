@@ -5,7 +5,6 @@ from .base import *
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
-
 # Debug Toolbar
 INTERNAL_IPS = ['127.0.0.1']
 DEBUG_TOOLBAR_CONFIG = {
