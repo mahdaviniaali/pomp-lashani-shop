@@ -195,6 +195,43 @@
     {% endblock %}
   </main>
 
+{% if not request.path|slice:":10" == "/products/d/" %}
+    <div class="mob-navigation d-flex d-lg-none" id="nav-mobile">
+      <ul>
+        <li id="blog" class="list {% if request.path == '/blog/' %}active{% endif %}">
+          <a href="{% url 'blog:bloglist' %}">
+            <span class="icon"> <i class="las la-newspaper"></i> </span>
+            <span class="text">وبلاگ</span>
+          </a>
+        </li>
+        <li id="products" class="list {% if request.path == '/products/' %}active{% endif %}">
+          <a href="{% url 'products:product_list' %}">
+            <span class="icon"> <i class="las la-boxes"></i> </span>
+            <span class="text">محصولات</span>
+          </a>
+        </li>
+        <li id="home" class="list {% if request.path == '' %}active{% endif %}">
+          <a href="{% url 'home:home' %}">
+            <span class="icon"> <i class="las la-home"></i> </span>
+            <span class="text">خانه</span>
+          </a>
+        </li>
+        <li id="cart" class="list {% if request.path == '/carts/cart/' %}active{% endif %}">
+          <a href="{% url 'carts:cart_detail' %}">
+            <span class="icon"> <i class="las la-shopping-bag"></i> </span>
+            <span class="text">سبد خرید</span>
+          </a>
+        </li>
+        <li id="profile" class="list {% if request.path == '/users/profile/' %}active{% endif %}">
+          <a href="{% url 'users:profile' %}">
+            <span class="icon"> <i class="las la-user"></i> </span>
+            <span class="text">پروفایل</span>
+          </a>
+        </li>
+        <li class="indicator"></li>
+      </ul>
+    </div>
+{% endif %}
   <!-- پاورقی -->
   <!-- پاورقی -->
 <footer class="tc-footer-style1 bg-dark text-white pt-5">
