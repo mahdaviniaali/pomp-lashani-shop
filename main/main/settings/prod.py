@@ -3,6 +3,8 @@ from .base import *
 #import sentry_sdk
 
 
+DEBUG=False
+
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 
 print(ALLOWED_HOSTS)
