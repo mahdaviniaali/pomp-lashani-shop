@@ -8,10 +8,9 @@ class CategoryAdmin(DraggableMPTTAdmin):
     list_display = ('tree_actions', 'indented_title', 'logo_preview', 'available')
     list_display_links = ('indented_title',)
     list_editable = ('available',)
-    prepopulated_fields = {'slug': ('title',)}
     search_fields = ('title',)
     list_filter = ('available', 'parent')
-    readonly_fields = ('logo_preview',)
+    readonly_fields = ('logo_preview', 'slug')
     mptt_level_indent = 30
 
     def logo_preview(self, obj):

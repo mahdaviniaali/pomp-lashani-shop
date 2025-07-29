@@ -57,9 +57,18 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // اگر مقدار تعداد تغییر کرد
             if (target.id && target.id.startsWith('number')) {
-                this.animateQuantityChange(target);
-                this.updateItemData(target);
-                this.updateSummary();
+                const newQuantity = parseInt(target.textContent);
+                
+                // اگر تعداد صفر شد، آیتم را حذف کن
+                if (newQuantity === 0) {
+                    const productCard = target.closest('.product-card');
+                    this.removeItemFromCart(productCard);
+                } else {
+                    // در غیر این صورت فقط به‌روزرسانی کن
+                    this.animateQuantityChange(target);
+                    this.updateItemData(target);
+                    this.updateSummary();
+                }
             }
         }
 

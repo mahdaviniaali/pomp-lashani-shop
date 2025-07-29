@@ -15,100 +15,94 @@ logger = logging.getLogger(__name__)
 ##############
 
 
-# صفحه سبد خرید
 class CartDetail(View):
-    """کلاس نمایش سبد خرید با قابلیت مدیریت کاربران لاگین کرده و مهمان"""
+    """کلاس نمایش سبد خرید با ساختار یکسان برای کاربران لاگین کرده و مهمان"""
     
-    def get(self, request):
-        """
-        هندلر درخواست GET برای نمایش سبد خرید
-        
-        Args:
-            request: درخواست دریافتی از کاربر
+    def get_cart_items_for_authenticated_user(self, user):
+        """استخراج آیتم‌های سبد خرید برای کاربر لاگین کرده"""
+        try:
+            cart = Cart.objects.prefetch_related(
+                'items__productvariant',
+                'items__product'
+            ).get(user=user)
             
-        Returns:
-            رندر تمپلیت cart.html با اطلاعات سبد خرید
-        """
+            items = []
+            for item in cart.items.all():
+                items.append({
+                    'id': item.id,
+                    'product': item.product,
+                    'productvariant': item.productvariant,
+                    'quantity': item.quantity,
+                    'price': item.productvariant.price,
+                    'total': item.quantity * item.productvariant.price
+                })
+            
+            return {
+                'cart_items': items,
+                'total_price': cart.total_price,
+                'cart': cart
+            }
+        except Exception as e:
+            logger.error(f"خطا در دریافت سبد خرید کاربر: {str(e)}")
+            return {'error': "خطا در دریافت سبد خرید"}
+
+    def get_cart_items_for_guest(self, session_cart):
+        """استخراج آیتم‌های سبد خرید برای کاربر مهمان"""
+        try:
+            variant_ids = [int(k) for k in session_cart.keys() if k.isdigit()]
+            items = []
+            total = 0
+            
+            if variant_ids:
+                variants = ProductVariant.objects.filter(
+                    id__in=variant_ids
+                ).select_related('product')
+                
+                for variant in variants:
+                    quantity = session_cart.get(str(variant.id), 1)
+                    item_total = quantity * variant.price
+                    
+                    items.append({
+                        'id': variant.id,  # استفاده از variant.id به جای item.id
+                        'product': variant.product,
+                        'productvariant': variant,
+                        'quantity': quantity,
+                        'price': variant.price,
+                        'total': item_total
+                    })
+                    
+                    total += item_total
+            
+            return {
+                'cart_items': items,
+                'total_price': total,
+                'cart': None  # برای یکسان‌سازی با حالت لاگین کرده
+            }
+        except Exception as e:
+            logger.error(f"خطا در پردازش سبد خرید مهمان: {str(e)}")
+            return {'error': "خطا در نمایش سبد خرید"}
+
+    def get(self, request):
         logger.info("درخواست نمایش سبد خرید دریافت شد")
         
-        user = request.user
-        context = {'total_price': 0, 'cart_items': []}
+        context = {
+            'total_price': 0,
+            'cart_items': [],
+            'cart': None
+        }
         
-        if user.is_authenticated:
-            logger.info(f"کاربر لاگین کرده: {user.username}")
-            
-            try:
-                # ایجاد یا دریافت سبد خرید کاربر
-                cart, created = Cart.objects.get_or_create(user=user)
-                logger.info(f"سبد خرید {'ایجاد شد' if created else 'از قبل وجود داشت'} برای کاربر {user.username}")
-                
-                # دریافت سبد خرید با بهینه‌سازی کوئری‌ها
-                cart = Cart.objects.prefetch_related(
-                    'items__productvariant',  # پیش‌بارگیری واریانت محصولات
-                    'items__product'         # پیش‌بارگیری خود محصولات
-                ).get(id=cart.id)
-                
-                logger.debug(f"سبد خرید با {cart.items.count()} آیتم بارگیری شد")
-                
-                # پر کردن context با اطلاعات سبد خرید
-                context.update({
-                    'cart': cart,
-                    'total_price': cart.total_price,
-                    'cart_items': cart.items.all()
-                })
-                
-            except Exception as e:
-                logger.error(f"خطا در دریافت سبد خرید کاربر: {str(e)}")
-                context['error'] = "خطا در دریافت سبد خرید"
-                
+        if request.user.is_authenticated:
+            logger.info(f"کاربر لاگین کرده: {request.user.username}")
+            context.update(self.get_cart_items_for_authenticated_user(request.user))
         else:
             logger.info("کاربر مهمان تشخیص داده شد")
-            
-            try:
-                # دریافت سبد خرید از session
-                session_cart = request.session.get('cart', {})
-                logger.debug(f"سبد خرید session: {session_cart}")
-                
-                # تبدیل کلیدهای session به integer (آی دی واریانت)
-                variant_ids = [int(k) for k in session_cart.keys() if k.isdigit()]
-                
-                items = []
-                total = 0
-                
-                if variant_ids:
-                    # دریافت واریانت‌های محصول از دیتابیس
-                    variants = ProductVariant.objects.filter(
-                        id__in=variant_ids
-                    ).select_related('product')  # بهینه‌سازی کوئری
-                    
-                    logger.debug(f"تعداد واریانت‌های یافت شده: {variants.count()}")
-                    
-                    for variant in variants:
-                        quantity = session_cart.get(str(variant.id), 1)
-                        item_total = quantity * variant.price
-                        
-                        items.append({
-                            'variant': variant,
-                            'product': variant.product,
-                            'quantity': quantity,
-                            'price': variant.price,
-                            'total': item_total
-                        })
-                        
-                        total += item_total
-                        logger.debug(f"آیتم افزوده شده: {variant.product.title} - تعداد: {quantity}")
-                
-                context.update({
-                    'cart_items': items,
-                    'total_price': total
-                })
-                
-            except Exception as e:
-                logger.error(f"خطا در پردازش سبد خرید مهمان: {str(e)}")
-                context['error'] = "خطا در نمایش سبد خرید"
+            session_cart = request.session.get('cart', {})
+            context.update(self.get_cart_items_for_guest(session_cart))
         
-        logger.info(f"سبد خرید با {len(context['cart_items'])} آیتم و قیمت کل {context['total_price']} آماده نمایش است")
+        logger.info(f"سبد خرید با {len(context['cart_items'])} آیتم آماده نمایش است")
         return render(request, 'cart.html', context)
+
+
 
 #cart count:
 #نمایش تعداد محصول در سبد
@@ -332,10 +326,10 @@ class CartDecreaseJustNumber(View):
                     request.session['cart'] = session_cart
                     request.session.modified = True
 
-        return render(request, 'product_count_number.html', {
-            'quantity': quantity,
-           
-        })
+            return render(request, 'product_count_number.html', {
+                'quantity': quantity,
+            
+            })
     
 
 

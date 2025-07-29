@@ -34,6 +34,10 @@ EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")'''
 
+TIME_ZONE = 'Asia/Tehran'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
 
 '''
 # Sentry Configuration

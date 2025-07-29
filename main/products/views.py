@@ -44,7 +44,7 @@ class ProductListView(ProductBaseView):
     
     def get(self, request, pk=None, slug=None):
         products = self.get_filtered_products(request)
-        
+        parent_category = None
         # فیلتر بر اساس دسته‌بندی اگر اسلاگ وجود دارد
         if pk:
             parent_category = Category.objects.get(id=pk)
@@ -56,13 +56,15 @@ class ProductListView(ProductBaseView):
         brands = Brand.objects.filter(product__in=products).distinct()
         page_obj = self.paginate_products(request, products)
         
-        return render(request, 'products.html', {
+        context={
             'page_obj': page_obj,
             'categories': categories,
-            'catname': slug,
             'brands': brands,
             'get_params': request.GET,
-        })
+        }
+        if parent_category is not None:
+            context['catname']=parent_category
+        return render(request, 'products.html',context)
 
 
 

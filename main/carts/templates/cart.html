@@ -68,7 +68,6 @@
                             hx-trigger="click"
                             hx-vals='{"product_id": "{{ item.product.id }}", "variant": "{{ item.productvariant.id }}"}'
                             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                            hx-target="closest .product-card"
                             hx-swap="outerHTML"
                             hx-indicator="#loading-overlay">
                             <i class="fas fa-trash-alt"></i>

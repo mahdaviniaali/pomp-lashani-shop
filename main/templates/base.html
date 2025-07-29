@@ -69,7 +69,7 @@
         <!-- بخش چپ: لوگو و جستجو -->
         <div class="d-flex align-items-center">
           <a class="navbar-brand me-4" href="{% url 'home:home' %}">
-            <img alt="لوگو" class="logo" src="{% static 'img/logo.png' %}">
+            <img src="{{company_info.logo.url}}" alt="لوگو" class="logo mb-3" width="120">
           </a>
           
           <div class="search-cat d-none d-lg-block">
@@ -128,45 +128,45 @@
           <div class="links">
             <ul class="links-ul">
               <li class="nav-item dropdown dropdown-hover">
-  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    دسته‌بندی محصولات
-  </a>
-  <ul class="dropdown-menu dropdown-menu-end p-3" style="width: 800px;">
-    <div class="row">
-      {% for category in categories %}
-        <div class="col-md-4">
-          <div class="mb-3">
-            <h6 class="fw-bold border-bottom pb-2">
-              <a href="{{ category.get_absolute_url }}" class="text-dark">{{ category.title }}</a>
-            </h6>
-            {% if category.children.all %}
-              <ul class="list-unstyled mt-2">
-                {% for child in category.children.all %}
-                  <li class="mb-1">
-                    <a href="{{ child.get_absolute_url }}" class="text-muted">
-                      <i class="fas fa-angle-left me-1"></i> {{ child.title }}
-                    </a>
-                    {% if child.children.all %}
-                      <ul class="list-unstyled ps-3 mt-1">
-                        {% for subchild in child.children.all %}
-                          <li class="mb-1">
-                            <a href="{{ subchild.get_absolute_url }}" class="text-muted">
-                              <i class="far fa-circle me-1"></i> {{ subchild.title }}
-                            </a>
-                          </li>
-                        {% endfor %}
-                      </ul>
-                    {% endif %}
-                  </li>
-                {% endfor %}
-              </ul>
-            {% endif %}
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-  </ul>
-</li>
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  دسته‌بندی محصولات
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end p-3" style="width: 800px;">
+                  <div class="row">
+                    {% for category in global_categories %}
+                      <div class="col-md-4">
+                        <div class="mb-3">
+                          <h6 class="fw-bold border-bottom pb-2">
+                            <a href="{{ category.get_absolute_url }}" class="text-dark">{{ category.title }}</a>
+                          </h6>
+                          {% if category.children.all %}
+                            <ul class="list-unstyled mt-2">
+                              {% for child in category.children.all %}
+                                <li class="mb-1">
+                                  <a href="{{ child.get_absolute_url }}" class="text-muted">
+                                    <i class="fas fa-angle-left me-1"></i> {{ child.title }}
+                                  </a>
+                                  {% if child.children.all %}
+                                    <ul class="list-unstyled ps-3 mt-1">
+                                      {% for subchild in child.children.all %}
+                                        <li class="mb-1">
+                                          <a href="{{ subchild.get_absolute_url }}" class="text-muted">
+                                            <i class="far fa-circle me-1"></i> {{ subchild.title }}
+                                          </a>
+                                        </li>
+                                      {% endfor %}
+                                    </ul>
+                                  {% endif %}
+                                </li>
+                              {% endfor %}
+                            </ul>
+                          {% endif %}
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </ul>
+              </li>
               <li class="nav-item">
                 <a href="{% url 'home:home' %}">خانه</a>
               </li>

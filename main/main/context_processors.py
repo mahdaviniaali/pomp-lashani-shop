@@ -66,7 +66,7 @@ def global_context(request):
             
         # اضافه کردن دسته‌بندی‌ها
         categories = get_categories()
-        context['categories'] = categories
+        context['global_categories'] = categories
             
         # همیشه cart_count را اضافه کنید، حتی اگر 0 باشد
         context['cart_count'] = get_global_cart(request)

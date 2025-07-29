@@ -18,7 +18,7 @@ urlpatterns = [
     path('partials/add', CartAddJustNumber.as_view(), name='cart_add_just_number' ),
     path('partials/decrease', CartDecreaseJustNumber.as_view(), name='cart_decrease_just_number' ),
     path('cart/total/', CartTotalView.as_view(), name='get_cart_total'),
-        path('cart/items/', CartItemListViewHtmx.as_view(), name='cart_items_partial'),
+    path('cart/items/', CartItemListViewHtmx.as_view(), name='cart_items_partial'),
 
 
 ]
