@@ -221,7 +221,7 @@ home-style3 sin-prod-pg-1
                         
                         <div id="product-list" 
                             hx-get="{% url 'products:product_partial' %}" 
-                            hx-trigger="load, change from:input, change from:select"
+                            hx-trigger="change from:input, change from:select"
                             hx-include="[name='min_price'], [name='max_price'], [name='brand'], [name='category'], [name='order'], [name='search']"
                             hx-indicator="#loading-spinner">
                           {% include 'product_cards.html' %}

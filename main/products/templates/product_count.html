@@ -2,7 +2,10 @@
 <small class="fsz-12 color-666 text-uppercase mb-2">قیمت کل:</small>
 
 {% if variant.price %}
-    <h5 class="fsz-30 fw-bold">{{ variant.price|intcomma }} تومان</h5>
+    <h4 class="fw-bold mb-0 text-primary" style="font-family: 'Yekan', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; letter-spacing: -0.5px;">
+        <span class="persian-number" style="font-family: 'Dana', 'Yekan', sans-serif; font-weight: 500; color: #4a4a4a;">{{ variant.price|intcomma }}</span>
+        <small class="fs-6" style="font-weight: 400;">تومان</small>
+    </h4>
     
     {% if variant.stock > 0 %}
         <p class="fsz-12 mt-3">
@@ -31,27 +34,24 @@
 
 {% if variant.price and variant.stock > 0 %}  
     {% if quantity > 0 %}
-        {% if quantity > variant.stock %}
-            <div class="alert alert-danger fsz-12 mt-2">
-                <i class="fas fa-exclamation-triangle me-1"></i>
-                تعداد درخواستی بیشتر از موجودی است (موجودی: {{ variant.stock }})
-                <br>
-                در صورت نیاز با پشتیبانی تماس بگیرید.
-            </div>
-        {% endif %}
         
-        <div class="add-more">
-            <button class="qt-minus" hx-post="{% url 'carts:cart_decrease' %}"
+        <div class="quantity-control d-flex justify-content-center align-items-center mt-4">
+            <button class="btn-quantity minus rounded-start" 
+                    hx-post="{% url 'carts:cart_decrease' %}"
                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
                     hx-vals='{"variant":{{ variant.id }}, "product_id": {{product.id}}}'
                     hx-target="#product-list"
                     hx-indicator="#loading-spinner">
-                <i class="{% if quantity == 1 %}fas fa-trash{% else %}fas fa-minus{% endif %}"></i>
+                <i class="{% if quantity == 1 %}fas fa-trash-alt{% else %}fas fa-minus{% endif %}"></i>
             </button>
 
-            <input class="qt border-0" type="text" value="{{quantity}}" />
+            <input class="quantity-input text-center" 
+                   type="text" 
+                   value="{{quantity}}"
+                   readonly />
 
-            <button class="qt-plus" hx-post="{% url 'carts:cartadd' %}"
+            <button class="btn-quantity plus rounded-end {% if quantity >= variant.stock %}disabled{% endif %}"
+                    hx-post="{% url 'carts:cartadd' %}"
                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
                     hx-vals='{"variant":{{ variant.id }}, "product_id": {{product.id}}}'
                     hx-target="#product-list"
@@ -68,14 +68,17 @@
             </p>
         {% endif %}
     {% else %}
-        <button type="button"
-                class="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-10 w-100 py-3"
-                hx-post="{% url 'carts:cartadd' %}"
-                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                hx-vals='{"variant":{{ variant.id }}, "product_id": {{product.id}}}'
-                hx-target="#product-list"
-                hx-indicator="#loading-spinner">
-            <span>به سبد خرید اضافه کنید</span>
-        </button>
+        <div class="text-center mt-3">
+            <button type="button"
+                    class="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase py-2 px-4"
+                    style="border: none; cursor: pointer;"
+                    hx-post="{% url 'carts:cartadd' %}"
+                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                    hx-vals='{"variant":{{ variant.id }}, "product_id": {{product.id}}}'
+                    hx-target="#product-list"
+                    hx-indicator="#loading-spinner">
+                <span>به سبد خرید اضافه کنید</span>
+            </button>
+        </div>
     {% endif %}
 {% endif %}

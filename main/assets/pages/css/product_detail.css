@@ -85,3 +85,42 @@
         font-size: 0.9rem;
     }
 }
+
+
+
+/* استایل کنترلرهای تعداد */
+.quantity-control {
+    gap: 5px;
+}
+
+.btn-quantity {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ddd;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-quantity:hover {
+    background: #e9ecef;
+}
+
+.btn-quantity:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.quantity-input {
+    width: 60px;
+    height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 0;
+    font-family: 'Dana', sans-serif;
+    font-weight: 500;
+}
+
+

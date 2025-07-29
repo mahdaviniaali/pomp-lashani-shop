@@ -71,7 +71,7 @@ class ProductListView(ProductBaseView):
 # views.py
 class ProductDetailView(View):
     def get(self, request, pk, slug):
-        product = get_object_or_404(Product.objects.select_related('category').with_related(), pk=pk)
+        product = get_object_or_404(Product.objects.with_related(), pk=pk)
 
         if product.slug != slug:
             return HttpResponsePermanentRedirect(

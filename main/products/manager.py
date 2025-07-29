@@ -80,6 +80,28 @@ class ProductQuerySet(QuerySet):
         return queryset
 
 
+
+    def related_products(self, category):
+        from products.models import ProductVariant
+        return self.filter(category = category).annotate(
+                min_price=Min('variants__price', 
+                            filter=Q(variants__available=True, variants__stock__gt=0)),
+                max_price=Max('variants__price', 
+                            filter=Q(variants__available=True, variants__stock__gt=0)),
+                has_stock=Exists(
+                    ProductVariant.objects.filter(
+                        product=OuterRef('pk'),
+                        available=True,
+                        stock__gt=0
+                    )
+                )
+            .filter(available=True, has_stock=True)
+            .distinct()
+        )
+
+
+
+
     def with_related(self):
         ''' این متد برای بارگذاری داده‌های مرتبط با محصول استفاده می‌شود.
         '''
