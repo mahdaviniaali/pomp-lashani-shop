@@ -165,6 +165,8 @@
             </div>
             {% endif %}
             
+
+
             <p class="color-666">
               <strong class="color-000 text-uppercase me-1">دسته:</strong>
               <a href="{{ product.category.get_absolute_url }}">{{product.category}}</a>
@@ -174,8 +176,71 @@
               <a href="{% url 'products:product_list' %}?brand={{product.brand.slug}}" class="color-green2">{{product.brand}}</a>
             </p>
           </div>
+          <!-- بعد از بخش variants در تمپلیت موجود -->
+          {% if product_option %}
+          <div class="options-section mt-4">
+            <h5 class="fsz-16 fw-bold mb-3 border-bottom pb-2">
+              <i class="fas fa-cogs me-2 text-primary"></i>
+              گزینه‌های سفارشی‌سازی
+            </h5>
+            
+            <div class="options-container">
+              {% regroup product_option by option.option_type as option_types %}
+              
+              {% for type in option_types %}
+              <div class="option-type-card mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h6 class="fsz-14 fw-bold mb-0">
+                    <i class="fas fa-{{ type.grouper.icon|default:'cog' }} me-2"></i>
+                    {{ type.grouper.name }}
+                  </h6>
+                  <small class="text-muted" data-bs-toggle="tooltip" title="{{ type.grouper.description }}">
+                    <i class="fas fa-info-circle"></i>
+                  </small>
+                </div>
+                
+                <div class="option-items">
+                  {% for option in type.list %}
+                  <div class="option-item form-check mb-2">
+                    <input class="form-check-input" 
+                          type="radio" 
+                          name="option_type_{{ type.grouper.id }}" 
+                          id="option_{{ option.id }}"
+                          data-price="{{ option.option.price }}"
+                          data-duration="{{ option.option.duration_days|default:0 }}"
+                          {% if not option.available %}disabled{% endif %}>
+                    
+                    <label class="form-check-label w-100" for="option_{{ option.id }}">
+                      <div class="option-card {% if not option.available %}disabled-option{% endif %} p-2 rounded-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <span class="option-name fsz-13">
+                            {{ option.option.name }}
+                            {% if not option.available %}
+                            <span class="badge bg-danger fsz-10 ms-2">ناموجود</span>
+                            {% endif %}
+                          </span>
+                          <span class="option-price fsz-12 fw-bold">
+                            +{{ option.option.price|intcomma }} تومان
+                          </span>
+                        </div>
+                        {% if option.option.duration_days %}
+                        <div class="option-duration text-muted fsz-11 mt-1">
+                          <i class="far fa-clock me-1"></i>
+                          مدت زمان: {{ option.option.duration_days }} روز
+                        </div>
+                        {% endif %}
+                      </div>
+                    </label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
         </div>
-
+        
         <!-- Payment sidebar -->
         <div class="col-lg-3">
           <div class="payment-side">

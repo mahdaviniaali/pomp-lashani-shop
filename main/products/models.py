@@ -1,5 +1,5 @@
 from django.db import models
-from .manager import ProductManager
+from .manager import ProductManager, ProductOptionManager 
 from taggit.managers import TaggableManager
 from mptt.models import TreeForeignKey
 from slugify import slugify
@@ -63,23 +63,8 @@ class Product(ModelMeta, models.Model):
     def get_meta_image(self):
         return self.image.url if self.image else None
 
-    def get_price(self):
-        if self.variants.exists():
-            return self.variants.order_by('price').first().price
-        return 0
+    
 
-    def get_last_stock_change_by_admin(self):
-        last_admin_change = self.history.filter(
-            changes_dict__has_key='stock',
-            actor__is_staff=True
-        ).order_by('-timestamp').first()
-        if last_admin_change:
-            return {
-                'stock': last_admin_change.changes['stock'][1],
-                'admin': last_admin_change.actor.get_full_name(),
-                'time': last_admin_change.timestamp
-            }
-        return None
 
     class Meta:
         verbose_name = _("محصول")
@@ -119,6 +104,12 @@ class ProductVariant(models.Model):
         verbose_name = _("تنوع محصول")
         verbose_name_plural = _("تنوع محصولات")
 
+
+
+
+###################
+#-----------آپشن های محصولات-----------#
+###################
 class OptionType(models.Model):
     name = models.CharField(_("نام نوع آپشن"), max_length=100)
     description = models.TextField(_("توضیحات"), blank=True)
@@ -149,6 +140,7 @@ class ProductOption(models.Model):
     option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name='productoption', verbose_name=_("آپشن"))
     available = models.BooleanField(_("موجود"), default=True)
     history = AuditlogHistoryField(_("تاریخچه"), null=True, blank=True)
+    objects = ProductOptionManager ()
     
     def __str__(self):
         return f"{self.product.title} - {self.option.name}"

@@ -2,11 +2,9 @@ from django.views import View
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from categories.models import Category, Brand
-from .models import Product, ProductVariant
+from .models import Product, ProductOption
 from django.shortcuts import get_object_or_404
-from django.db.models import OuterRef, Subquery
-from django.http import HttpResponsePermanentRedirect
-from django.urls import reverse
+
 
 
 class ProductBaseView(View):
@@ -73,26 +71,17 @@ class ProductDetailView(View):
     def get(self, request, pk, slug):
         product = get_object_or_404(Product.objects.with_related(), pk=pk)
 
-        if product.slug != slug:
-            return HttpResponsePermanentRedirect(
-                reverse('products:product_detail', kwargs={'pk': product.pk, 'slug': product.slug})
-            )
+        related_products = Product.objects.related_products(product.category).exclude(pk=product.pk)[:10]
 
-        related_products = (
-            Product.objects.filter(category=product.category)
-            .exclude(id=product.id)
-            .annotate(
-                product_price=Subquery(
-                    ProductVariant.objects.filter(product=OuterRef('pk')).order_by('price').values('price')[:1]
-                )
-            )
-            .order_by('id')[:10]
-        )
+        #بعدا اگه خواستی بزن اپشن هارم اضاف کن
+        #product_option = ProductOption.objects.related_product_details(product)
+        #'product_option':product_option,
 
         tags = product.tags.all()[:3]
         context = {
             'product': product,
             'related_products': related_products,
             'tags': tags,
+            
         }
         return render(request, 'product_detail.html', context)

@@ -94,11 +94,8 @@ class ProductQuerySet(QuerySet):
                         available=True,
                         stock__gt=0
                     )
-                )
-            .filter(available=True, has_stock=True)
-            .distinct()
-        )
-
+                )).filter(available=True, has_stock=True).distinct()
+        
 
 
 
@@ -118,7 +115,7 @@ class ProductQuerySet(QuerySet):
                         )
                     )
     
-
+    
     def with_related_for_home(self):
         """
         کوئری بهینه برای صفحه اصلی با اطلاعات:
@@ -214,7 +211,8 @@ class ProductQuerySet(QuerySet):
 class ProductManager(Manager):
     def get_queryset(self):
         return ProductQuerySet(self.model, using=self._db)
-
+    def related_products(self, category):
+        return self.get_queryset().related_products(category)
     def filter_and_order_by_params(self, params):
         return self.get_queryset().filter_by_params(params)
     def with_related(self):
@@ -224,3 +222,30 @@ class ProductManager(Manager):
 
     
     
+class ProductOptionQuerySet(QuerySet):
+    def related_product(self, product):
+        return self.filter(
+            product=product,
+            available=True
+        ).select_related(
+            'option',
+            'option__option_type'
+        )
+    
+    def with_option_details(self):
+        return self.values(
+            'option__name',
+            'option__option_type__name',
+            'option__price',
+            'option__duration_days'
+        )
+
+class ProductOptionManager(Manager):
+    def get_queryset(self):
+        return ProductOptionQuerySet(self.model, using=self._db)
+    
+    def related_product(self, product):
+        return self.get_queryset().related_product(product)
+    
+    def related_product_details(self, product):
+        return self.related_product(product).with_option_details()

@@ -1,3 +1,83 @@
+/* استایل‌های بخش آپشن‌ها */
+.options-section {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 15px;
+  background: #f9f9f9;
+}
+
+.option-type-card {
+  padding: 12px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.option-items {
+  border-left: 2px solid #f0f0f0;
+  padding-left: 10px;
+}
+
+.option-card {
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+}
+
+.option-card:hover {
+  border-color: var(--bs-primary);
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+.option-item .form-check-input:checked ~ .option-card {
+  border-color: var(--bs-primary);
+  background-color: rgba(13, 110, 253, 0.1);
+}
+
+.disabled-option {
+  opacity: 0.6;
+  background-color: #f8f9fa;
+}
+
+.option-item .form-check-input {
+  margin-top: 0.8em;
+}
+
+/* استایل کنترلرهای تعداد */
+.quantity-control {
+    gap: 5px;
+}
+
+.btn-quantity {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ddd;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-quantity:hover {
+    background: #e9ecef;
+}
+
+.btn-quantity:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.quantity-input {
+    width: 60px;
+    height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 0;
+    font-family: 'Dana', sans-serif;
+    font-weight: 500;
+}
+
+
 /* استایل‌های اصلی */
 .product-details-container {
     border: 1px solid #e9ecef;
@@ -86,41 +166,5 @@
     }
 }
 
-
-
-/* استایل کنترلرهای تعداد */
-.quantity-control {
-    gap: 5px;
-}
-
-.btn-quantity {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #ddd;
-    background: #f8f9fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-quantity:hover {
-    background: #e9ecef;
-}
-
-.btn-quantity:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.quantity-input {
-    width: 60px;
-    height: 40px;
-    border: 1px solid #ddd;
-    border-radius: 0;
-    font-family: 'Dana', sans-serif;
-    font-weight: 500;
-}
 
 
