@@ -20,7 +20,7 @@
         const shippingDisplay = document.getElementById('shipping-cost-display');
         if(isPostpaid) {
             shippingDisplay.textContent = 'پس‌کرایه';
-            shippingDisplay.className = 'text-info';
+            shippingDisplay.className = 'text-success';
         } else if(cost === 0) {
             shippingDisplay.textContent = 'رایگان';
             shippingDisplay.className = 'text-success';
@@ -29,3 +29,5 @@
             shippingDisplay.className = 'text-warning';
         }
     }
+
+    

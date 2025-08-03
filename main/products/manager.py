@@ -60,7 +60,7 @@ class ProductQuerySet(QuerySet):
 
         # فیلتر دسته‌بندی
         if category := params.get('category'):
-            queryset = queryset.filter(category__slug=category)
+            queryset = queryset.filter(category__id=category)
 
         # فیلتر چند برندی
         if brands := params.getlist('brand'):  # برای GET params مانند ?brand=apple&brand=samsung

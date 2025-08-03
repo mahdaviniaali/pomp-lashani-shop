@@ -2,7 +2,7 @@ from django.views import View
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from categories.models import Category, Brand
-from .models import Product, ProductOption
+from .models import Product
 from django.shortcuts import get_object_or_404
 
 

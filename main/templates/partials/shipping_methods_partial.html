@@ -2,7 +2,7 @@
     {% for method in shipping_methods %}
     <div class="col-md-4">
         <div class="shipping-method-card {% if forloop.first %}selected{% endif %}" 
-             onclick="selectShipping({{ method.id }}, {% if method.is_postpaid %}0{% else %}{{ method.price|default:0 }}{% endif %}, '{{ method.name }}')">
+             onclick="selectShipping({{ method.id }}, {% if method.is_postpaid %}0{% else %}{{ method.price|default:0 }}{% endif %}, '{{ method.name }}', {% if method.is_postpaid %}true{% else %}false{% endif %})">
             <div class="p-3 text-center">
                 <input type="radio" name="step1-shippingmethod" 
                        value="{{ method.id }}" class="d-none" {% if forloop.first %}checked{% endif %}>
