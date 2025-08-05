@@ -14,7 +14,7 @@ class SmsIrR(SmsIr):
             linenumber=linenumber
         )
 
-SendSMS = SmsIr(
+SendSMS = SmsIrR(
 api_key=settings.SMSIR_API_KEY,
 linenumber=settings.SMSIR_LINE_NUMBER,
 )
