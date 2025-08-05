@@ -14,8 +14,8 @@ from django.contrib.auth import get_user_model
 
 
 class Product(ModelMeta, models.Model):
-    title = models.CharField(_("عنوان محصول"), max_length=255)
-    slug = models.CharField(_("اسلاگ"), max_length=255, unique=True, blank=True)
+    title = models.CharField(_("عنوان محصول"), max_length=700)
+    slug = models.CharField(_("اسلاگ"), max_length=700, unique=True, blank=True)
     category = TreeForeignKey('categories.Category', on_delete=models.PROTECT, verbose_name=_("دسته‌بندی"))
     brand = models.ForeignKey('categories.Brand', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_("برند"))
     image = models.ImageField(_("تصویر اصلی"), upload_to='products/')

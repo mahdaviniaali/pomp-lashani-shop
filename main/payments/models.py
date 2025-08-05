@@ -135,7 +135,7 @@ class Order (models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items', verbose_name=_("سفارش"))
-    product_name = models.CharField(_("نام محصول"), max_length=50)
+    product_name = models.CharField(_("نام محصول"), max_length=700)
     quantity = models.PositiveIntegerField(_("تعداد"))
     price = models.PositiveIntegerField(_("قیمت"))
 
