@@ -3,6 +3,17 @@ from sms_ir import SmsIr
 from django.conf import settings
 
 
+class SmsIrR(SmsIr):
+    def send_sms(self, number: str, message: str, linenumber=None):
+
+        modified_message = f"{message} \n\n waterrisen.com"
+
+        return super().send_sms(
+            number=number,
+            message=modified_message,
+            linenumber=linenumber
+        )
+
 SendSMS = SmsIr(
 api_key=settings.SMSIR_API_KEY,
 linenumber=settings.SMSIR_LINE_NUMBER,

@@ -371,7 +371,6 @@ class PaymentWizard(LoginRequiredMixin, SessionWizardView):
         user = self.request.user
         form_data = self.process_forms(form_list)
         cart = self.get_user_cart(user)
-        cart_number = CartNumber.objects.get(available=True)
         if not cart:
             return self.handle_empty_cart()
             
