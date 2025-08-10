@@ -49,6 +49,8 @@ class UserAdmin(admin.ModelAdmin):
         'last_login_display'
     )
     
+    filter_horizontal = ('groups', 'user_permissions')
+    
     fieldsets = (
         (_("اطلاعات کاربری"), {
             'fields': (
@@ -64,7 +66,9 @@ class UserAdmin(admin.ModelAdmin):
                 'is_staff',
                 'is_superuser',
                 'is_verified',
-                'available'
+                'available',
+                'groups',           
+                'user_permissions',
             )
         }),
         (_("تاریخ‌ها"), {
