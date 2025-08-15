@@ -39,37 +39,37 @@
                                 <div class="step-label">اتمام خرید و ارسال</div>
                             </div>
                         </div>
-    
+
                         <form id="checkout-form" method="POST" action="{% url 'payments:checkout' %}">
                             {% csrf_token %}
                             {{ wizard.management_form }}
-    
+
                             {% if wizard.form.errors %}
                             <div class="alert alert-light border mb-4">
                                 <h6 class="fw-500 mb-2">خطاهای فرم</h6>
                                 <ul class="mb-0 ps-3">
                                     {% for field, errors in wizard.form.errors.items %}
-                                        {% for error in errors %}
-                                            <li class="text-danger">{{ error }}</li>
-                                        {% endfor %}
+                                    {% for error in errors %}
+                                    <li class="text-danger">{{ error }}</li>
+                                    {% endfor %}
                                     {% endfor %}
                                 </ul>
                             </div>
                             {% endif %}
-    
+
                             <!-- بخش اطلاعات کاربر -->
                             <div class="checkout-card mb-4">
                                 <div class="checkout-header d-flex justify-content-between align-items-center">
                                     <h6 class="mb-0 fw-500">اطلاعات کاربر</h6>
                                     <button class="btn btn-sm btn-outline-secondary border rounded-pill"
-                                        hx-get="{% url 'users:compleateprofile' %}" 
-                                        hx-target="#userprofile" 
+                                        hx-get="{% url 'users:compleateprofile' %}" hx-target="#userprofile"
                                         hx-swap="innerHTML">
                                         <i class="fas fa-edit me-1"></i> ویرایش
                                     </button>
                                 </div>
                                 <div class="checkout-body" id="userprofile">
-                                    <div hx-get="{% url 'home:userinfo' %}" hx-trigger="load" hx-target="#userprofile" hx-swap="innerHTML">
+                                    <div hx-get="{% url 'home:userinfo' %}" hx-trigger="load" hx-target="#userprofile"
+                                        hx-swap="innerHTML">
                                         <div class="text-center py-3">
                                             <div class="spinner-border text-primary" role="status">
                                                 <span class="visually-hidden">Loading...</span>
@@ -78,16 +78,14 @@
                                     </div>
                                 </div>
                             </div>
-    
+
                             <!-- بخش آدرس کاربر -->
                             <div class="checkout-card mb-4">
                                 <div class="checkout-header">
                                     <h6 class="mb-0 fw-500">آدرس تحویل</h6>
                                 </div>
                                 <div class="checkout-body" id="user-address">
-                                    <div hx-get="{% url 'home:address' %}" 
-                                        hx-trigger="load" 
-                                        hx-target="#user-address" 
+                                    <div hx-get="{% url 'home:address' %}" hx-trigger="load" hx-target="#user-address"
                                         hx-swap="innerHTML">
                                         <div class="text-center py-3">
                                             <div class="spinner-border text-primary" role="status">
@@ -97,7 +95,7 @@
                                     </div>
                                 </div>
                             </div>
-    
+
                             <!-- بخش توضیحات سفارش -->
                             <div class="checkout-card mb-4">
                                 <div class="checkout-header">
@@ -106,12 +104,13 @@
                                 <div class="checkout-body">
                                     <textarea class="form-control" rows="3" name="step1-description"
                                         placeholder="هر گونه توضیحات یا نکات خاص درباره سفارش خود را اینجا بنویسید..."></textarea>
-                                    <small class="text-muted mt-1 d-block">مثلاً ساعت مناسب برای تحویل، رنگ مورد نظر و ...</small>
+                                    <small class="text-muted mt-1 d-block">مثلاً ساعت مناسب برای تحویل، رنگ مورد نظر و
+                                        ...</small>
                                 </div>
                             </div>
-    
+
                             <!-- بخش روش‌های ارسال -->
-                             
+
                             <div class="checkout-card mb-4">
                                 <div class="checkout-header">
                                     <h6 class="mb-0 fw-500">روش ارسال</h6>
@@ -125,11 +124,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <input type="hidden" name="step1-shipping_cost" id="shipping-cost" value="">
                                 <input type="hidden" name="step1-shipping_name" id="shipping-name" value="">
                                 <input type="hidden" name="step1-shipping_method_id" id="shipping-method-id" value="">
-                                <input type="hidden" name="step1-shipping_is_postpaid" id="shipping-is-postpaid" value="false">
+                                <input type="hidden" name="step1-shipping_is_postpaid" id="shipping-is-postpaid"
+                                    value="false">
                             </div>
                         </form>
                     </div>
@@ -146,26 +146,38 @@
                 <div class="checkout-body">
 
                     <div class="mb-3">
+
+                        <!-- <div class="d-flex justify-content-between py-2">
+                                      <span>جمع قیمت محصولات</span>
+                                      <span id="product-total" data-price="1500000"> 1500000 تومان</span>
+                                  </div>
+                                  <div class="d-flex justify-content-between py-2">
+                                      <span>هزینه ارسال</span>
+                                      <span id="shipping-fee" data-fee="25000" class="color-red1">25000 تومان</span>
+                                  </div>
+                                  <div class="total d-flex justify-content-between py-3 fsz-16 fw-bold border-top">
+                                      <span>مبلغ قابل پرداخت</span>
+                                      <span id="payable-amount" class="color-green2"></span>
+                                  </div> -->
+
                         <div class="summary-item d-flex justify-content-between">
                             <span>جمع کل محصولات</span>
-                            <span 
-                                hx-get="{% url 'carts:get_cart_total' %}" 
-                                hx-trigger="load, cartUpdated from:body"  
-                                hx-swap="innerHTML"                       
-                            >
-                                0 تومان  
-                            </span>
+
+                            <span id="product-total-hidden" hx-get="{% url 'carts:get_cart_total' %}"
+                                hx-trigger="load, cartUpdated from:body" hx-swap="innerHTML" style="display: none;"></span>
+                            <span id="product-total-s"></span>
                         </div>
                         <div class="summary-item d-flex justify-content-between">
                             <span>هزینه ارسال</span>
+                            <input type="hidden" id="shipping-cost-display">
                             <span class="text-success" id="shipping-cost-display">رایگان</span>
                         </div>
-                        
+
                     </div>
 
                     <div class="d-flex justify-content-between fw-500 fs-5 mb-4">
                         <span>مبلغ قابل پرداخت</span>
-                        <span class="text-primary" id="total-price">1,109,000 تومان</span>
+                        <span id="payable-amount" class="text-primary" id="total-price"></span>
                     </div>
 
                     <button type="submit" form="checkout-form" class="btn btn-continue w-100 text-white">
@@ -173,7 +185,8 @@
                     </button>
 
                     <div class="alert alert-light border mt-3 mb-0">
-                        <small class="d-block mb-1"><i class="fas fa-info-circle me-2"></i> هزینه نهایی پس از تأیید نهایی محاسبه می‌شود</small>
+                        <small class="d-block mb-1"><i class="fas fa-info-circle me-2"></i> هزینه نهایی پس از تأیید
+                            نهایی محاسبه می‌شود</small>
                         <small><i class="fas fa-shield-alt me-2"></i> پرداخت امن از طریق درگاه بانکی</small>
                     </div>
                 </div>

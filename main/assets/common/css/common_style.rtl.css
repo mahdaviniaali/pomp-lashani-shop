@@ -649,13 +649,13 @@ input:focus {
 .to_top {
     position: fixed;
     z-index: 9999;
-    bottom: 3vw;
+    bottom: 12vw;
     left: -80px;
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    color: #999;
-    border: 1px solid #999;
+    background: var(--color-blue1);
+    color: #fff;
     font-size: 11px;
     text-align: center;
     padding: 7px;
@@ -673,6 +673,10 @@ input:focus {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
+}
+
+.to_top:hover {
+    color: #fff !important;
 }
 
 .to_top small {

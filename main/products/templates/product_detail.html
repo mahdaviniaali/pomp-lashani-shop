@@ -36,24 +36,6 @@
     </section>
     <!-- End breadcrumb -->
 
-    <!-- Mobile fixed action bar -->
-    <section class="fixed-section d-lg-none w-100" style="position:fixed; bottom: 0; left:0; z-index:1050; background:#fff; box-shadow: 0 -2px 10px rgba(0,0,0,0.1);">
-      <div class="container d-flex align-items-center justify-content-between py-3">
-        <div class="fixed-section-actions d-flex justify-content-between w-100 align-items-center">
-          <a href="#add-to-cart" class="btn btn-primary btn-sm ms-2">
-            <i class="la la-cart-plus me-1"></i>افزودن به سبد خرید
-          </a>
-          {% if product.min_price %}
-            <span class="me-3 fsz-16 fw-600 text-success">{{ product.min_price|intcomma }} تومان</span>
-          {% elif product.need_to_call %}
-            <span class="me-3 fsz-14 text-warning"><i class="fas fa-phone-alt me-1"></i> تماس بگیرید</span>
-          {% else %}
-            <span class="me-3 fsz-14 text-danger">عدم موجودی</span>
-          {% endif %}
-        </div>
-      </div>
-    </section>
-
     <!-- Start main product details -->
     <section class="product-main-details p-30 radius-4 bg-white mt-3 wow fadeInUp">
       <div class="row">
@@ -245,18 +227,17 @@
         <div class="col-lg-3">
           <div class="payment-side">
             {% if not product.need_to_call %}
-            <div class="payment-card" id="product-list" 
+            <div class="payment-card d-none d-lg-block" id="product-list" 
                             hx-get="{% url 'carts:cart_count' product_id=product.id %}" 
                             hx-include="[name='variant'] " 
                             hx-target="#product-list" 
-                            hx-trigger="load,change from:input"
-                            hx-indicator="#loading-spinner">
+                            hx-trigger="load,change from:input">
                             
                             {% include 'product_count.html' with product=product %}
                             
             </div>
             {% else %}
-            <div class="text-center mt-3">
+            <div class="text-center mt-3 d-none d-lg-block">
               <div class="d-flex align-items-center justify-content-center gap-2">
                 <span class="text-muted small">قیمت:</span>
                 <a href="tel:{{company_info.contact_phone}}" class="text-decoration-none">
@@ -401,6 +382,34 @@
     </section>
   </div>
 </div>
+
+<!-- Mobile fixed action bar -->
+<section class="fixed-section d-lg-none w-100" style="position:fixed; bottom: 0; left:0; z-index:1050; background:#fff; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 100;">
+      <div class="container d-flex align-items-center justify-content-between py-3">
+        <div class="fixed-section-actions d-flex justify-content-between w-100 align-items-center">
+              <button type="button"
+            class="butn btn-loading bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase py-2 px-4"
+            style="border: none; cursor: pointer;"
+            hx-post="{% url 'carts:cartadd' %}"
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+            hx-vals='{"variant":{{ variant.id }}, "product_id": {{product.id}}}'
+            hx-target="#product-list">
+        <span class="btn-text">به سبد خرید اضافه کنید</span>
+    </button>
+
+          <!-- <a href="#add-to-cart" class="btn btn-primary btn-sm ms-2">
+            <i class="la la-cart-plus me-1"></i>افزودن به سبد خرید
+          </a> -->
+          {% if product.min_price %}
+            <span class="me-3 fsz-16 fw-600 text-success">{{ product.min_price|intcomma }} تومان</span>
+          {% elif product.need_to_call %}
+            <span class="me-3 fsz-14 text-warning"><i class="fas fa-phone-alt me-1"></i> تماس بگیرید</span>
+          {% else %}
+            <span class="me-3 fsz-14 text-danger">عدم موجودی</span>
+          {% endif %}
+        </div>
+      </div>
+</section>
 
 
 {% endblock %}
