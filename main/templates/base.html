@@ -5,46 +5,61 @@
 <html lang="fa" dir="rtl">
 
 <head>
-  
+
   <!-- متا تگ‌های اصلی -->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="keywords" content="HTML5 Template swoo Multi-Purpose themeforest">
   <meta name="description" content="لورم ایپسوم متن ساختگی با تولید ساد">
-  <meta name="author" content="">
   
+  <!-- دست نزن -->
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:title" content="فروشگاه اینترنتی">
+  <meta property="og:description" content="Desc">
+  <meta property="og:image" content="Image Url">
+  <meta property="og:url" content="Current Url">
+
+  <!-- دست نزن -->
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:title" content="فروشگاه اینترنتی">
+  <meta name="twitter:description" content="Desc">
+  <meta property="twitter:image" content="Image Url">
+
   <!-- عنوان صفحه -->
   <title>
     {% block title %}
-      فروشگاه اینترنتی
+    فروشگاه اینترنتی
     {% endblock %}
   </title>
-  
+
   <!-- فاوآیکون -->
   <link rel="shortcut icon" href="assets/img/fav.png" sizes="16x16" title="Favicon">
-  
+
   <!-- استایل‌های اصلی -->
   <link href="{% static 'common/css/lib/bootstrap.min.rtl.css' %}" rel="stylesheet">
-  
+
   <!-- فونت‌ها -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+    rel="stylesheet">
+
   <!-- آیکون‌ها -->
   <link href="{% static 'common/css/lib/all.min.css' %}" rel="stylesheet">
   <link href="{% static 'common/css/lib/line-awesome.css' %}" rel="stylesheet">
   <link href="{% static 'common/css/lib/ionicons.css' %}" rel="stylesheet">
-  
+
   <!-- کتابخانه‌های جانبی -->
   <link href="{% static 'common/css/lib/animate.css' %}" rel="stylesheet">
   <link href="{% static 'common/css/lib/jquery.fancybox.rtl.css' %}" rel="stylesheet">
   <link href="{% static 'common/css/lib/lity.rtl.css' %}" rel="stylesheet">
   <link href="{% static 'common/css/lib/swiper8.min.rtl.css' %}" rel="stylesheet">
   <link href="{% static 'common/css/lib/iziToast.min.rtl.css' %}" rel="stylesheet">
-  
+
   <!-- استایل مشترک -->
   <link href="{% static 'common/css/common_style.rtl.css' %}" rel="stylesheet">
-  
+
   <!-- استایل‌های اختصاصی صفحه -->
   {% block css %}{% endblock %}
 </head>
@@ -62,128 +77,248 @@
     </div>
   </div>
 
-  <!-- نوار ناوبری اصلی -->
-  <nav class="navbar tc-navbar-style1 navbar-expand-lg navbar-light border-nav">
-    <div class="container-fluid">
-      <div class="content w-100 d-flex justify-content-between align-items-center">
-        <!-- بخش چپ: لوگو و جستجو -->
-        <div class="d-flex align-items-center">
-          <a class="navbar-brand me-4" href="{% url 'home:home' %}">
-            <img src="{{company_info.logo.url}}" alt="لوگو" class="logo mb-3" width="120">
+  <!-- Start Nav -->
+   
+  <nav class="navbar tc-navbar-style1 navbar-expand-lg navbar-light {% if request.path|slice:":12" == "/products/d/" %} d-none d-lg-flex {% endif %}">
+    <div class="container justify-content-center">
+      <div class="content">
+        <a class="navbar-brand" href="{% url 'home:home' %}">
+          <img alt="لوگو" class="logo" src="{{company_info.logo.url}}" />
+        </a>
+        <button aria-controls="offcanvasMenu" aria-expanded="false" aria-label="Toggle navigation"
+          class="navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" type="button">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="search-cat d-none d-lg-block">
+          <div class="input-group">
+            <input class="form-control" placeholder="هر چیزی را جستجو کنید ..." name="search" type="text"
+              value="{{ request.GET.search }}" />
+            <a class="search-btn" href="#"> <i class="fal fa-search"></i> </a>
+          </div>
+        </div>
+        <div class="hot-line d-none d-lg-flex">
+          <span class="icon"> <i class="las la-tty"></i> </span>
+          <div class="inf">
+            <small class="fsz-13 d-block">خط تلفن 24/7</small>
+            <h6 class="fsz-20 color-blue1 fw-bold">
+              <a href="tel:{{company_info.contact_phone}}">{{company_info.contact_phone}}</a>
+            </h6>
+          </div>
+        </div>
+        <div class="icons d-none d-lg-block">
+          <a href="{% url 'users:profile' %}"> <i class="la la-user"></i> </a>
+          <a href="{% url 'carts:cart_detail' %}">
+            <i class="la la-shopping-cart"></i> <span class="num">{{ cart_count|default:0 }}</span>
           </a>
-          
-          <div class="search-cat d-none d-lg-block">
-            <form method="get" action="{% url 'products:product_list' %}" class="input-group" name="search" >
-              <input 
-                class="form-control" 
-                placeholder="هر چیزی را جستجو کنید ..." 
-                type="text"
-                name="search"  
-                value="{{ request.GET.search }}" 
-              >
-              <button type="submit" class="search-btn">
-                <i class="fal fa-search"></i>
-              </button>
-            </form>
-          </div>
         </div>
-        
-        <!-- بخش راست: منو و اطلاعات تماس -->
-        <div class="d-flex align-items-center">
-          <div class="hot-line d-none d-lg-block me-4">
-            <span class="icon"><i class="las la-tty"></i></span>
-            <div class="inf">
-              <small class="fsz-13 d-block">خط تلفن 24/7</small>
-              <h6 class="fsz-20 color-blue1 fw-bold">
-                <a href="tel:{{company_info.contact_phone}}">{{company_info.contact_phone}}</a>
-              </h6>
-            </div>
-          </div>
-          
-          <div class="icons d-none d-lg-block me-3">
-              <a href="{% url 'users:profile' %}" class="me-3"><i class="la la-user"></i></a>
-              <a href="{% url 'carts:cart_detail' %}" class="position-relative">
-                  <i class="la la-shopping-cart"></i>
-                  <span class="cart-count-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                      {{ cart_count|default:0 }}
-                  </span>
-              </a>
-          </div>
-          
-        </div>
-      </div>
-      
-      <!-- منوی اصلی -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <!-- محتوای منو -->
       </div>
     </div>
   </nav>
 
-  <!-- منوی لینک‌ها -->
+  {% if request.path|slice:":12" == "/products/d/" %}
+  <!-- Mobile Fixed Nav -->
+  <nav class="navbar tc-navbar-style1 p-mob-nav navbar-expand-lg navbar-light d-lg-none">
+    <div class="container justify-content-center">
+      <div class="content d-flex align-items-center justify-content-between">
+        <a class="navbar-brand" href="{% url 'home:home' %}">
+          <img alt="لوگو" class="logo" src="{{company_info.logo.url}}" />
+        </a>
+
+
+        <div class="icons d-flex align-items-center">
+          <a href="{% url 'users:profile' %}"> <i class="la la-user"></i> </a>
+          <a href="{% url 'carts:cart_detail' %}">
+            <i class="la la-shopping-cart"></i> <span class="num">{{ cart_count|default:0 }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  {% endif %}
+
+  <!--  End Nav  -->
+
+  <!--  Start Link Nav  -->
+    {% if not request.path|slice:":12" == "/products/d/" %}
   <div class="tc-links-nav-style1 d-none d-lg-block">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="links">
-            <ul class="links-ul">
-              <li class="nav-item dropdown dropdown-hover">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  دسته‌بندی محصولات
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end p-3" style="width: 800px;">
-                  <div class="row">
-                    {% for category in global_categories %}
-                      <div class="col-md-4">
-                        <div class="mb-3">
-                          <h6 class="fw-bold border-bottom pb-2">
-                            <a href="{{ category.get_absolute_url }}" class="text-dark">{{ category.title }}</a>
-                          </h6>
-                          {% if category.children.all %}
-                            <ul class="list-unstyled mt-2">
-                              {% for child in category.children.all %}
-                                <li class="mb-1">
-                                  <a href="{{ child.get_absolute_url }}" class="text-muted">
-                                    <i class="fas fa-angle-left me-1"></i> {{ child.title }}
-                                  </a>
-                                  {% if child.children.all %}
-                                    <ul class="list-unstyled ps-3 mt-1">
-                                      {% for subchild in child.children.all %}
-                                        <li class="mb-1">
-                                          <a href="{{ subchild.get_absolute_url }}" class="text-muted">
-                                            <i class="far fa-circle me-1"></i> {{ subchild.title }}
-                                          </a>
-                                        </li>
-                                      {% endfor %}
-                                    </ul>
-                                  {% endif %}
-                                </li>
-                              {% endfor %}
-                            </ul>
-                          {% endif %}
-                        </div>
-                      </div>
-                    {% endfor %}
+    <div class="container justify-content-center">
+      <div class="links">
+        <ul class="links-ul">
+          <li>
+            <a href="#"> <i class="la la-grip-lines"></i> </a>
+          </li>
+          <li class="nav-item dropdown dropdown-hover">
+            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              دسته‌بندی محصولات
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end p-3" style="width: 800px;">
+              <div class="row">
+                {% for category in global_categories %}
+                <div class="col-md-4">
+                  <div class="mb-3">
+                    <h6 class="fw-bold border-bottom pb-2">
+                      <a href="{{ category.get_absolute_url }}" class="text-dark">{{ category.title }}</a>
+                    </h6>
+                    {% if category.children.all %}
+                    <ul class="list-unstyled mt-2">
+                      {% for child in category.children.all %}
+                      <li class="mb-1">
+                        <a href="{{ child.get_absolute_url }}" class="text-muted">
+                          <i class="fas fa-angle-left me-1"></i> {{ child.title }}
+                        </a>
+                        {% if child.children.all %}
+                        <ul class="list-unstyled ps-3 mt-1">
+                          {% for subchild in child.children.all %}
+                          <li class="mb-1">
+                            <a href="{{ subchild.get_absolute_url }}" class="text-muted">
+                              <i class="far fa-circle me-1"></i> {{ subchild.title }}
+                            </a>
+                          </li>
+                          {% endfor %}
+                        </ul>
+                        {% endif %}
+                      </li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
                   </div>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'home:home' %}">خانه</a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'products:product_list' %}">محصولات</a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'home:about_us' %}">درباره ما</a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'home:conect_us' %}">تماس با ما</a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'blog:bloglist' %}">بلاگ</a>
-              </li>
+                </div>
+                {% endfor %}
+              </div>
             </ul>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'home:home' %}">خانه</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'products:product_list' %}">محصولات</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'home:about_us' %}">درباره ما</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'home:conect_us' %}">تماس با ما</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'blog:bloglist' %}">بلاگ</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+    {% endif %}
+  <!-- End Link Nav -->
+
+
+  <div class="mob-navbar-style5 offcanvas offcanvas-start" id="offcanvasExample" tabindex="-1" aria-modal="true"
+    role="dialog" style="visibility: visible;">
+    <div class="icons">
+      <a href="{% url 'users:profile' %}"> <i class="fal fa-user"></i> </a>
+      <a href="{% url 'carts:cart_detail' %}">
+        <i class="fal fa-shopping-bag"></i> <span class="num">{{ cart_count|default:0 }}</span>
+      </a>
+    </div>
+    <div class="ntop">
+      <a class="logo" href="{% url 'home:home' %}">
+        <img alt="لوگو" src="{{company_info.logo.url}}" />
+      </a>
+      <!-- <span class="cls-menu fs-4"> <i class="fal fa-times"></i> </span> -->
+      <button aria-label="Close" class="btn-close text-reset" data-bs-dismiss="offcanvas" type="button"></button>
+    </div>
+    <div class="hot-line">
+      <span class="icon"> <i class="fal fa-tty"></i> </span>
+      <div class="inf">
+        <small class="fsz-12 d-block mb-1">خط تلفن 24/7</small>
+        <h6 class="fsz-20 fw-bold">
+          <a href="tel:{{company_info.contact_phone}}">{{company_info.contact_phone}}</a>
+        </h6>
+      </div>
+    </div>
+    <div class="nbody">
+      <div class="links-group">
+        <div class="accordion" id="accordionExample">
+
+          <div class="accordion-item">
+            <div class="accordion-header" id="headingTwo">
+              <button aria-controls="collapseTwo" aria-expanded="false" class="accordion-button group collapsed"
+                data-bs-target="#collapseTwo" data-bs-toggle="collapse" type="button">
+                <strong class="links-title">دسته بندی محصولات</strong>
+              </button>
+            </div>
+            <div aria-labelledby="headingTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample"
+              id="collapseTwo">
+              <div class="accordion-body p-0">
+                <ul class="links">
+                  <li>
+                    <a href="#">
+                      <span>لیست محصولات</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <span>شبکه محصولات</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <span>جزئیات محصول 1</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <span>جزئیات محصول 2</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <span>سبد خرید</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <a href="{% url 'home:home' %}" class="accordion-button">
+                <strong class="links-title">خانه</strong>
+              </a>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <a href="{% url 'products:product_list' %}" class="accordion-button">
+                <strong class="links-title">محصولات</strong>
+              </a>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <a href="{% url 'home:about_us' %}" class="accordion-button">
+                <strong class="links-title">درباره ما</strong>
+              </a>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <a href="{% url 'home:conect_us' %}" class="accordion-button">
+                <strong class="links-title">تماس با ما</strong>
+              </a>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <a href="{% url 'blog:bloglist' %}" class="accordion-button">
+                <strong class="links-title">بلاگ</strong>
+              </a>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -195,209 +330,202 @@
     {% endblock %}
   </main>
 
-{% if not request.path|slice:":10" == "/products/d/" %}
-    <div class="mob-navigation d-flex d-lg-none" id="nav-mobile">
-      <ul>
-        <li id="blog" class="list {% if request.path == '/blog/' %}active{% endif %}">
-          <a href="{% url 'blog:bloglist' %}">
-            <span class="icon"> <i class="las la-newspaper"></i> </span>
-            <span class="text">وبلاگ</span>
-          </a>
-        </li>
-        <li id="products" class="list {% if request.path == '/products/' %}active{% endif %}">
-          <a href="{% url 'products:product_list' %}">
-            <span class="icon"> <i class="las la-boxes"></i> </span>
-            <span class="text">محصولات</span>
-          </a>
-        </li>
-        <li id="home" class="list {% if request.path == '' %}active{% endif %}">
-          <a href="{% url 'home:home' %}">
-            <span class="icon"> <i class="las la-home"></i> </span>
-            <span class="text">خانه</span>
-          </a>
-        </li>
-        <li id="cart" class="list {% if request.path == '/carts/cart/' %}active{% endif %}">
-          <a href="{% url 'carts:cart_detail' %}">
-            <span class="icon"> <i class="las la-shopping-bag"></i> </span>
-            <span class="text">سبد خرید</span>
-          </a>
-        </li>
-        <li id="profile" class="list {% if request.path == '/users/profile/' %}active{% endif %}">
-          <a href="{% url 'users:profile' %}">
-            <span class="icon"> <i class="las la-user"></i> </span>
-            <span class="text">پروفایل</span>
-          </a>
-        </li>
-        <li class="indicator"></li>
-      </ul>
-    </div>
-{% endif %}
+  {% if not request.path|slice:":12" == "/products/d/" %}
+  <div class="mob-navigation d-flex d-lg-none" id="nav-mobile">
+    <ul>
+      <li id="blog" class="list {% if request.path == '/blog/' %}active{% endif %}">
+        <a href="{% url 'blog:bloglist' %}">
+          <span class="icon"> <i class="las la-newspaper"></i> </span>
+          <span class="text">وبلاگ</span>
+        </a>
+      </li>
+      <li id="products" class="list {% if request.path == '/products/' %}active{% endif %}">
+        <a href="{% url 'products:product_list' %}">
+          <span class="icon"> <i class="las la-boxes"></i> </span>
+          <span class="text">محصولات</span>
+        </a>
+      </li>
+      <li id="home" class="list {% if request.path == '' %}active{% endif %}">
+        <a href="{% url 'home:home' %}">
+          <span class="icon"> <i class="las la-home"></i> </span>
+          <span class="text">خانه</span>
+        </a>
+      </li>
+      <li id="cart" class="list {% if request.path == '/carts/cart/' %}active{% endif %}">
+        <a href="{% url 'carts:cart_detail' %}">
+          <span class="icon"> <i class="las la-shopping-bag"></i> </span>
+          <span class="text">سبد خرید</span>
+        </a>
+      </li>
+      <li id="profile" class="list {% if request.path == '/users/profile/' %}active{% endif %}">
+        <a href="{% url 'users:profile' %}">
+          <span class="icon"> <i class="las la-user"></i> </span>
+          <span class="text">پروفایل</span>
+        </a>
+      </li>
+      <li class="indicator"></li>
+    </ul>
+  </div>
+  {% endif %}
   <!-- پاورقی -->
   <!-- پاورقی -->
-<footer class="tc-footer-style1 bg-dark text-white pt-5">
+  <footer class="tc-footer-style1 bg-dark text-white pt-5">
     <div class="container">
-        <!-- بخش مزایا -->
-        <div class="row g-4 mb-5">
-            <div class="col-md-3 col-6">
-                <div class="d-flex align-items-center">
-                    <div class="icon-box bg-primary rounded-circle p-3 me-3">
-                        <i class="fas fa-truck text-white"></i>
-                    </div>
-                    <div>
-                        <h6 class="mb-1">تحویل سریع</h6>
-                        <p class="mb-0 text-muted">تحویل در تهران 24 ساعته</p>
-                    </div>
-                </div>
+      <!-- بخش مزایا -->
+      <div class="row g-4 mb-5">
+        <div class="col-md-4 col-6">
+          <div class="d-flex align-items-center">
+            <div class="icon-box bg-primary rounded-circle p-3 me-3">
+              <i class="fas fa-truck text-white"></i>
             </div>
-            <div class="col-md-3 col-6">
-                <div class="d-flex align-items-center">
-                    <div class="icon-box bg-primary rounded-circle p-3 me-3">
-                        <i class="fas fa-shield-alt text-white"></i>
-                    </div>
-                    <div>
-                        <h6 class="mb-1">پرداخت امن</h6>
-                        <p class="mb-0 text-muted">پرداخت آنلاین مطمئن</p>
-                    </div>
-                </div>
+            <div>
+              <h6 class="mb-1">تحویل سریع</h6>
+              <p class="mb-0 text-muted">تحویل در تهران 24 ساعته</p>
             </div>
-            <div class="col-md-3 col-6">
-                <div class="d-flex align-items-center">
-                    <div class="icon-box bg-primary rounded-circle p-3 me-3">
-                        <i class="fas fa-headset text-white"></i>
-                    </div>
-                    <div>
-                        <h6 class="mb-1">پشتیبانی 24/7</h6>
-                        <p class="mb-0 text-muted">تماس در تمام ساعات</p>
-                    </div>
-                </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-6">
+          <div class="d-flex align-items-center">
+            <div class="icon-box bg-primary rounded-circle p-3 me-3">
+              <i class="fas fa-shield-alt text-white"></i>
             </div>
-            <div class="col-md-3 col-6">
-                <div class="d-flex align-items-center">
-                    <div class="icon-box bg-primary rounded-circle p-3 me-3">
-                        <i class="fas fa-undo-alt text-white"></i>
-                    </div>
-                    <div>
-                        <h6 class="mb-1">بازگشت 7 روزه</h6>
-                        <p class="mb-0 text-muted">ضمانت بازگشت کالا</p>
-                    </div>
-                </div>
+            <div>
+              <h6 class="mb-1">پرداخت امن</h6>
+              <p class="mb-0 text-muted">پرداخت آنلاین مطمئن</p>
             </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-6">
+          <div class="d-flex align-items-center">
+            <div class="icon-box bg-primary rounded-circle p-3 me-3">
+              <i class="fas fa-headset text-white"></i>
+            </div>
+            <div>
+              <h6 class="mb-1">پشتیبانی 24/7</h6>
+              <p class="mb-0 text-muted">تماس در تمام ساعات</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- محتوای اصلی فوتر -->
+      <div class="row g-4">
+        <!-- اطلاعات تماس -->
+        <div class="col-lg-4 col-md-6">
+          <div class="footer-about">
+            <img src="{{company_info.logo.url}}" alt="لوگو" class="logo mb-3" width="120">
+            <p class="mb-3">{{ company_info.short_description|default:"فروشگاه اینترنتی با کیفیت ترین محصولات" }}</p>
+
+            <div class="contact-info mb-3">
+              <div class="d-flex mb-2">
+                <i class="fas fa-map-marker-alt mt-1 me-2"></i>
+                <span>{{ company_info.address|default:"تهران، خیابان نمونه، پلاک 123" }}</span>
+              </div>
+              <div class="d-flex mb-2">
+                <i class="fas fa-phone-alt mt-1 me-2"></i>
+                <span>{{ company_info.contact_phone|default:"021-12345678" }}</span>
+              </div>
+              <div class="d-flex">
+                <i class="fas fa-envelope mt-1 me-2"></i>
+                <span>{{ company_info.contact_email|default:"info@example.com" }}</span>
+              </div>
+            </div>
+
+            <div class="social-links">
+              <h6 class="mb-3">ما را دنبال کنید</h6>
+              <div class="d-flex">
+                <a href="{{ company_info.instagram|default:'#' }}" class="social-icon me-2">
+                  <i class="fab fa-instagram"></i>
+                </a>
+                <a href="{{ company_info.telegram|default:'#' }}" class="social-icon me-2">
+                  <i class="fab fa-telegram"></i>
+                </a>
+                <a href="{{ company_info.whatsapp|default:'#' }}" class="social-icon me-2">
+                  <i class="fab fa-whatsapp"></i>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- محتوای اصلی فوتر -->
-        <div class="row g-4">
-            <!-- اطلاعات تماس -->
-            <div class="col-lg-4 col-md-6">
-                <div class="footer-about">
-                    <img src="{{company_info.logo.url}}" alt="لوگو" class="logo mb-3" width="120">
-                    <p class="mb-3">{{ company_info.short_description|default:"فروشگاه اینترنتی با کیفیت ترین محصولات" }}</p>
-                    
-                    <div class="contact-info mb-3">
-                        <div class="d-flex mb-2">
-                            <i class="fas fa-map-marker-alt mt-1 me-2"></i>
-                            <span>{{ company_info.address|default:"تهران، خیابان نمونه، پلاک 123" }}</span>
-                        </div>
-                        <div class="d-flex mb-2">
-                            <i class="fas fa-phone-alt mt-1 me-2"></i>
-                            <span>{{ company_info.contact_phone|default:"021-12345678" }}</span>
-                        </div>
-                        <div class="d-flex">
-                            <i class="fas fa-envelope mt-1 me-2"></i>
-                            <span>{{ company_info.contact_email|default:"info@example.com" }}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="social-links">
-                        <h6 class="mb-3">ما را دنبال کنید</h6>
-                        <div class="d-flex">
-                            <a href="{{ company_info.instagram|default:'#' }}" class="social-icon me-2">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                            <a href="{{ company_info.telegram|default:'#' }}" class="social-icon me-2">
-                                <i class="fab fa-telegram"></i>
-                            </a>
-                            <a href="{{ company_info.whatsapp|default:'#' }}" class="social-icon me-2">
-                                <i class="fab fa-whatsapp"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- لینک های سریع -->
-            <div class="col-lg-2 col-md-6">
-                <div class="footer-links">
-                    <h5 class="mb-3">لینک های سریع</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="{% url 'home:home' %}"><i class="fas fa-angle-left me-2"></i> صفحه اصلی</a></li>
-                        <li class="mb-2"><a href="{% url 'products:product_list' %}"><i class="fas fa-angle-left me-2"></i> محصولات</a></li>
-                        <li class="mb-2"><a href="{% url 'blog:bloglist' %}"><i class="fas fa-angle-left me-2"></i> وبلاگ</a></li>
-                        <li class="mb-2"><a href="{% url 'home:about_us' %}"><i class="fas fa-angle-left me-2"></i> درباره ما</a></li>
-                        <li class="mb-2"><a href="{% url 'home:conect_us' %}"><i class="fas fa-angle-left me-2"></i> تماس با ما</a></li>
-                        <li><a href="{% url 'users:profile' %}"><i class="fas fa-angle-left me-2"></i> حساب کاربری</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- دسته بندی محصولات -->
-            <div class="col-lg-2 col-md-6">
-                <div class="footer-links">
-                    <h5 class="mb-3">دسته بندی ها</h5>
-                    <ul class="list-unstyled">
-                        {% for category in categories|slice:":6" %}
-                        <li class="mb-2">
-                            <a href="{{ category.get_absolute_url }}">
-                                <i class="fas fa-angle-left me-2"></i> {{ category.title }}
-                            </a>
-                        </li>
-                        {% endfor %}
-                        <li>
-                            <a href="{% url 'products:product_list' %}">
-                                <i class="fas fa-angle-left me-2"></i> مشاهده همه
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- خبرنامه -->
-            <div class="col-lg-4 col-md-6">
-                <div class="footer-newsletter">
-                    <h5 class="mb-3">عضویت در خبرنامه</h5>
-                    <p class="mb-3">با عضویت در خبرنامه از آخرین تخفیف‌ها و محصولات جدید مطلع شوید</p>
-                    
-                    <form class="newsletter-form">
-                        <div class="input-group mb-3">
-                            <input type="email" class="form-control" placeholder="آدرس ایمیل شما" required>
-                            <button class="btn btn-primary" type="submit">
-                                <i class="far fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </form>
-                    
-                    
-                </div>
-            </div>
+        <!-- لینک های سریع -->
+        <div class="col-lg-2 col-md-6">
+          <div class="footer-links">
+            <h5 class="mb-3">لینک های سریع</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="{% url 'home:home' %}"><i class="fas fa-angle-left me-2"></i> صفحه اصلی</a></li>
+              <li class="mb-2"><a href="{% url 'products:product_list' %}"><i class="fas fa-angle-left me-2"></i>
+                  محصولات</a></li>
+              <li class="mb-2"><a href="{% url 'blog:bloglist' %}"><i class="fas fa-angle-left me-2"></i> وبلاگ</a></li>
+              <li class="mb-2"><a href="{% url 'home:about_us' %}"><i class="fas fa-angle-left me-2"></i> درباره ما</a>
+              </li>
+              <li class="mb-2"><a href="{% url 'home:conect_us' %}"><i class="fas fa-angle-left me-2"></i> تماس با
+                  ما</a></li>
+              <li><a href="{% url 'users:profile' %}"><i class="fas fa-angle-left me-2"></i> حساب کاربری</a></li>
+            </ul>
+          </div>
         </div>
-        
-        <!-- کپی رایت -->
-        <div class="footer-bottom py-4 mt-5 border-top">
-            <div class="row align-items-center">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    <p class="mb-0">
-                        © {% now "Y" %} تمام حقوق برای <a href="{% url 'home:home' %}" class="text-white">{{ company_info.name|default:"فروشگاه اینترنتی" }}</a> محفوظ است.
-                    </p>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <div class="footer-links">
-                        <a href="" class="me-3">حریم خصوصی</a>
-                        <a href="">قوانین و شرایط</a>
-                    </div>
-                </div>
-            </div>
+
+        <!-- دسته بندی محصولات -->
+        <div class="col-lg-2 col-md-6">
+          <div class="footer-links">
+            <h5 class="mb-3">دسته بندی ها</h5>
+            <ul class="list-unstyled">
+              {% for category in categories|slice:":6" %}
+              <li class="mb-2">
+                <a href="{{ category.get_absolute_url }}">
+                  <i class="fas fa-angle-left me-2"></i> {{ category.title }}
+                </a>
+              </li>
+              {% endfor %}
+              <li>
+                <a href="{% url 'products:product_list' %}">
+                  <i class="fas fa-angle-left me-2"></i> مشاهده همه
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
+
+        <!-- خبرنامه -->
+        <div class="col-lg-4 col-md-6">
+          <div class="footer-newsletter">
+            <h5 class="mb-3">عضویت در خبرنامه</h5>
+            <p class="mb-3">با عضویت در خبرنامه از آخرین تخفیف‌ها و محصولات جدید مطلع شوید</p>
+
+            <form class="newsletter-form">
+              <div class="input-group mb-3">
+                <input type="email" class="form-control" placeholder="آدرس ایمیل شما" required>
+                <button class="btn btn-primary" type="submit">
+                  <i class="far fa-paper-plane"></i>
+                </button>
+              </div>
+            </form>
+
+
+          </div>
+        </div>
+      </div>
+
+      <!-- کپی رایت -->
+      <div class="footer-bottom py-4 mt-5 border-top">
+        <div class="row align-items-center">
+          <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+            <p class="mb-0">
+              © {% now "Y" %} تمام حقوق برای <a href="{% url 'home:home' %}" class="text-white">{{
+                company_info.name|default:"فروشگاه اینترنتی" }}</a> محفوظ است.
+            </p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <div class="footer-links">
+              <a href="" class="me-3">حریم خصوصی</a>
+              <a href="">قوانین و شرایط</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</footer>
+  </footer>
   <!-- دکمه بازگشت به بالا -->
   <a class="to_top" href="#">
     <i class="la la-angle-up"></i>
@@ -416,15 +544,16 @@
   <script src="{% static 'common/js/lib/jquery.counterup.js' %}"></script>
   <script src="{% static 'common/js/lib/parallaxie.js' %}"></script>
   <script src="{% static 'common/js/lib/iziToast.min.js' %}"></script>
-  
+
   <!-- GSAP -->
   <script src="{% static 'common/js/gsap_lib/gsap.min.js' %}"></script>
-  
+
   <!-- اسکریپت مشترک -->
   <script src="{% static 'common/js/common_js.js' %}"></script>
-  
+
   <!-- اسکریپت‌های اختصاصی صفحه -->
   {% block js %}{% endblock %}
-  
+
 </body>
+
 </html>

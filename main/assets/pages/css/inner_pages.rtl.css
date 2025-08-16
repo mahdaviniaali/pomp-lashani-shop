@@ -528,36 +528,36 @@
 
 /* --------------- products style6 --------------- */
 
-.tc-products-style6 .filters .category-box {
+.filters .category-box {
     position: relative;
     padding: 30px;
     border-radius: 10px;
     background-color: #eeeff6;
 }
 
-.tc-products-style6 .filters .category-box .cat-list ul {
+.filters .category-box .cat-list ul {
     -webkit-padding-start: 20px;
     padding-inline-start: 20px;
 }
 
-.tc-products-style6 .filters .category-box .cat-list ul a {
+.filters .category-box .cat-list ul a {
     font-size: 14px;
     margin: 3px 0;
 }
 
-.tc-products-style6 .filters .category-box .cat-list ul a:hover {
+.filters .category-box .cat-list ul a:hover {
     color: var(--color-green2);
     text-decoration: underline;
 }
 
-.tc-products-style6 .filters .filter-box {
+.filters .filter-box {
     position: relative;
     padding: 30px;
     border-radius: 10px;
     background-color: #eeeff6;
 }
 
-.tc-products-style6 .filters .filter-box .title {
+.filters .filter-box .title {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -569,11 +569,11 @@
     justify-content: space-between;
 }
 
-.tc-products-style6 .filters .filter-box .selected-filters {
+.filters .filter-box .selected-filters {
     margin: 0 -5px 30px;
 }
 
-.tc-products-style6 .filters .filter-box .selected-filters .selected-item {
+.filters .filter-box .selected-filters .selected-item {
     font-size: 13px;
     padding: 5px 8px;
     background-color: #fff;
@@ -582,7 +582,7 @@
     cursor: pointer;
 }
 
-.tc-products-style6 .filters .filter-box .selected-filters .selected-item i {
+.filters .filter-box .selected-filters .selected-item i {
     width: 20px;
     height: 20px;
     border-radius: 50%;
@@ -590,21 +590,21 @@
     text-align: center;
 }
 
-.tc-products-style6 .filters .filter-box .selected-filters .selected-item:hover {
+.filters .filter-box .selected-filters .selected-item:hover {
     background-color: var(--color-green2);
     color: #fff;
 }
 
-.tc-products-style6 .filters .filter-box .selected-filters .selected-item:hover i {
+.filters .filter-box .selected-filters .selected-item:hover i {
     background-color: #047604;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .filter-group {
+.filters .filter-box .filter-groups .filter-group {
     border-bottom: 1px solid rgba(153, 153, 153, 0.2);
     padding: 10px 0;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .filter-group .group-title {
+.filters .filter-box .filter-groups .filter-group .group-title {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -618,25 +618,25 @@
     cursor: pointer;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .filter-group .form-check-input:checked {
+.filters .filter-box .filter-groups .filter-group .form-check-input:checked {
     background-color: var(--color-green2);
     border-color: var(--color-green2);
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .filter-group .group-body {
+.filters .filter-box .filter-groups .filter-group .group-body {
     padding: 5px 0 20px;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .form-check {
+.filters .filter-box .filter-groups .form-check {
     margin: 5px 0;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .search-group {
+.filters .filter-box .filter-groups .search-group {
     position: relative;
     padding-bottom: 15px;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .search-group .form-control {
+.filters .filter-box .filter-groups .search-group .form-control {
     background-color: #fff;
     min-height: 40px;
     border-radius: 5px;
@@ -644,7 +644,7 @@
     width: 100%;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .search-group .search-btn {
+.filters .filter-box .filter-groups .search-group .search-btn {
     position: absolute;
     left: 5px;
     top: 5px;
@@ -654,7 +654,7 @@
     z-index: 10;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .check-brands .form-check {
+.filters .filter-box .filter-groups .check-brands .form-check {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -664,52 +664,52 @@
     margin: 12px 0;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .check-brands .form-check label {
+.filters .filter-box .filter-groups .check-brands .form-check label {
     display: -webkit-inline-box;
     display: -ms-inline-flexbox;
     display: inline-flex;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .check-brands .form-check .brand-img {
+.filters .filter-box .filter-groups .check-brands .form-check .brand-img {
     height: 25px;
     -webkit-margin-start: 10px;
     margin-inline-start: 10px;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .scroll-cont {
+.filters .filter-box .filter-groups .scroll-cont {
     max-height: 190px;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .scroll-cont::-webkit-scrollbar {
+.filters .filter-box .filter-groups .scroll-cont::-webkit-scrollbar {
     width: 7px;
     background: #dcdde4;
     border-radius: 7px;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .scroll-cont::-webkit-scrollbar-thumb {
+.filters .filter-box .filter-groups .scroll-cont::-webkit-scrollbar-thumb {
     background: #b9bbc4;
     border-radius: 7px;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .scroll-cont::-webkit-scrollbar-corner {
+.filters .filter-box .filter-groups .scroll-cont::-webkit-scrollbar-corner {
     background: #b9bbc4;
     border-radius: 7px;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .price-card {
+.filters .filter-box .filter-groups .price-card {
     padding-top: 10px;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .price-card .price-input {
+.filters .filter-box .filter-groups .price-card .price-input {
     width: 100%;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .price-card .price-input .field {
+.filters .filter-box .filter-groups .price-card .price-input .field {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -731,7 +731,7 @@
     font-weight: 600;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .price-card .field input {
+.filters .filter-box .filter-groups .price-card .field input {
     width: 50px;
     height: 100%;
     outline: none;
@@ -744,12 +744,12 @@
     font-weight: 600;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .price-card input[type=number]::-webkit-outer-spin-button,
-.tc-products-style6 .filters .filter-box .filter-groups .price-card input[type=number]::-webkit-inner-spin-button {
+.filters .filter-box .filter-groups .price-card input[type=number]::-webkit-outer-spin-button,
+.filters .filter-box .filter-groups .price-card input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .price-card .price-input .separator {
+.filters .filter-box .filter-groups .price-card .price-input .separator {
     width: 10px;
     height: 1px;
     background-color: #000;
@@ -760,14 +760,14 @@
     top: 20px;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .price-card .slider {
+.filters .filter-box .filter-groups .price-card .slider {
     height: 2px;
     position: relative;
     background: #dcdde4;
     border-radius: 2px;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .price-card .slider .progress {
+.filters .filter-box .filter-groups .price-card .slider .progress {
     height: 100%;
     right: 0%;
     left: 0%;
@@ -776,12 +776,12 @@
     background: var(--color-green2);
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .price-card .range-input {
+.filters .filter-box .filter-groups .price-card .range-input {
     position: relative;
     top: 2px;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .price-card .range-input input {
+.filters .filter-box .filter-groups .price-card .range-input input {
     position: absolute;
     width: 100%;
     height: 5px;
@@ -792,7 +792,7 @@
     -moz-appearance: none;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .price-card input[type=range]::-webkit-slider-thumb {
+.filters .filter-box .filter-groups .price-card input[type=range]::-webkit-slider-thumb {
     height: 10px;
     width: 10px;
     border-radius: 50%;
@@ -803,7 +803,7 @@
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .price-card input[type=range]::-moz-range-thumb {
+.filters .filter-box .filter-groups .price-card input[type=range]::-moz-range-thumb {
     height: 10px;
     width: 10px;
     border-radius: 50%;
@@ -814,7 +814,7 @@
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .price-card button {
+.filters .filter-box .filter-groups .price-card button {
     width: 40px;
     height: 40px;
     border-radius: 5px;
@@ -825,11 +825,11 @@
     border: 0;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .check-stars .form-check {
+.filters .filter-box .filter-groups .check-stars .form-check {
     margin: 5px 0;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .check-stars .form-check .rate {
+.filters .filter-box .filter-groups .check-stars .form-check .rate {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -838,7 +838,7 @@
     align-items: center;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .check-stars .form-check .rate .stars {
+.filters .filter-box .filter-groups .check-stars .form-check .rate .stars {
     color: #ffae00;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -846,7 +846,7 @@
     font-size: 15px;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .check-boxes {
+.filters .filter-box .filter-groups .check-boxes {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -858,25 +858,25 @@
     margin: 0 -3px;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .check-boxes .form-check {
+.filters .filter-box .filter-groups .check-boxes .form-check {
     padding: 0;
     margin: 0;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .check-boxes .form-check .form-check-input {
+.filters .filter-box .filter-groups .check-boxes .form-check .form-check-input {
     display: none;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .check-boxes .form-check .form-check-input:checked~.form-check-label {
+.filters .filter-box .filter-groups .check-boxes .form-check .form-check-input:checked~.form-check-label {
     background-color: var(--color-green2);
     color: #fff;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .check-boxes .form-check .form-check-input:checked~.form-check-label i {
+.filters .filter-box .filter-groups .check-boxes .form-check .form-check-input:checked~.form-check-label i {
     background-color: #047604;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .check-boxes .form-check .form-check-label {
+.filters .filter-box .filter-groups .check-boxes .form-check .form-check-label {
     font-size: 13px;
     padding: 5px 8px;
     background-color: #fff;
@@ -887,7 +887,7 @@
     transition: all 0.3s ease;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .check-boxes .form-check .form-check-label i {
+.filters .filter-box .filter-groups .check-boxes .form-check .form-check-label i {
     width: 20px;
     height: 20px;
     border-radius: 50%;
@@ -895,11 +895,11 @@
     text-align: center;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .check-boxes .form-check .form-check-label:hover {
+.filters .filter-box .filter-groups .check-boxes .form-check .form-check-label:hover {
     background-color: #f9f9f9;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .color-boxes {
+.filters .filter-box .filter-groups .color-boxes {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -911,20 +911,20 @@
     margin: 0 -7px;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .color-boxes .form-check {
+.filters .filter-box .filter-groups .color-boxes .form-check {
     padding: 0;
     margin: 0;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .color-boxes .form-check .form-check-input {
+.filters .filter-box .filter-groups .color-boxes .form-check .form-check-input {
     display: none;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .color-boxes .form-check .form-check-input:checked~.form-check-label .color-box i {
+.filters .filter-box .filter-groups .color-boxes .form-check .form-check-input:checked~.form-check-label .color-box i {
     opacity: 1;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box {
+.filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box {
     font-size: 13px;
     width: 30px;
     height: 30px;
@@ -945,58 +945,58 @@
     transition: all 0.3s ease;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box i {
+.filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box i {
     opacity: 0;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-red {
+.filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-red {
     background-color: #a42a2a;
     color: #fff;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-blue {
+.filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-blue {
     background-color: #2f557b;
     color: #fff;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-cyan {
+.filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-cyan {
     background-color: #439abb;
     color: #fff;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-black {
+.filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-black {
     background-color: #222222;
     color: #fff;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-white {
+.filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-white {
     background-color: #ffffff;
     color: #222;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-green {
+.filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-green {
     background-color: #1aba1a;
     color: #fff;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-gray {
+.filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-gray {
     background-color: #696969;
     color: #fff;
 }
 
-.tc-products-style6 .filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-purple {
+.filters .filter-box .filter-groups .color-boxes .form-check .form-check-label .color-box.card-purple {
     background-color: #534898;
     color: #fff;
 }
 
-.tc-products-style6 .filters .addimg {
+.filters .addimg {
     position: relative;
     border-radius: 15px;
     overflow: hidden;
     height: 300px;
 }
 
-.tc-products-style6 .filters .addimg .inf {
+.filters .addimg .inf {
     position: absolute;
     right: 0;
     top: 0;
@@ -1005,7 +1005,7 @@
     z-index: 10;
 }
 
-.tc-products-style6 .filters .addimg .inf .price h5 {
+.filters .addimg .inf .price h5 {
     color: #27fd27;
     margin-top: 5px;
 }

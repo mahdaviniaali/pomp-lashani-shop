@@ -1,6 +1,6 @@
-$(function() {
+$(function () {
 
-    
+
     // ---------- WOW.js -----------
     var wind = $(window);
 
@@ -15,7 +15,7 @@ $(function() {
 
     // ---------- background change -----------
     var pageSection = $(".bg-img");
-    pageSection.each(function(indx) {
+    pageSection.each(function (indx) {
 
         if ($(this).attr("data-background")) {
             $(this).css("background-image", "url(" + $(this).data("background") + ")");
@@ -24,7 +24,7 @@ $(function() {
 
     // ---------- to top -----------
 
-    wind.on("scroll", function() {
+    wind.on("scroll", function () {
 
         var bodyScroll = wind.scrollTop(),
             toTop = $(".to_top")
@@ -39,7 +39,7 @@ $(function() {
         }
     });
 
-    $('.to_top').click(function() {
+    $('.to_top').click(function () {
         $('html, body').animate({
             scrollTop: 0
         }, 0);
@@ -54,7 +54,7 @@ $(function() {
 
 
     /* ==  float_box_container button  == */
-    $(".float_box_container").mousemove(function(e) {
+    $(".float_box_container").mousemove(function (e) {
         var parentOffset = $(this).offset();
         var relX = e.pageX - parentOffset.left;
         var relY = e.pageY - parentOffset.top;
@@ -64,12 +64,12 @@ $(function() {
         });
         $(".float_box").addClass("show");
     });
-    $(".float_box_container").mouseleave(function(e) {
+    $(".float_box_container").mouseleave(function (e) {
         $(".float_box").removeClass("show");
     });
 
     /* ==  Button Animation  == */
-    $(".button_su_inner").mouseenter(function(e) {
+    $(".button_su_inner").mouseenter(function (e) {
         var parentOffset = $(this).offset();
         var relX = e.pageX - parentOffset.left;
         var relY = e.pageY - parentOffset.top;
@@ -81,7 +81,7 @@ $(function() {
         $(this).prev(".su_button_circle").addClass("explode-circle");
     });
 
-    $(".button_su_inner").mouseleave(function(e) {
+    $(".button_su_inner").mouseleave(function (e) {
         var parentOffset = $(this).offset();
         var relX = e.pageX - parentOffset.left;
         var relY = e.pageY - parentOffset.top;
@@ -94,12 +94,12 @@ $(function() {
     });
 
     // -------- fav-btn --------
-    $(".fav-btn").on("click", function() {
+    $(".fav-btn").on("click", function () {
         $(this).toggleClass("active");
     })
 
     // -------- cls --------
-    $(".cls").on("click", function() {
+    $(".cls").on("click", function () {
         $(this).parent().fadeOut();
     })
 
@@ -121,7 +121,7 @@ $(function() {
 
     // ---------- tooltip -----------
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
 
@@ -130,7 +130,7 @@ $(function() {
 
 
 // ------------ Preloader -----------
-$(function() {
+$(function () {
     const svg = document.getElementById("svg");
     const tl = gsap.timeline();
     const curve = "M0 502S175 272 500 272s500 230 500 230V0H0Z";
@@ -163,23 +163,23 @@ $(function() {
     });
     tl.from(
         "header", {
-            y: 200,
-        },
+        y: 200,
+    },
         "-=1.5"
     );
     tl.from(
         "header .container", {
-            y: 40,
-            opacity: 0,
-            delay: 0.3,
-        },
+        y: 40,
+        opacity: 0,
+        delay: 0.3,
+    },
         "-=1.5"
     );
 });
 
 
 // --------- izi toast ---------
-$(function() {
+$(function () {
     // settings関数で初期設定 全体に適応させたい場合
     iziToast.settings({
         timeout: 3000, // default timeout
@@ -188,16 +188,16 @@ $(function() {
         transitionIn: 'flipInX',
         transitionOut: 'flipOutX',
         position: 'topRight', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter, center
-        onOpen: function() {
+        onOpen: function () {
             console.log('callback abriu!');
         },
-        onClose: function() {
+        onClose: function () {
             console.log("callback fechou!");
         }
     });
 
     // addCart toast
-    $('.addCart').click(function() {
+    $('.addCart').click(function () {
 
         iziToast.show({
             color: 'dark',
@@ -211,7 +211,7 @@ $(function() {
 
 
     // info
-    $('.infoClick').click(function() {
+    $('.infoClick').click(function () {
         iziToast.info({
             position: "center",
             title: 'Hello',
@@ -220,7 +220,7 @@ $(function() {
     }); // ! click
 
     // success
-    $('.successClick').click(function() {
+    $('.successClick').click(function () {
         iziToast.success({
             position: "topRight",
             timeout: 5000,
@@ -231,7 +231,7 @@ $(function() {
     }); // ! .click
 
     // warning
-    $('.warningClick').click(function() {
+    $('.warningClick').click(function () {
         iziToast.warning({
             position: "bottomLeft",
             title: 'Caution',
@@ -240,7 +240,7 @@ $(function() {
     });
 
     // error
-    $('.errorClick').click(function() {
+    $('.errorClick').click(function () {
         iziToast.error({
             title: 'Error',
             message: 'Illegal operation'
@@ -248,7 +248,7 @@ $(function() {
     });
 
     // custom toast
-    $('.customClick').click(function() {
+    $('.customClick').click(function () {
 
         iziToast.show({
             color: 'dark',
@@ -260,13 +260,13 @@ $(function() {
             buttons: [
                 [
                     '<button>Ok</button>',
-                    function(instance, toast) {
+                    function (instance, toast) {
                         alert("Hello world!");
                     }
                 ],
                 [
                     '<button>Close</button>',
-                    function(instance, toast) {
+                    function (instance, toast) {
                         instance.hide({
                             transitionOut: 'fadeOutUp'
                         }, toast);
@@ -277,7 +277,7 @@ $(function() {
 
     }); // ! .click()
 
-    $('.any').click(function() {
+    $('.any').click(function () {
         iziToast.error({
             title: 'Errorカラー',
             message: 'iziToast.error()'
@@ -285,13 +285,65 @@ $(function() {
     });
 });
 
-$(window).on("load", function() {
+$(window).on("load", function () {
 
     // ------------ Preloader -----------
     var body = $('body');
     body.addClass('loaded');
-    setTimeout(function() {
+    setTimeout(function () {
         body.removeClass('loaded');
     }, 1500);
 
 });
+
+
+$(document).ready(function () {
+
+    document.addEventListener("htmx:beforeRequest", function (e) {
+        let btn = e.target.closest(".btn-loading");
+        if (btn) {
+            const span = btn.querySelector(".btn-text");
+            if (span) {
+                span.dataset.originalText = span.textContent;
+                span.innerHTML = `
+        <div class="loader-dots">
+          <span></span><span></span><span></span>
+        </div>
+      `;
+            }
+        }
+    });
+
+    document.addEventListener("htmx:afterRequest", function (e) {
+        let btn = e.target.closest(".btn-loading");
+        if (btn) {
+            const span = btn.querySelector(".btn-text");
+            if (span && span.dataset.originalText) {
+                span.textContent = span.dataset.originalText;
+            }
+        }
+    });
+
+
+
+    let productTotal = parseFloat($("#product-total").data("price"));
+    let shippingFee = parseFloat($("#shipping-fee").data("fee"));
+
+    let payable = productTotal + shippingFee;
+
+    // محاسبه مبلغ قابل پرداخت
+    $("#payable-amount").text(payable.toLocaleString('fa-IR') + " تومان");
+
+    $(document).ready(function () {
+
+        // $('.deals-cards-mobile').owlCarousel({
+        //     rtl: true,
+        //     loop: true,
+        //     margin: 10,
+        //     items: 2,
+        // })
+    });
+})
+
+
+

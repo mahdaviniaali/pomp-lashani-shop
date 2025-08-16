@@ -40,8 +40,7 @@
                     hx-post="{% url 'carts:cart_decrease' %}"
                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
                     hx-vals='{"variant":{{ variant.id }}, "product_id": {{product.id}}}'
-                    hx-target="#product-list"
-                    hx-indicator="#loading-spinner">
+                    hx-target="#product-list">
                 <i class="{% if quantity == 1 %}fas fa-trash-alt{% else %}fas fa-minus{% endif %}"></i>
             </button>
 
@@ -55,7 +54,6 @@
                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
                     hx-vals='{"variant":{{ variant.id }}, "product_id": {{product.id}}}'
                     hx-target="#product-list"
-                    hx-indicator="#loading-spinner"
                     {% if quantity >= variant.stock %}disabled{% endif %}>
                 <i class="fas fa-plus"></i>
             </button>
@@ -68,17 +66,16 @@
             </p>
         {% endif %}
     {% else %}
-        <div class="text-center mt-3">
-            <button type="button"
-                    class="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase py-2 px-4"
-                    style="border: none; cursor: pointer;"
-                    hx-post="{% url 'carts:cartadd' %}"
-                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                    hx-vals='{"variant":{{ variant.id }}, "product_id": {{product.id}}}'
-                    hx-target="#product-list"
-                    hx-indicator="#loading-spinner">
-                <span>به سبد خرید اضافه کنید</span>
-            </button>
-        </div>
+<div class="text-center mt-3">
+    <button type="button"
+            class="butn btn-loading bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase py-2 px-4 w-100"
+            style="border: none; cursor: pointer;"
+            hx-post="{% url 'carts:cartadd' %}"
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+            hx-vals='{"variant":{{ variant.id }}, "product_id": {{product.id}}}'
+            hx-target="#product-list">
+        <span class="btn-text">به سبد خرید اضافه کنید</span>
+    </button>
+</div>
     {% endif %}
 {% endif %}

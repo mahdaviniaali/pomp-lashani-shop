@@ -177,7 +177,7 @@ class CartTotalView(View):
         
         formatted_total = "{:,}".format(total)
         
-        return HttpResponse(f"{formatted_total} تومان")
+        return HttpResponse(f"{formatted_total}")
     
 #ایتم های سبد خرید را به صورت جدا
 class CartItemListViewHtmx(View):
