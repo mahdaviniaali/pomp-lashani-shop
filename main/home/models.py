@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.translation import gettext as _
 class CompanyInfo(models.Model):
     name = models.CharField(max_length=255, verbose_name="نام شرکت")
     logo = models.ImageField(upload_to='logos/', verbose_name="لوگو")
@@ -69,3 +69,58 @@ class GlobalSettings(models.Model):
         verbose_name_plural = "تنظیمات کلی سایت"
 
 
+
+
+class MainSlider(models.Model):
+    title = models.CharField(_("عنوان"), max_length=100)
+    subtitle = models.CharField(_("زیرعنوان"), max_length=200, blank=True)
+    image = models.ImageField(_("تصویر"), upload_to='home/slider/')
+    button_text = models.CharField(_("متن دکمه"), max_length=50, default="اکنون خرید کنید")
+    button_url = models.CharField(_("لینک دکمه"), max_length=200, default="/")
+    is_active = models.BooleanField(_("فعال"), default=True)
+    order = models.PositiveIntegerField(_("ترتیب"), default=0)
+
+    class Meta:
+        verbose_name = _("اسلایدر اصلی")
+        verbose_name_plural = _("اسلایدرهای اصلی")
+        ordering = ['order']
+
+    def __str__(self):
+        return self.title
+
+
+class PromoCard(models.Model):
+    CARD_TYPES = (
+        ('large', 'کارت بزرگ'),
+        ('medium', 'کارت متوسط'),
+        ('small', 'کارت کوچک'),
+    )
+
+    card_type = models.CharField(_("نوع کارت"), max_length=10, choices=CARD_TYPES)
+    title = models.CharField(_("عنوان"), max_length=100)
+    subtitle = models.CharField(_("زیرعنوان"), max_length=200, blank=True)
+    price_text = models.CharField(_("متن قیمت"), max_length=50, blank=True)
+    image = models.ImageField(_("تصویر"), upload_to='home/promo/')
+    button_text = models.CharField(_("متن دکمه"), max_length=50, blank=True)
+    button_url = models.CharField(_("لینک دکمه"), max_length=200, blank=True)
+    is_active = models.BooleanField(_("فعال"), default=True)
+    order = models.PositiveIntegerField(_("ترتیب"), default=0)
+
+    class Meta:
+        verbose_name = _("کارت تبلیغاتی")
+        verbose_name_plural = _("کارت‌های تبلیغاتی")
+        ordering = ['order']
+
+    def __str__(self):
+        return f"{self.get_card_type_display()} - {self.title}"
+
+class ExtraPhone(models.Model):
+    phone_number = models.CharField(max_length=20, verbose_name="شماره تلفن اضافی")
+    is_active = models.BooleanField(default=True, verbose_name="فعال")
+
+    class Meta:
+        verbose_name = "شماره تلفن اضافی"
+        verbose_name_plural = "شماره‌های تلفن اضافی"
+
+    def __str__(self):
+        return self.phone_number

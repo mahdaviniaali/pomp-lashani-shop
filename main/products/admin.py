@@ -205,6 +205,7 @@ class ProductAdmin(ImportExportModelAdmin):
 @admin.register(ProductVariant)
 class ProductVariantAdmin(ImportExportModelAdmin):
     list_display = (
+        
         'product_link',
         'name',
         'value',

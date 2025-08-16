@@ -2,52 +2,92 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.core.cache import cache
-from django.conf import settings
 from products.models import Product
 from categories.models import Category
 from blog.models import Post
 from taggit.models import Tag
 from .form import ProductSearchForm
 from users.models import Address
+from .models import MainSlider, PromoCard
+
 
 class Home(View):
     def get(self, request):
-        # 1. کش دسته‌بندی‌ها (هفته‌ای یکبار آپدیت)
+        # 1. کش اسلایدر اصلی (هفته‌ای یکبار آپدیت)
+        main_slides = cache.get_or_set(
+            'home_main_slides',
+            MainSlider.objects.filter(is_active=True).order_by('order')[:5],  # حداکثر 5 اسلاید
+            60 * 60 * 24 * 7  # 7 روز
+        )
+
+        # 2. کش کارت‌های تبلیغاتی (روزانه آپدیت)
+        promo_cards = cache.get_or_set(
+            'home_promo_cards',
+            {
+                'large': PromoCard.objects.filter(
+                    card_type='large', 
+                    is_active=True
+                ).order_by('order')[:1],  # فقط 1 کارت بزرگ
+                'medium': PromoCard.objects.filter(
+                    card_type='medium', 
+                    is_active=True
+                ).order_by('order')[:1],  # فقط 1 کارت متوسط
+                'small': PromoCard.objects.filter(
+                    card_type='small', 
+                    is_active=True
+                ).order_by('order')[:2]  # 2 کارت کوچک
+            },
+            60 * 60 * 24  # 1 روز
+        )
+
+        # 3. کش دسته‌بندی‌ها (هفته‌ای یکبار آپدیت)
         categories = cache.get_or_set(
             'home_categories',
             Category.objects.all()[:10],  # فقط 10 مورد
-            60 * 60 * 24 * 7  # 7 روز (هفته‌ای یکبار)
+            60 * 60 * 24 * 7  # 7 روز
         )
 
-        # پر فروش ترین محصولات
-        top_products = cache.get_or_set('top_products',Product.objects.order_by('-sold_count').with_related_for_home().filter(available=True)[:8],5)
+        # 4. کش پرفروش‌ترین محصولات (ساعتی آپدیت)
+        top_products = cache.get_or_set(
+            'top_products',
+            Product.objects.order_by('-sold_count')
+                          .with_related_for_home()
+                          .filter(available=True)[:8],
+            60 * 60  # 1 ساعت
+        )
 
-        # 3. کش تگ‌های رندوم (روزانه آپدیت)
+        # 5. کش تگ‌های رندوم (روزانه آپدیت)
         random_tags = cache.get_or_set(
             'home_random_tags',
             list(Tag.objects.order_by('?')[:10]),  # 10 تگ رندوم
             60 * 60 * 24  # 1 روز
         )
 
-        # 4. کش جدیدترین محصولات (شرطی با تنظیمات)
-       
-        new_products = Product.objects.order_by('-create_at').with_related_for_home().filter(available=True)[:6]
-        cache.set('home_new_products', new_products, 60 * 60 * 24)  # 1 روز
-        
+        # 6. کش جدیدترین محصولات (روزانه آپدیت)
+        new_products = cache.get_or_set(
+            'home_new_products',
+            Product.objects.order_by('-create_at')
+                          .with_related_for_home()
+                          .filter(available=True)[:6],
+            60 * 60 * 24  # 1 روز
+        )
 
-        # 5. کش خبرنامه (شرطی با تنظیمات)
-        
-        post = Post.objects.all()
-        cache.set('Post', post, 60 * 60 * 24)  # 1 روز
-       
+        # 7. کش مقالات/خبرنامه (روزانه آپدیت)
+        posts = cache.get_or_set(
+            'home_posts',
+            Post.objects.all()[:3],  # فقط 3 مقاله
+            60 * 60 * 24  # 1 روز
+        )
 
         # محتوای نهایی
         context = {
+            'main_slides': main_slides,
+            'promo_cards': promo_cards,
             'categories': categories,
             'top_products': top_products,
             'random_tags': random_tags,
             'new_products': new_products,
-            'post': post,
+            'posts': posts,
         }
         
         return render(request, 'home.html', context)

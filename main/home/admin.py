@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import CompanyInfo, GlobalSettings
+from .models import CompanyInfo, GlobalSettings, MainSlider, PromoCard, ExtraPhone
 
 @admin.register(CompanyInfo)
 class CompanyInfoAdmin(admin.ModelAdmin):
@@ -85,3 +85,35 @@ class GlobalSettingsAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+@admin.register(MainSlider)
+class MainSliderAdmin(admin.ModelAdmin):
+    list_display = ('title', 'subtitle', 'image_preview', 'is_active', 'order')
+    list_editable = ('is_active', 'order')
+    list_filter = ('is_active',)
+    readonly_fields = ('image_preview',)
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height: 50px;" />', obj.image.url)
+        return "تصویر آپلود نشده است"
+    image_preview.short_description = 'پیش‌نمایش تصویر'
+
+@admin.register(PromoCard)
+class PromoCardAdmin(admin.ModelAdmin):
+    list_display = ('title', 'card_type', 'image_preview', 'is_active', 'order')
+    list_editable = ('is_active', 'order')
+    list_filter = ('is_active', 'card_type')
+    readonly_fields = ('image_preview',)
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height: 50px;" />', obj.image.url)
+        return "تصویر آپلود نشده است"
+    image_preview.short_description = 'پیش‌نمایش تصویر'
+
+@admin.register(ExtraPhone)
+class ExtraPhoneAdmin(admin.ModelAdmin):
+    list_display = ('phone_number', 'is_active')
+    list_editable = ('is_active',)
+    list_filter = ('is_active',)
