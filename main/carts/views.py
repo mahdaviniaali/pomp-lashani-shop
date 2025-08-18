@@ -171,13 +171,29 @@ class ProductQuantityInCartJustNumber(View):
 class CartTotalView(View):
 
     def get(self, request):
-
-        cart = Cart.objects.get(user=request.user) 
-        total = cart.get_total_price()    
-        
-        formatted_total = "{:,}".format(total)
-        
-        return HttpResponse(f"{formatted_total}")
+        try:
+            if request.user.is_authenticated:
+                cart = Cart.objects.filter(user=request.user).first()
+                if cart:
+                    total = cart.get_final_price()
+                else:
+                    total = 0
+            else:
+                # محاسبه قیمت برای کاربران مهمان
+                session_cart = request.session.get('cart', {})
+                total = 0
+                for variant_id, quantity in session_cart.items():
+                    try:
+                        variant = ProductVariant.objects.get(id=variant_id)
+                        total += variant.price * quantity
+                    except ProductVariant.DoesNotExist:
+                        continue
+            
+            formatted_total = "{:,}".format(total)
+            return HttpResponse(f"{formatted_total} تومان")
+        except Exception as e:
+            logger.error(f"خطا در محاسبه قیمت کل: {str(e)}")
+            return HttpResponse("0 تومان")
     
 #ایتم های سبد خرید را به صورت جدا
 class CartItemListViewHtmx(View):

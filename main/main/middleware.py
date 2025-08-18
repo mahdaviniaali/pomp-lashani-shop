@@ -1,13 +1,15 @@
 from django.core.cache import cache
 from django.http import JsonResponse
+from django.conf import settings
 import time
 
 class GlobalRateLimitMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
-        # تنظیمات محدودیت
-        self.rate_limit = 10000  # حداکثر ۱۰۰ درخواست
-        self.time_window = 60 
+        # تنظیمات محدودیت از settings یا مقدار پیش‌فرض
+        cfg = getattr(settings, 'GLOBAL_RATE_LIMIT', {}) or {}
+        self.rate_limit = int(cfg.get('RATE_LIMIT', 10000))
+        self.time_window = int(cfg.get('TIME_WINDOW', 60))
 
     def __call__(self, request):
         # ایجاد کلید منحصر به فرد برای هر کاربر/IP
@@ -18,8 +20,11 @@ class GlobalRateLimitMiddleware:
         current_requests = cache.get(cache_key, 0)
         
         if current_requests >= self.rate_limit:
-            # محاسبه زمان باقیمانده تا ریست محدودیت
-            reset_time = cache.ttl(cache_key)
+            # محاسبه زمان باقیمانده تا ریست محدودیت (ممکن است توسط برخی بک‌اندها پشتیبانی نشود)
+            try:
+                reset_time = cache.ttl(cache_key)
+            except Exception:
+                reset_time = self.time_window
             return JsonResponse({
                 'error': 'محدودیت تعداد درخواست',
                 'detail': f'شما بیش از {self.rate_limit} درخواست در {self.time_window//60} دقیقه ارسال کرده‌اید',

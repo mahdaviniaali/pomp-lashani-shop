@@ -32,9 +32,9 @@
     <div class="d-flex align-items-center">
       <i class="fas fa-phone me-2 text-primary"></i>
       <div class="w-100">
-        <small class="text-muted d-block">شماره تماس</small>
+        <small class="text-muted d-block">شماره تماس <span class="text-danger">*</span></small>
         <input type="text" class="form-control" 
-               name="step1-user_phone_number" 
+               name="step1-user_phone_number" required
                value="{% firstof form_data.user_phone_number user.phone_number '' %}">
       </div>
     </div>

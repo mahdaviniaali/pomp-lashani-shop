@@ -5,7 +5,15 @@
 
 
 
-{% block title %}{{product.title}} | Djangocenter{% endblock %}
+{% block title %}{{ product.title }} | {{ company_info.name|default:global_settings.site_title }}{% endblock %}
+{% block meta_title %}{{ product.title }} | {{ company_info.name|default:global_settings.site_title }}{% endblock %}
+{% block meta_description %}خرید {{ product.title }} با بهترین قیمت از {{ company_info.name|default:global_settings.site_title }}{% endblock %}
+{% block og_description %}خرید {{ product.title }} با بهترین قیمت از {{ company_info.name|default:global_settings.site_title }}{% endblock %}
+{% block twitter_title %}{{ product.title }} | {{ company_info.name|default:global_settings.site_title }}{% endblock %}
+{% block twitter_description %}خرید {{ product.title }} با بهترین قیمت از {{ company_info.name|default:global_settings.site_title }}{% endblock %}
+{% block extra_meta %}
+  <meta property="og:type" content="product">
+{% endblock %}
 
 {% block css %}
 <link href="{% static 'pages/css/product_detail.css' %}" rel="stylesheet" />

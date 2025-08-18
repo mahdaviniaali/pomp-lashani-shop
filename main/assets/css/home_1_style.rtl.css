@@ -1,3 +1,78 @@
+/* Partners Section Styles */
+.tc-partners-style1 {
+    background-color: #f9f9f9;
+}
+
+.partners-slider {
+    padding: 0 40px;
+}
+
+.partner-card {
+    border: 1px solid #eee;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+}
+
+.partner-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+}
+
+.partner-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.partner-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.partner-card:hover .partner-logo img {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/* Swiper Navigation */
+.partners-slider .swiper-button-next,
+.partners-slider .swiper-button-prev {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    color: var(--color-blue1);
+}
+
+.partners-slider .swiper-button-next::after,
+.partners-slider .swiper-button-prev::after {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Swiper Pagination */
+.partners-slider .swiper-pagination {
+    position: relative;
+    bottom: 0;
+    margin-top: 30px;
+}
+
+.partners-slider .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: #ddd;
+    opacity: 1;
+}
+
+.partners-slider .swiper-pagination-bullet-active {
+    background: var(--color-blue1);
+}
 .cart-count-badge {
     font-size: 0.6rem;
     padding: 3px 5px;

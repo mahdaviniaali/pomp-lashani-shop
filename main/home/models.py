@@ -52,6 +52,16 @@ class CompanyInfo(models.Model):
             return f"https://wa.me/{self.whatsapp}"
         return "#"
 
+    def short_description(self):
+        """Return a short text suitable for meta/footers based on about_us."""
+        try:
+            if self.about_us:
+                text = str(self.about_us)
+                return text[:160]
+        except Exception:
+            pass
+        return ""
+
 class GlobalSettings(models.Model):
     """
     تنظیمات کلی سایت که در تمام صفحات اعمال می‌شود.
@@ -116,6 +126,7 @@ class PromoCard(models.Model):
 
 class ExtraPhone(models.Model):
     phone_number = models.CharField(max_length=20, verbose_name="شماره تلفن اضافی")
+    description = models.CharField(max_length=100, verbose_name="توضیحات")
     is_active = models.BooleanField(default=True, verbose_name="فعال")
 
     class Meta:
@@ -124,3 +135,20 @@ class ExtraPhone(models.Model):
 
     def __str__(self):
         return self.phone_number
+    
+
+class Partner(models.Model):
+    name = models.CharField(max_length=100, verbose_name="نام شرکت/برند")
+    logo = models.ImageField(upload_to='partners/logos/', verbose_name="لوگو")
+    description = models.TextField(blank=True, null=True, verbose_name="توضیحات")
+    website_url = models.URLField(verbose_name="آدرس وبسایت")
+    is_active = models.BooleanField(default=True, verbose_name="فعال")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "همکار"
+        verbose_name_plural = "همکاران"
+
+    def __str__(self):
+        return self.name

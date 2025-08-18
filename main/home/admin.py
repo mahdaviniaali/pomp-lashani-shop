@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import CompanyInfo, GlobalSettings, MainSlider, PromoCard, ExtraPhone
+from .models import CompanyInfo, GlobalSettings, MainSlider, PromoCard, ExtraPhone, Partner
 
 @admin.register(CompanyInfo)
 class CompanyInfoAdmin(admin.ModelAdmin):
@@ -117,3 +117,15 @@ class ExtraPhoneAdmin(admin.ModelAdmin):
     list_display = ('phone_number', 'is_active')
     list_editable = ('is_active',)
     list_filter = ('is_active',)
+
+@admin.register(Partner)
+class PartnerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'logo_preview', 'website_url', 'is_active')
+    list_editable = ('is_active',)
+    readonly_fields = ('logo_preview',)
+    
+    def logo_preview(self, obj):
+        if obj.logo:
+            return format_html('<img src="{}" style="max-height: 50px;" />', obj.logo.url)
+        return "لوگو آپلود نشده است"
+    logo_preview.short_description = 'پیش‌نمایش لوگو'

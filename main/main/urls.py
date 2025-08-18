@@ -16,6 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path , include
+from django.contrib.sitemaps.views import sitemap
+from django.http import HttpResponse
+from django.views.decorators.http import require_GET
+from django.utils.text import slugify
+from django.contrib.sitemaps import Sitemap
+from django.urls import reverse
+from products.models import Product
+from blog.models import Post
+from categories.models import Category
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import register_converter
@@ -50,6 +59,34 @@ urlpatterns = [
     path('notifications/', include('notifications.urls', namespace='notifications')),  # ارسال پیامک و نوتیفیکیشن‌ها
     path('support/', include('support.urls', namespace='support')),  # سیستم تیکت و پشتیبانی
     path('discounts/', include('discounts.urls', namespace='discounts')),  # سیستم تخفیف و کوپن
+    path('sitemap.xml', sitemap, {'sitemaps': {
+        'products': type('ProductSitemap', (Sitemap,), {
+            'changefreq': 'daily',
+            'priority': 0.8,
+            'items': staticmethod(lambda: Product.objects.filter(available=True)),
+            'location': staticmethod(lambda obj: reverse('products:product_detail', args=[obj.id, obj.slug])),
+            'lastmod': staticmethod(lambda obj: obj.update_at),
+        })(),
+        'blog': type('PostSitemap', (Sitemap,), {
+            'changefreq': 'weekly',
+            'priority': 0.6,
+            'items': staticmethod(lambda: Post.objects.filter(available=True)),
+            'location': staticmethod(lambda obj: reverse('blog:blogdetail', args=[obj.slug])),
+            'lastmod': staticmethod(lambda obj: obj.updated_at),
+        })(),
+        'categories': type('CategorySitemap', (Sitemap,), {
+            'changefreq': 'weekly',
+            'priority': 0.5,
+            'items': staticmethod(lambda: Category.objects.filter(available=True)),
+            'location': staticmethod(lambda obj: reverse('products:product_list_by_category', args=[obj.id, obj.slug])),
+        })(),
+        'static': type('StaticViewSitemap', (Sitemap,), {
+            'changefreq': 'monthly',
+            'priority': 0.5,
+            'items': staticmethod(lambda: ['home:home', 'home:about_us', 'home:conect_us', 'products:product_list', 'blog:bloglist']),
+            'location': staticmethod(lambda name: reverse(name)),
+        })(),
+    }}, name='django.contrib.sitemaps.views.sitemap'),
 ]
 
 if settings.DEBUG:
@@ -61,3 +98,19 @@ if settings.DEBUG:
     urlpatterns = [
         path('__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
+
+
+# Simple robots.txt
+@require_GET
+def robots_txt(_request):
+    lines = [
+        'User-agent: *',
+        'Disallow: /admin/',
+        'Allow: /static/',
+        'Sitemap: ' + (_request.build_absolute_uri('/sitemap.xml') if _request else '/sitemap.xml')
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
+
+urlpatterns += [
+    path('robots.txt', robots_txt, name='robots_txt')
+]

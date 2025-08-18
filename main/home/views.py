@@ -8,7 +8,7 @@ from blog.models import Post
 from taggit.models import Tag
 from .form import ProductSearchForm
 from users.models import Address
-from .models import MainSlider, PromoCard
+from .models import MainSlider, PromoCard, Partner, ExtraPhone
 
 
 class Home(View):
@@ -79,6 +79,13 @@ class Home(View):
             60 * 60 * 24  # 1 روز
         )
 
+        # 8. کش همکاران و برندها (هفته‌ای یکبار آپدیت)
+        partners = cache.get_or_set(
+            'home_partners',
+            Partner.objects.filter(is_active=True).order_by('?')[:12],  # 12 همکار رندوم
+            60 * 60 * 24 * 7  # 7 روز
+        )
+
         # محتوای نهایی
         context = {
             'main_slides': main_slides,
@@ -88,11 +95,10 @@ class Home(View):
             'random_tags': random_tags,
             'new_products': new_products,
             'posts': posts,
+            'partners': partners,  
         }
         
         return render(request, 'home.html', context)
-
-
 
 
 
@@ -114,9 +120,9 @@ class AboutUs (View):
     
 class ConectUs (View):
     def get (self , request):
-
+        extra_phones = ExtraPhone.objects.filter(is_active=True)
         content = {
-
+            'extra_phones': extra_phones,
         }
         return render(request,'contact.html',content)
     

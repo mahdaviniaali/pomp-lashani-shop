@@ -1,4 +1,5 @@
 {% load static %}
+{% load main_filters %}
 
 
 <!doctype html>
@@ -10,22 +11,29 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="لورم ایپسوم متن ساختگی با تولید ساد">
+  <meta name="description" content="{% block meta_description %}{% if global_settings and global_settings.meta_description %}{{ global_settings.meta_description }}{% else %}{{ company_info.short_description|default:'فروشگاه اینترنتی' }}{% endif %}{% endblock %}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{% canonical_url %}">
   
   <!-- دست نزن -->
   <meta name="robots" content="index, follow">
 
-  <meta property="og:title" content="فروشگاه اینترنتی">
-  <meta property="og:description" content="Desc">
-  <meta property="og:image" content="Image Url">
-  <meta property="og:url" content="Current Url">
+  <meta property="og:title" content="{% block meta_title %}{% if global_settings and global_settings.site_title %}{{ global_settings.site_title }}{% else %}فروشگاه اینترنتی{% endif %}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{% if global_settings and global_settings.meta_description %}{{ global_settings.meta_description }}{% else %}{{ company_info.short_description|default:'فروشگاه اینترنتی' }}{% endif %}{% endblock %}">
+  <meta property="og:image" content="{% if company_info and company_info.logo %}{% absolute_url company_info.logo.url %}{% elif global_settings and global_settings.favicon %}{% absolute_url global_settings.favicon.url %}{% else %}{% static 'img/fav.png' %}{% endif %}">
+  <meta property="og:url" content="{% canonical_url %}">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fa_IR">
 
   <!-- دست نزن -->
   <meta property="og:type" content="website">
 
-  <meta name="twitter:title" content="فروشگاه اینترنتی">
-  <meta name="twitter:description" content="Desc">
-  <meta property="twitter:image" content="Image Url">
+  {% block extra_meta %}{% endblock %}
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% block twitter_title %}{% if global_settings and global_settings.site_title %}{{ global_settings.site_title }}{% else %}فروشگاه اینترنتی{% endif %}{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}{% if global_settings and global_settings.meta_description %}{{ global_settings.meta_description }}{% else %}{{ company_info.short_description|default:'فروشگاه اینترنتی' }}{% endif %}{% endblock %}">
+  <meta property="twitter:image" content="{% if company_info and company_info.logo %}{% absolute_url company_info.logo.url %}{% elif global_settings and global_settings.favicon %}{% absolute_url global_settings.favicon.url %}{% else %}{% static 'img/fav.png' %}{% endif %}">
 
   <!-- عنوان صفحه -->
   <title>
@@ -35,7 +43,7 @@
   </title>
 
   <!-- فاوآیکون -->
-  <link rel="shortcut icon" href="assets/img/fav.png" sizes="16x16" title="Favicon">
+  <link rel="shortcut icon" href="{% if global_settings and global_settings.favicon %}{% absolute_url global_settings.favicon.url %}{% else %}{% static 'img/fav.png' %}{% endif %}" sizes="16x16" title="Favicon">
 
   <!-- استایل‌های اصلی -->
   <link href="{% static 'common/css/lib/bootstrap.min.rtl.css' %}" rel="stylesheet">
@@ -345,7 +353,7 @@
           <span class="text">محصولات</span>
         </a>
       </li>
-      <li id="home" class="list {% if request.path == '' %}active{% endif %}">
+      <li id="home" class="list {% if request.path == '/' %}active{% endif %}">
         <a href="{% url 'home:home' %}">
           <span class="icon"> <i class="las la-home"></i> </span>
           <span class="text">خانه</span>
@@ -371,42 +379,7 @@
   <!-- پاورقی -->
   <footer class="tc-footer-style1 bg-dark text-white pt-5">
     <div class="container">
-      <!-- بخش مزایا -->
-      <div class="row g-4 mb-5">
-        <div class="col-md-4 col-6">
-          <div class="d-flex align-items-center">
-            <div class="icon-box bg-primary rounded-circle p-3 me-3">
-              <i class="fas fa-truck text-white"></i>
-            </div>
-            <div>
-              <h6 class="mb-1">تحویل سریع</h6>
-              <p class="mb-0 text-muted">تحویل در تهران 24 ساعته</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-6">
-          <div class="d-flex align-items-center">
-            <div class="icon-box bg-primary rounded-circle p-3 me-3">
-              <i class="fas fa-shield-alt text-white"></i>
-            </div>
-            <div>
-              <h6 class="mb-1">پرداخت امن</h6>
-              <p class="mb-0 text-muted">پرداخت آنلاین مطمئن</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-6">
-          <div class="d-flex align-items-center">
-            <div class="icon-box bg-primary rounded-circle p-3 me-3">
-              <i class="fas fa-headset text-white"></i>
-            </div>
-            <div>
-              <h6 class="mb-1">پشتیبانی 24/7</h6>
-              <p class="mb-0 text-muted">تماس در تمام ساعات</p>
-            </div>
-          </div>
-        </div>
-      </div>
+     
 
       <!-- محتوای اصلی فوتر -->
       <div class="row g-4">
@@ -440,7 +413,7 @@
                 <a href="{{ company_info.telegram|default:'#' }}" class="social-icon me-2">
                   <i class="fab fa-telegram"></i>
                 </a>
-                <a href="{{ company_info.whatsapp|default:'#' }}" class="social-icon me-2">
+                <a href="{{ company_info.whatsapp_link|default:'#' }}" class="social-icon me-2">
                   <i class="fab fa-whatsapp"></i>
                 </a>
               </div>
@@ -471,7 +444,7 @@
           <div class="footer-links">
             <h5 class="mb-3">دسته بندی ها</h5>
             <ul class="list-unstyled">
-              {% for category in categories|slice:":6" %}
+              {% for category in global_categories|slice:":6" %}
               <li class="mb-2">
                 <a href="{{ category.get_absolute_url }}">
                   <i class="fas fa-angle-left me-2"></i> {{ category.title }}
@@ -553,6 +526,17 @@
 
   <!-- اسکریپت‌های اختصاصی صفحه -->
   {% block js %}{% endblock %}
+
+  <!-- Structured Data JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "{{ company_info.name|default:global_settings.site_title }}",
+    "url": "{% canonical_url %}",
+    "logo": "{% if company_info and company_info.logo %}{% absolute_url company_info.logo.url %}{% elif global_settings and global_settings.favicon %}{% absolute_url global_settings.favicon.url %}{% else %}{% static 'img/fav.png' %}{% endif %}"
+  }
+  </script>
 
 </body>
 

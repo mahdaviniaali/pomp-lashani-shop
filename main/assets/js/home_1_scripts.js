@@ -1,3 +1,36 @@
+// Initialize Partners Slider
+var partnersSwiper = new Swiper('.partners-slider', {
+    slidesPerView: 2,
+    spaceBetween: 20,
+    loop: true,
+    autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+    },
+    pagination: {
+        el: '.partners-slider .swiper-pagination',
+        clickable: true,
+    },
+    navigation: {
+        nextEl: '.partners-slider .swiper-button-next',
+        prevEl: '.partners-slider .swiper-button-prev',
+    },
+    breakpoints: {
+        576: {
+            slidesPerView: 3,
+        },
+        768: {
+            slidesPerView: 4,
+        },
+        992: {
+            slidesPerView: 5,
+        },
+        1200: {
+            slidesPerView: 6,
+        }
+    }
+});
+
 $(function () {
 
     $(document).ready(function () {

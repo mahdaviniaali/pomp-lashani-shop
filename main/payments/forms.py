@@ -1,5 +1,5 @@
 from django import forms
-from users.forms import AddUserInfoForm
+from users.forms import AddUserInfoForm2 as AddUserInfoForm
 from users.models import Address
 from django.utils.translation import gettext_lazy as _
 
@@ -40,7 +40,7 @@ class Step1Form(forms.Form):
         required=False,
     )
 
-    shippingmethod = forms.CharField(label='شناسه روش ارسال', max_length=2, required=True)
+    shippingmethod = forms.IntegerField(label='شناسه روش ارسال', required=True)
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -52,6 +52,9 @@ class Step1Form(forms.Form):
         # اضافه کردن فیلدهای هر دو فرم به این فرم
         for field_name, field in self.user_info_form.fields.items():
             self.fields[f'user_{field_name}'] = field
+        # شماره تماس را اجباری می‌کنیم تا در سفارش ذخیره شود
+        if 'user_phone_number' in self.fields:
+            self.fields['user_phone_number'].required = True
             
         for field_name, field in self.address_form.fields.items():
             self.fields[f'address_{field_name}'] = field

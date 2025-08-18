@@ -275,10 +275,10 @@
                     <p>پس از واریز مبلغ، لطفا تصویر رسید پرداخت را از طریق یکی از روش‌های زیر ارسال نمایید:</p>
                     
                     <div class="btn-group">
-                        <a href="https://wa.me/{{company_info.contact_phone}}" class="btn btn-whatsapp">
+                        <a href="{{ company_info.whatsapp_link }}" class="btn btn-whatsapp">
                             <i class="fab fa-whatsapp me-2"></i> ارسال از طریق واتساپ
                         </a>
-                        <a href="https://t.me/{{company_info.contact_phone}}" class="btn btn-telegram">
+                        <a href="{{ company_info.telegram|default:'#' }}" class="btn btn-telegram">
                             <i class="fab fa-telegram me-2"></i> ارسال از طریق تلگرام
                         </a>
                     </div>

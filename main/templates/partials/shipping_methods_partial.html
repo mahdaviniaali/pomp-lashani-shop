@@ -1,13 +1,13 @@
 <div class="row g-3">
     {% for method in shipping_methods %}
     <div class="col-md-4">
-        <div class="shipping-method-card {% if forloop.first %}selected{% endif %}" 
+        <div class="shipping-method-card {% if selected_shipping_id %}{% if selected_shipping_id == method.id %}selected{% endif %}{% elif forloop.first %}selected{% endif %}" 
      data-cost="{% if method.is_postpaid %}0{% else %}{{ method.price|default:0 }}{% endif %}"
      data-is-postpaid="{% if method.is_postpaid %}true{% else %}false{% endif %}"
      onclick="selectShipping({{ method.id }}, {% if method.is_postpaid %}0{% else %}{{ method.price|default:0 }}{% endif %}, '{{ method.name }}', {% if method.is_postpaid %}true{% else %}false{% endif %})">
             <div class="p-3 text-center">
                 <input type="radio" name="step1-shippingmethod" 
-                       value="{{ method.id }}" class="d-none" {% if forloop.first %}checked{% endif %}>
+                       value="{{ method.id }}" class="d-none" {% if selected_shipping_id %}{% if selected_shipping_id == method.id %}checked{% endif %}{% elif forloop.first %}checked{% endif %}>
                 <div class="mb-3">
                     {% if method.logo %}
                     <img src="{{ method.logo.url }}" alt="{{ method.name }}" style="height: 40px;">

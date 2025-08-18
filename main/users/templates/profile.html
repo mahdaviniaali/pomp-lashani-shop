@@ -49,39 +49,51 @@ home-style3 profile-pg-1
           <div class="row">
             <div class="col-lg-3">
               <div class="tabs-side me-lg-5 mb-4 mb-lg-0">
-                <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link active"
-                      data-bs-target="#pills-prof1"
-                      data-bs-toggle="pill"
-                      id="pills-prof1-tab"
-                    >
-                      <span>اطلاعات حساب</span>
-                      <i class="fal fa-arrow-left"></i>
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link"
-                      data-bs-target="#pills-prof2"
-                      data-bs-toggle="pill"
-                      id="pills-prof2-tab"
-                    >
-                      <span>سفارش من</span> <i class="fal fa-arrow-left"></i>
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link"
-                      data-bs-target="#pills-prof3"
-                      data-bs-toggle="pill"
-                      id="pills-prof3-tab"
-                    >
-                      <span>آدرس من</span> <i class="fal fa-arrow-left"></i>
-                    </button>
-                  </li>
-                </ul>
+                  <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                      <li class="nav-item" role="presentation">
+                          <button
+                              class="nav-link active"
+                              data-bs-target="#pills-prof1"
+                              data-bs-toggle="pill"
+                              id="pills-prof1-tab"
+                          >
+                              <span>اطلاعات حساب</span>
+                              <i class="fal fa-arrow-left"></i>
+                          </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                          <button
+                              class="nav-link"
+                              data-bs-target="#pills-prof2"
+                              data-bs-toggle="pill"
+                              id="pills-prof2-tab"
+                          >
+                              <span>سفارش من</span> 
+                              <i class="fal fa-arrow-left"></i>
+                          </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                          <button
+                              class="nav-link"
+                              data-bs-target="#pills-prof3"
+                              data-bs-toggle="pill"
+                              id="pills-prof3-tab"
+                          >
+                              <span>آدرس من</span> 
+                              <i class="fal fa-arrow-left"></i>
+                          </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                          <a 
+                              href="{% url 'users:logout' %}" 
+                              class="nav-link text-danger"
+                              id="pills-logout-tab"
+                          >
+                              <span>خروج از حساب</span> 
+                              <i class="fal fa-sign-out"></i>
+                          </a>
+                      </li>
+                  </ul>
               </div>
             </div>
             <div class="col-lg-9">

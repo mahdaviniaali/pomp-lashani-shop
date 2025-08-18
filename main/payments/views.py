@@ -141,7 +141,7 @@ class CartPaymentRequestView(LoginRequiredMixin, View):
         if not cart:
             raise Http404("سبد خرید پیدا نشد یا قبلاً پرداخت شده است!")
 
-        amount = cart.get_total_price()
+        amount = cart.get_final_price()
         if amount <= 0:
             return render(request, 'payment_error.html', {'message': 'سبد خرید شما خالی است یا مبلغ نامعتبر است!'})
 
@@ -218,7 +218,7 @@ class CartPaymentVerifyView(LoginRequiredMixin, View):
 
         data = {
             "merchant_id": settings.MERCHANT,
-            "amount": cart.get_total_price(),
+            "amount": cart.get_final_price(),
             "authority": authority,
         }
 
@@ -241,7 +241,7 @@ class CartPaymentVerifyView(LoginRequiredMixin, View):
                         user=request.user,
                         order=cart,
                         method=PaymentMethod.GATEWAY,
-                        amount=cart.get_total_price(),
+                        amount=cart.get_final_price(),
                         gateway_transaction_id=data.get('ref_id', ''),
                         status=PaymentStatus.SUCCESS
                     )
@@ -251,7 +251,7 @@ class CartPaymentVerifyView(LoginRequiredMixin, View):
                     # ارسال پیامک موفقیت پرداخت به کاربر
                     SendSMS.send_payment_success(
                         number=request.user.phone_number,
-                        amount=cart.get_total_price(),
+                        amount=cart.get_final_price(),
                         order_id=f'ORD-{cart.id}'
                     )
                     
@@ -277,7 +277,7 @@ class CartPaymentVerifyView(LoginRequiredMixin, View):
                     user=request.user,
                     order=cart,
                     method=PaymentMethod.GATEWAY,
-                    amount=cart.get_total_price(),
+                    amount=cart.get_final_price(),
                     gateway_transaction_id=authority,
                     status=PaymentStatus.FAILED,
                     description=f"کد خطای زرین پال: {data.get('code')}"
@@ -292,7 +292,7 @@ class CartPaymentVerifyView(LoginRequiredMixin, View):
                 context = {
                     **base_context,
                     'order_id': f'ORD-{cart.id}',
-                    'amount': cart.get_total_price(),
+                    'amount': cart.get_final_price(),
                     'error_code': f"ZP-{data.get('code')}",
                     'error_message': self._get_zarinpal_error_message(data.get('code')),
                 }
@@ -303,7 +303,7 @@ class CartPaymentVerifyView(LoginRequiredMixin, View):
                 user=request.user,
                 order=cart,
                 method=PaymentMethod.GATEWAY,
-                amount=cart.get_total_price(),
+                amount=cart.get_final_price(),
                 gateway_transaction_id=authority,
                 status=PaymentStatus.FAILED,
                 description='پاسخ نامعتبر از زرین‌پال'
@@ -312,7 +312,7 @@ class CartPaymentVerifyView(LoginRequiredMixin, View):
             context = {
                 **base_context,
                 'order_id': f'ORD-{cart.id}',
-                'amount': cart.get_total_price(),
+                'amount': cart.get_final_price(),
                 'error_code': 'ZP-COMM-ERROR',
                 'error_message': 'پاسخ نامعتبر از زرین‌پال',
             }
@@ -323,7 +323,7 @@ class CartPaymentVerifyView(LoginRequiredMixin, View):
                 user=request.user,
                 order=cart,
                 method=PaymentMethod.GATEWAY,
-                amount=cart.get_total_price(),
+                amount=cart.get_final_price(),
                 gateway_transaction_id=authority,
                 status=PaymentStatus.FAILED,
                 description='خطا در ارتباط با درگاه پرداخت'
@@ -332,7 +332,7 @@ class CartPaymentVerifyView(LoginRequiredMixin, View):
             context = {
                 **base_context,
                 'order_id': f'ORD-{cart.id if cart else ""}',
-                'amount': cart.get_total_price() if cart else 0,
+                'amount': cart.get_final_price() if cart else 0,
                 'error_code': 'NETWORK-ERROR',
                 'error_message': 'خطا در ارتباط با درگاه پرداخت',
             }
@@ -366,6 +366,60 @@ class PaymentWizard(LoginRequiredMixin, SessionWizardView):
     
     def get_template_names(self):
         return [self.templates[self.steps.current]]
+    
+    def get_context_data(self, form, **kwargs):
+        context = super().get_context_data(form=form, **kwargs)
+        user = self.request.user
+        cart = Cart.objects.filter(user=user).with_related().first()
+        cart_total = cart.get_final_price() if cart else 0
+        
+        # اضافه کردن آیتم‌های سبد خرید به کانتکست
+        cart_items = []
+        if cart:
+            cart_items = cart.items.all()
+
+        # انتخاب روش ارسال از داده‌های مرحله ۱ یا پیش‌فرض ارزان‌ترین روش فعال
+        cleaned_step1 = self.get_cleaned_data_for_step('step1') or {}
+        selected_shipping_id = cleaned_step1.get('shippingmethod')
+        default_method = None
+        if not selected_shipping_id:
+            default_method = ShippingMethod.objects.filter(active=True).order_by('price').first()
+            selected_shipping_id = default_method.id if default_method else None
+
+        shipping_price = 0
+        is_postpaid = False
+        if selected_shipping_id:
+            try:
+                method = ShippingMethod.objects.get(id=selected_shipping_id)
+                is_postpaid = bool(method.is_postpaid)
+                shipping_price = 0 if is_postpaid else int(method.price or 0)
+            except ShippingMethod.DoesNotExist:
+                pass
+
+        # تبدیل به عدد صحیح فقط اگر مقادیر عددی باشند
+        try:
+            cart_total_int = int(cart_total) if cart_total else 0
+            shipping_price_int = int(shipping_price) if shipping_price and not is_postpaid else 0
+            payable = cart_total_int + shipping_price_int
+        except (ValueError, TypeError):
+            payable = 0
+
+        # ذخیره در سشن برای استفاده یکپارچه سمت سرور
+        self.request.session['checkout_cart_total'] = int(cart_total)
+        self.request.session['checkout_shipping_method_id'] = int(selected_shipping_id) if selected_shipping_id else None
+        self.request.session['checkout_shipping_is_postpaid'] = is_postpaid
+        self.request.session['checkout_shipping_price'] = int(shipping_price)
+        self.request.session['checkout_payable'] = int(payable)
+
+        context.update({
+            'cart_total': cart_total,
+            'shipping_price': shipping_price,
+            'is_postpaid': is_postpaid,
+            'final_price': payable,
+            'selected_shipping_id': selected_shipping_id,
+            'cart_items': cart_items,
+        })
+        return context
     
     def done(self, form_list, **kwargs):
         user = self.request.user
@@ -436,8 +490,10 @@ class PaymentWizard(LoginRequiredMixin, SessionWizardView):
 
 def load_shipping_methods(request):
     methods = ShippingMethod.objects.filter(active=True).order_by('price')
+    selected_id = request.session.get('checkout_shipping_method_id')
     return render(request, 'partials/shipping_methods_partial.html', {
-        'shipping_methods': methods
+        'shipping_methods': methods,
+        'selected_shipping_id': selected_id,
     })
 
 

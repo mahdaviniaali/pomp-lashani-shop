@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}مقالات | وبلاگ شما{% endblock %}
+{% block title %}آخرین مقالات | {{ company_info.name|default:global_settings.site_title }}{% endblock %}
+{% block meta_title %}آخرین مقالات | {{ company_info.name|default:global_settings.site_title }}{% endblock %}
+{% block meta_description %}جدیدترین مقالات و آموزش‌ها از {{ company_info.name|default:global_settings.site_title }}{% endblock %}
+{% block og_description %}جدیدترین مقالات و آموزش‌ها از {{ company_info.name|default:global_settings.site_title }}{% endblock %}
+{% block twitter_title %}آخرین مقالات | {{ company_info.name|default:global_settings.site_title }}{% endblock %}
+{% block twitter_description %}جدیدترین مقالات و آموزش‌ها از {{ company_info.name|default:global_settings.site_title }}{% endblock %}
 
 {% block css %}
 <link href="{% static 'pages/css/blog.css' %}" rel="stylesheet" />

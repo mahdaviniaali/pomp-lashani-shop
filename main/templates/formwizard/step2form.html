@@ -43,6 +43,18 @@
                         <form id="payment-form" method="POST" action="{% url 'payments:checkout' %}">
                             {% csrf_token %}
                             {{ wizard.management_form }}
+                            
+                            {% if wizard.form.errors %}
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                {% for field, errors in wizard.form.errors.items %}
+                                    {% for error in errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
                             <!-- بخش روش‌های پرداخت -->
                             <div class="checkout-card mb-4">
                                 <div class="checkout-header">
@@ -120,16 +132,12 @@
 
                     <div class="border-bottom pb-3 mb-3">
                         <div class="summary-item d-flex justify-content-between">
-                            <span>جمع کل محصولات</span><span 
-                                hx-get="{% url 'carts:get_cart_total' %}" 
-                                hx-trigger="load, cartUpdated from:body"  
-                                hx-swap="innerHTML"                       
-                            >
-                                0 تومان  
+                            <span>جمع کل محصولات</span>
+                            <span>{{ cart_total }} تومان</span>  
                         </div>
                         <div class="summary-item d-flex justify-content-between">
                             <span>هزینه ارسال</span>
-                            <span class="text-success">رایگان</span>
+                            <span class="text-success">{% if shipping_price == 0 %}رایگان{% elif is_postpaid %}پس‌کرایه{% else %}{% if shipping_price %}{{ shipping_price }}{% else %}0{% endif %} تومان{% endif %}</span>
                         </div>
                         <div class="summary-item d-flex justify-content-between">
                             <span>تخفیف</span>
@@ -139,7 +147,9 @@
 
                     <div class="d-flex justify-content-between fw-bold fs-5 mb-4">
                         <span>مبلغ قابل پرداخت</span>
-                        <span class="text-primary">1,109,000 تومان</span>
+                        <span class="text-primary">
+                            {% if final_price %}{{ final_price }}{% else %}0{% endif %} تومان
+                        </span>
                     </div>
 
                     <button type="submit" form="payment-form" class="btn btn-continue w-100 text-white">
@@ -147,7 +157,7 @@
                     </button>
 
                     <div class="alert alert-light border mt-3 mb-0">
-                        <small class="d-block mb-1"><i class="fas fa-info-circle me-2"></i> پس از پرداخت، رسید به ایمیل شما ارسال می‌شود</small>
+                        <small class="d-block mb-1"><i class="fas fa-info-circle me-2"></i> پس از پرداخت، رسید به شماره شما ارسال می‌شود</small>
                     </div>
                 </div>
             </div>

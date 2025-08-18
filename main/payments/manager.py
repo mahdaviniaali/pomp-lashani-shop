@@ -20,8 +20,8 @@ class OrderManager(Manager):
     def create_order(self, user, shipping_method, **order_data):
         if not user:
             raise ValueError("کاربر باید برای سفارش تعیین شود")
-        
-        order = self.model(user=user, shipping_method=shipping_method)
+        # ابتدا خود سفارش را بسازیم تا شناسه داشته باشد
+        order = self.model(user=user)
         
         # ست کردن فیلدهای معتبر با setattr
         valid_fields = {f.name for f in self.model._meta.get_fields()}
@@ -30,6 +30,11 @@ class OrderManager(Manager):
                 setattr(order, field, value)
         
         order.save()
+
+        # اتصال روش ارسال به سفارش پس از ذخیره سفارش
+        if shipping_method is not None:
+            shipping_method.order = order
+            shipping_method.save()
         return order
     
 

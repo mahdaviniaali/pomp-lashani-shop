@@ -91,34 +91,36 @@ home-style3 sin-prod-pg-1
                       <span>محصول</span> <span>در کل</span>
                     </h6>
                     <div class="prod-cont">
+                      {% for item in cart_items %}
                       <div class="prod-card">
                         <div class="img-side">
                           <div class="img">
                             <img
-                              alt=""
-                              src="{% static 'pages/img/products/prod37.png' %}"
+                              alt="{{ item.product.title }}"
+                              src="{{ item.product.image.url }}"
                             />
                           </div>
                           <div class="inf">
                             <p class="fsz-14 fw-500 lh-3">
-                              آناناس MacBook Pro 2022<br />M1/ 512 گیگابایت
+                              {{ item.product.title }}
                             </p>
-                            <p class="fsz-14 color-666">x 3</p>
+                            <p class="fsz-14 color-666">x {{ item.quantity }}</p>
                           </div>
                         </div>
                       </div>
+                      {% endfor %}
                       <div
                         class="worldwide d-flex justify-content-between py-2"
                       >
-                        <span>حمل و نقل استاندارد در سراسر جهان رایگان</span>
-                        <span class="color-red1">+ 9.50 تومان</span>
+                        <span>هزینه ارسال</span>
+                        <span class="color-red1">{% if shipping_price == 0 %}رایگان{% else %}{{ shipping_price }} تومان{% endif %}</span>
                       </div>
                     </div>
                     <div
                       class="total d-flex justify-content-between py-3 fsz-16 fw-bold"
                     >
-                      <span>کل سفارش</span>
-                      <span class="color-green2">1،746.50 تومان</span>
+                      <span>مبلغ قابل پرداخت</span>
+                      <span class="color-green2">{{ final_price }} تومان</span>
                     </div>
                   </div>
                   <div class="payment-card">

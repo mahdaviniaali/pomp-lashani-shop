@@ -18,14 +18,22 @@ class Cart(models.Model):
     def get_total_price(self):
         return self.items.aggregate(total=Sum(F('quantity') * F('price')))['total'] or 0
     
+    def get_final_price(self):
+        """محاسبه قیمت نهایی با در نظر گرفتن هزینه ارسال"""
+        total = self.get_total_price()
+        # اضافه کردن هزینه ارسال به قیمت نهایی اگر پس‌کرایه نباشد
+        if hasattr(self, 'shipping_method') and self.shipping_method and not self.shipping_method.is_postpaid and self.shipping_method.price:
+            total += self.shipping_method.price
+        return total
+    
     def update_total_price(self):
-        self.total_price = self.get_total_price()
+        self.total_price = self.get_final_price()
         self.save()
 
 
     def final_check_price(self):
-        if self.get_total_price() == self.total_price:
-            return self.total_price , True
+        if self.get_final_price() == self.total_price:
+            return self.total_price, True
         else:
             return False
 

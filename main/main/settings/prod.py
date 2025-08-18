@@ -3,11 +3,10 @@ from .base import *
 #import sentry_sdk
 
 
-DEBUG=False
+DEBUG = False
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
-
-print(ALLOWED_HOSTS)
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 
 # Security settings
 SECURE_HSTS_SECONDS = 31536000  # 1 year
@@ -81,6 +80,7 @@ MERCHANT = env("GETWAY_MERCHANT")
 
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = 'pomp-lashani-shop/main/static/'
-MEDIA_URL = 'pomp-lashani-shop/main/madia/'
+# It is recommended to serve under root-relative URLs in production
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 

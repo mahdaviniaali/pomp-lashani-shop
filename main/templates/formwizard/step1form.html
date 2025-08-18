@@ -162,24 +162,16 @@
 
                         <div class="summary-item d-flex justify-content-between">
                             <span>جمع کل محصولات</span>
-
-                            <span id="product-total-hidden" hx-get="{% url 'carts:get_cart_total' %}"
-                                hx-trigger="load, cartUpdated from:body" hx-swap="innerHTML" style="display: none;"></span>
-                            <span id="product-total-s"></span>
+                            <span id="product-total-s">{% if cart_total %}{{ cart_total }}{% else %}0{% endif %} تومان</span>
                         </div>
                         <div class="summary-item d-flex justify-content-between">
                             <span>هزینه ارسال</span>
-                            <input type="hidden" id="shipping-cost-display">
-                            <span class="text-success" id="shipping-cost-display">رایگان</span>
+                            <span id="shipping-cost-display" class="{% if is_postpaid or shipping_price == 0 %}text-success{% else %}text-warning{% endif %}">
+                                {% if is_postpaid %}پس‌کرایه{% elif shipping_price == 0 %}رایگان{% else %}{% if shipping_price %}{{ shipping_price }}{% else %}0{% endif %} تومان{% endif %}
+                            </span>
                         </div>
 
                     </div>
-
-                    <div class="d-flex justify-content-between fw-500 fs-5 mb-4">
-                        <span>مبلغ قابل پرداخت</span>
-                        <span id="payable-amount" class="text-primary" id="total-price"></span>
-                    </div>
-
                     <button type="submit" form="checkout-form" class="btn btn-continue w-100 text-white">
                         ادامه فرایند خرید
                     </button>
@@ -187,7 +179,7 @@
                     <div class="alert alert-light border mt-3 mb-0">
                         <small class="d-block mb-1"><i class="fas fa-info-circle me-2"></i> هزینه نهایی پس از تأیید
                             نهایی محاسبه می‌شود</small>
-                        <small><i class="fas fa-shield-alt me-2"></i> پرداخت امن از طریق درگاه بانکی</small>
+                       
                     </div>
                 </div>
             </div>

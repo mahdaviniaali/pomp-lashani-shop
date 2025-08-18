@@ -1,110 +1,194 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Djangocenter Blog List{% endblock %}
-
+{% block title %}تماس با واتر رایزن {% endblock %}
 
 {% block css %}
 <link href="{% static 'pages/css/inner_pages.rtl.css' %}" rel="stylesheet" />
 <link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
-{% endblock %}
-
-{% block bodystyle %}
-home-style3 contact-pg-1
-{% endblock %}
-
-{% block js %}
-<script src="{% static 'pages/js/inner_pages.js' %}"></script>
+<style>
+  .contact-method {
+    transition: all 0.3s ease;
+  }
+  .contact-method:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  .contact-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 123, 255, 0.1);
+    margin-bottom: 20px;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
+<div class="body-container">
+  <div class="container container-llgg">
+    <main>
+      <!-- مسیر导航 -->
+      <section class="tc-breadcrumb-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb fw-bold mb-0">
+            <li class="breadcrumb-item"><a href="#">خانه</a></li>
+            <li class="breadcrumb-item active">تماس با ما</li>
+          </ol>
+        </nav>
+      </section>
 
-  <div class="body-container">
-    <div class="container container-llgg">
-      <!--Contents-->
-      <main>
-        <!--  Start breadcrumb  -->
-        <section
-          class="tc-breadcrumb-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp"
-        >
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb fw-bold mb-0">
-              <li class="breadcrumb-item color-999"><a href="#">خانه</a></li>
-              <li class="breadcrumb-item color-999">
-                <a href="#">فروشگاه</a>
-              </li>
-              <li
-                aria-current="page"
-                class="breadcrumb-item active color-000"
-              >
-                تماس
-              </li>
-            </ol>
-          </nav>
-        </section>
-        <!--  End breadcrumb  -->
-        <!-- Start contact  -->
-        <section class="contact p-30 radius-4 bg-white mt-3 wow fadeInUp">
-          <h6 class="fsz-18 fw-bold text-uppercase mb-30">آماده کار با ما</h6>
-          <div class="checkout-form mt-50">
-            <div class="row">
-              
-              <div class="col-lg-5">
-                <div class="contact-info mt-5 mt-lg-0">
-                  <div class="contact-info-card">
-                    
-          
-                    <ul class="fsz-16 lh-lg">
-                      <li>
-                        <a href="#"
-                          >{{company_info.address}}</a
-                        >
-                      </li>
-                      <li>
-                        <a href="#">(+718) 895-5350</a>
-                      </li>
-                      <li>
-                        <a
-                          class="color-green2 text-decoration-underline"
-                          href="#"
-                          >contact@swattechmart.co.uk</a
-                        >
-                      </li>
-                    </ul>
-                    <div class="social-icons mt-50">
-                      
-                      <a href="#"> <i class="fab fa-instagram"></i> </a>
-                     
-                    </div>
-                  </div>
-                 
-                </div>
+      <!-- بخش اصلی تماس -->
+      <section class="contact p-30 radius-4 bg-white mt-3 wow fadeInUp">
+        <div class="text-center mb-40">
+          <h2 class="fw-bold">در ارتباط با واتر رایزن</h2>
+          <p class="fsz-18 mt-3">کارشناسان ما آماده پاسخگویی به سوالات شما هستند</p>
+        </div>
+
+        <div class="row g-4">
+          <!-- روش‌های تماس -->
+          <div class="col-md-4">
+            <div class="contact-method p-4 text-center h-100">
+              <div class="contact-icon mx-auto">
+                <i class="la la-phone fs-3 text-primary"></i>
               </div>
+              <h5 class="fw-bold mb-3">تماس تلفنی</h5>
+              <p class="text-muted mb-2">پاسخگویی همه روزه از ساعت 8 تا 16</p>
+              {% if company_info and company_info.contact_phone %}
+              <a href="tel:{{ company_info.contact_phone }}" class="d-block fsz-16 fw-bold mt-3">{{ company_info.contact_phone }}</a>
+              {% else %}
+              <span class="d-block fsz-16 fw-bold mt-3">-</span>
+              {% endif %}
             </div>
           </div>
-        </section>
-        <!--  End contact  -->
-        <!-- Start map  -->
-        <section class="map p-30 radius-4 bg-white mt-3 wow fadeInUp mb-3">
-          <h6 class="fsz-18 fw-bold text-uppercase mb-30">
-            ما را در نقشه Google پیدا کنید
-          </h6>
-          <div class="map-content">
+
+          <div class="col-md-4">
+            <div class="contact-method p-4 text-center h-100">
+              <div class="contact-icon mx-auto">
+                <i class="la la-envelope fs-3 text-primary"></i>
+              </div>
+              <h5 class="fw-bold mb-3">پست الکترونیک</h5>
+              <p class="text-muted mb-2">پاسخگویی در کمتر از 24 ساعت</p>
+              {% if company_info and company_info.contact_email %}
+              <a href="mailto:{{ company_info.contact_email }}" class="d-block fsz-16 fw-bold mt-3">{{ company_info.contact_email }}</a>
+              {% else %}
+              <span class="d-block fsz-16 fw-bold mt-3">-</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="contact-method p-4 text-center h-100">
+              <div class="contact-icon mx-auto">
+                <i class="la la-map-marker fs-3 text-primary"></i>
+              </div>
+              <h5 class="fw-bold mb-3">آدرس دفتر</h5>
+              <p class="text-muted mb-2">{% if company_info and company_info.address %}{{ company_info.address }}{% else %}—{% endif %}</p>
+              <a href="#map-section" class="d-block fsz-16 fw-bold mt-3">مشاهده روی نقشه</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- بخش نقشه -->
+      <section id="map-section" class="map p-30 radius-4 bg-white mt-3 wow fadeInUp mb-3">
+        <h4 class="fw-bold mb-4">موقعیت ما روی نقشه</h4>
+        <div class="map-content ratio ratio-16x9">
+          {% if company_info and company_info.map_embed_code %}
+            {{ company_info.map_embed_code|safe }}
+          {% elif company_info and company_info.latitude and company_info.longitude %}
             <iframe
+              src="https://maps.google.com/maps?width=100%25&hl=fa&q={{ company_info.latitude }},{{ company_info.longitude }}&t=&z=14&ie=UTF8&iwloc=B&output=embed"
               allowfullscreen=""
-              height="300"
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2877.501184049855!2d10.508400375579958!3d43.845439739977!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12d583f3cf413995%3A0x39c36090e2825e12!2sChurch%20of%20Saint%20Francis!5e0!3m2!1sen!2seg!4v1694912173628!5m2!1sen!2seg"
-              style="border: 0"
-              width="100%"
             ></iframe>
-          </div>
-        </section>
-        <!--  End map  -->
-      </main>
-      <!--End-Contents-->
-    </div>
-  </div>
- 
+          {% else %}
+            <div class="d-flex align-items-center justify-content-center text-muted" style="min-height: 240px;">نقشه در دسترس نیست</div>
+          {% endif %}
+        </div>
+      </section>
 
+      <section class="p-30 radius-4 bg-white mt-3 wow fadeInUp mb-3">
+        <div class="row">
+          <!-- ستون شماره‌های تماس -->
+          <div class="col-lg-4 mb-4 mb-lg-0">
+            <h4 class="fw-bold mb-4 border-bottom pb-3">تماس تلفنی</h4>
+            <ul class="contact-list">
+              <li class="mb-3">
+                <i class="fas fa-phone-alt text-primary me-2"></i>
+                <div>
+                  {% if company_info and company_info.contact_phone %}
+                  <a href="tel:{{ company_info.contact_phone }}" class="fw-bold d-block">{{ company_info.contact_phone }}</a>
+                  {% else %}
+                  <span class="fw-bold d-block">-</span>
+                  {% endif %}
+                  <span class="text-muted small">دفتر مرکزی</span>
+                </div>
+              </li>
+              {% for phone in extra_phones %}
+              <li class="mb-3">
+                <i class="fas fa-phone text-primary me-2"></i>
+                <div>
+                  <a href="tel:{{ phone.phone_number }}" class="fw-bold d-block">{{ phone.phone_number }}</a>
+                  <span class="text-muted small">{{phone.description}} </span>
+                </div>
+              </li>
+              {% empty %}
+              {% endfor %}
+            </ul>
+          </div>
+      
+          <!-- ستون آدرس و ساعت کاری -->
+          <div class="col-lg-4 mb-4 mb-lg-0">
+            <h4 class="fw-bold mb-4 border-bottom pb-3">آدرس و ساعت کاری</h4>
+            <div class="mb-3">
+              <i class="fas fa-map-marker-alt text-primary me-2"></i>
+              <span>تهران، خیابان آزادی، بلوار اکبری، پلاک 123</span>
+            </div>
+            <div class="mb-3">
+              <i class="far fa-clock text-primary me-2"></i>
+              <div>
+                <p class="mb-1">شنبه تا چهارشنبه: 8:00 تا 16:00</p>
+                <p class="mb-0">پنجشنبه: 8:00 تا 12:00</p>
+              </div>
+            </div>
+            <a href="#map-section" class="btn btn-sm btn-outline-primary mt-2">
+              <i class="fas fa-map-marked-alt me-1"></i> مشاهده روی نقشه
+            </a>
+          </div>
+      
+          <!-- ستون شبکه‌های اجتماعی -->
+          <div class="col-lg-4">
+            <h4 class="fw-bold mb-4 border-bottom pb-3">شبکه‌های اجتماعی</h4>
+            <div class="social-media-links">
+              {% if company_info and company_info.instagram %}
+              <a href="{{ company_info.instagram }}" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm mb-2">
+                <i class="fab fa-instagram me-1"></i> اینستاگرام
+              </a>
+              {% endif %}
+              {% if company_info and company_info.whatsapp %}
+              <a href="{{ company_info.whatsapp_link }}" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm mb-2">
+                <i class="fab fa-whatsapp me-1"></i> واتساپ
+              </a>
+              {% endif %}
+              {% if company_info and company_info.telegram %}
+              <a href="{{ company_info.telegram }}" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm mb-2">
+                <i class="fab fa-telegram me-1"></i> تلگرام
+              </a>
+              {% endif %}
+              {% if company_info and company_info.twitter %}
+              <a href="{{ company_info.twitter }}" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm mb-2">
+                <i class="fab fa-twitter me-1"></i> توییتر
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
 {% endblock %}

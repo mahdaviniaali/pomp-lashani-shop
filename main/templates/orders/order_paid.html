@@ -292,7 +292,7 @@
                     </tr>
                     <tr>
                         <td>مبلغ پرداخت شده:</td>
-                        <td class="summary-value">{{ order.total_price|intcomma }} تومان</td>
+                        <td class="summary-value">{{ order.get_final_price|intcomma }} تومان</td>
                     </tr>
                 </table>
             </div>
