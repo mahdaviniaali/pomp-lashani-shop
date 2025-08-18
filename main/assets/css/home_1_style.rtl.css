@@ -1,3 +1,24 @@
+/* استایل‌های سفارشی برای لوگو */
+.navbar-brand .logo {
+    max-height: 60px;
+    width: auto;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+/* تنظیمات responsive برای لوگو */
+@media screen and (max-width: 991px) {
+    .navbar-brand .logo {
+        max-height: 45px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .navbar-brand .logo {
+        max-height: 40px;
+    }
+}
+
 /* Partners Section Styles */
 .tc-partners-style1 {
     background-color: #f9f9f9;
