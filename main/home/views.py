@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.core.cache import cache
 from products.models import Product
-from categories.models import Category
+from categories.models import Category, Brand
 from blog.models import Post
 from taggit.models import Tag
 from .form import ProductSearchForm
@@ -47,6 +47,13 @@ class Home(View):
             60 * 60 * 24 * 7  # 7 روز
         )
 
+        # کش برندها (هفته‌ای یکبار آپدیت)
+        brands = cache.get_or_set(
+            'home_brands',
+            Brand.objects.all()[:20],  # حداکثر 20 برند
+            60 * 60 * 24 * 7  # 7 روز
+        )
+
         # 4. کش پرفروش‌ترین محصولات (ساعتی آپدیت)
         top_products = cache.get_or_set(
             'top_products',
@@ -75,48 +82,36 @@ class Home(View):
         # 7. کش مقالات/خبرنامه (روزانه آپدیت)
         posts = cache.get_or_set(
             'home_posts',
-            Post.objects.all()[:3],  # فقط 3 مقاله
+            Post.objects.all()[:4],  # فقط 3 مقاله
             60 * 60 * 24  # 1 روز
         )
 
-        # 8. کش همکاران و برندها (هفته‌ای یکبار آپدیت)
-        partners = cache.get_or_set(
-            'home_partners',
-            Partner.objects.filter(is_active=True).order_by('?')[:12],  # 12 همکار رندوم
-            60 * 60 * 24 * 7  # 7 روز
-        )
 
         # محتوای نهایی
         context = {
             'main_slides': main_slides,
             'promo_cards': promo_cards,
             'categories': categories,
+            'brands': brands,
             'top_products': top_products,
             'random_tags': random_tags,
             'new_products': new_products,
-            'posts': posts,
-            'partners': partners,  
-        }
-        
+            'posts': posts,        }
         return render(request, 'home.html', context)
 
 
-
-class HomeSample(View):
-    def get (self, request):
-        
-        context = {
-           
-        }
-        return render(request, 'home2.html', context)
-
 class AboutUs (View):
-    def get (self , request):
-
+    def get(self, request):
+        # کش همکاران و برندها (هفته‌ای یکبار آپدیت)
+        partners = cache.get_or_set(
+            'home_partners',
+            Partner.objects.filter(is_active=True).order_by('?')[:12],  # 12 همکار رندوم
+            60 * 60 * 24 * 7  # 7 روز
+        )
         content = {
-
+            'partners': partners,
         }
-        return render(request,'about.html',content)
+        return render(request, 'about.html', content)
     
 class ConectUs (View):
     def get (self , request):

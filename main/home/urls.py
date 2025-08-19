@@ -5,7 +5,6 @@ app_name = 'home'
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
-    path('2', views.HomeSample.as_view(), name='home2'),
     path('conectus', views.ConectUs.as_view(), name='conect_us'),
     path('aboutus', views.AboutUs.as_view(), name='about_us'),
     path('faq', views.FAQ.as_view(), name='faq'),
