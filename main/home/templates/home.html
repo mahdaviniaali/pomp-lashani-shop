@@ -50,13 +50,13 @@ home-style1
           </div>
         </div>
         <div class="cat-content">
-          {% for cat in categories %}
-          <a class="cat-card" href="{% url 'products:product_list_by_category' pk=cat.id slug=cat.slug %}">
-            <div class="img">
-              <img alt="" src="{{cat.logo}}" />
-            </div>
-            <p class="fsz-13 fw-bold mt-15">{{cat.title}}</p>
-          </a>
+         {% for cat in categories %}
+            <a class="cat-card" href="{% url 'products:product_list_by_category' pk=cat.id slug=cat.slug %}">
+              <div class="img">
+                <img alt="{{cat.title}}" src="{{cat.logo_url}}" />
+              </div>
+              <p class="fsz-13 fw-bold mt-15">{{cat.title}}</p>
+            </a>
           {% endfor %}
         </div>
       </div>
