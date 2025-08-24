@@ -18,10 +18,21 @@ function selectShipping(id, cost, name, isPostpaid = false) {
     document.querySelector(`input[value="${id}"]`).checked = true;
 
     // پر کردن فیلدهای فرم برای ارسال سمت سرور
-    document.getElementById('shipping-cost').value = isPostpaid ? 0 : cost;
+    let shipping_cost = document.getElementById('shipping-cost').value = isPostpaid ? 'پس کرایه' : cost;
+    if(isPostpaid) {
+        shipping_cost = 'پس کرایه';
+    } else if (cost == 0 || !cost) {
+        shipping_cost = 'رایگان';
+    } else {
+        shipping_cost = `${cost} تومان`;
+    }
+
+    shippingDisplay.textContent = shipping_cost;
+    
     document.getElementById('shipping-name').value = name;
     document.getElementById('shipping-is-postpaid').value = isPostpaid;
     document.getElementById('shipping-method-id').value = id;
+
     // باقی محاسبات توسط سرور انجام می‌شود
 }
 

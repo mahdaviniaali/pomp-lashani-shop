@@ -531,12 +531,10 @@
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "{{ company_info.name|default:global_settings.site_title }}",
     "url": "{% canonical_url %}",
     "logo": "{% if company_info and company_info.logo %}{% absolute_url company_info.logo.url %}{% elif global_settings and global_settings.favicon %}{% absolute_url global_settings.favicon.url %}{% else %}{% static 'img/fav.png' %}{% endif %}"
   }
   </script>
-
 </body>
 
 </html>

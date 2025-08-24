@@ -318,9 +318,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // مدیریت ارسال فرم
-    document.getElementById('search-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        // HTMX به صورت خودکار فرم را مدیریت می‌کند
-    });
+    // // مدیریت ارسال فرم
+    // document.getElementById('search-form').addEventListener('submit', function (e) {
+    //     e.preventDefault();
+    //     // HTMX به صورت خودکار فرم را مدیریت می‌کند
+    // });
 });

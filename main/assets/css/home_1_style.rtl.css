@@ -2269,12 +2269,9 @@
 }
 
 /* بهبود موقعیت دکمه بازگشت به بالا در موبایل */
-@media screen and (max-width: 991px) {
+@media screen and (max-width: 992px) {
     .home-style1 .to_top.show {
-        left: 15px;
-        bottom: 80px !important;
-        /* افزایش فاصله از منوی موبایل */
-        opacity: 1;
+        bottom: 104px !important;
     }
 
     .home-style1 .tc-footer-style1 .foot {
