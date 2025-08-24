@@ -22,6 +22,12 @@ class Category(MPTTModel):
             self.slug = slugify(self.title, allow_unicode=True)
         super().save(*args, **kwargs)
 
+    @property
+    def logo_url(self):
+        if self.logo and hasattr(self.logo, 'url'):
+            return self.logo.url
+        return '/static/images/default-category.png' 
+
 # مدل برند محصولات
 class Brand(models.Model):
     name = models.CharField(max_length=100, verbose_name="نام برند")
