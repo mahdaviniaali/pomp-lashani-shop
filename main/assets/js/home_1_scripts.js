@@ -219,13 +219,13 @@ $(document).ready(function () {
                 slidesPerView: 2,
             },
             787: {
-                slidesPerView: 3,
+                slidesPerView: 4,
             },
             991: {
-                slidesPerView: 3,
+                slidesPerView: 5,
             },
             1200: {
-                slidesPerView: 3,
+                slidesPerView: 6,
             }
         }
     });
