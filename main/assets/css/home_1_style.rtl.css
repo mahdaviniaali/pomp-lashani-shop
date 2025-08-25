@@ -1426,6 +1426,12 @@
     border-radius: 0 8px 8px 0;
 }
 
+.tc-pupolar-brands-style1 .content .pupolar-slider .img-cover {
+    height: 65px Im !important;
+}
+
+
+
 .tc-pupolar-brands-style1 .content .card-overlay {
     position: relative;
     border-radius: 20px;
