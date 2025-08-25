@@ -356,13 +356,13 @@
             {% for product in related_products %}
               <div class="swiper-slide">
                 <div class="product-card">
-                  <a class="img" href="{{ product.get_absolute_url }}">
+                  <a class="img" href="{% url 'products:product_detail' pk=product.id slug=product.slug %}">
                     <img src="{{ product.image.url }}" alt="{{ product.title }}" style="height: 180px; object-fit: contain;">
                   </a>
                   <div class="info">
                     <h6>
                       <a class="prod-title fsz-14 fw-bold mt-2 hover-green2" 
-                         href="{{ product.get_absolute_url }}">
+                         href="{% url 'products:product_detail' pk=product.id slug=product.slug %}">
                         {{product.title|truncatechars:30}}
                       </a>
                     </h6>
