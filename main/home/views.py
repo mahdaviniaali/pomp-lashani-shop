@@ -170,16 +170,11 @@ class ProductSearch(View):
     template_name = 'products.html'  # مشخص کردن نام تمپلیت
 
     def get(self, request):
-        form = self.form_class(request.GET)  # اصلاح: استفاده از self.form_class و GET data
+        form = self.form_class(request.GET)  
         
-        results = Product.objects.all()  # مقدار پیش‌فرض وقتی جستجو انجام نشده
-        
-        if form.is_valid():  # بررسی اعتبار فرم
-            query = form.cleaned_data.get('search')  # استفاده از .get() برای جلوگیری از KeyError
-            if query:
-                results = Product.objects.filter(title__icontains=query)
-                print(f"Search query: {results}")  # برای دیباگینگ
-        
+        results = Product.objects.all()  
+        if form.is_valid():  
+            results = Product.objects.filter_and_order_by_params(request.GET)
         context = {
             'page_obj': results,
         }

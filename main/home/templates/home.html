@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% load main_filters %}
+{% load humanize %}
+
 {% block title %}{{ global_settings.site_title|default:'فروشگاه اینترنتی' }}{% endblock %}
 {% block meta_title %}{{ global_settings.site_title|default:'فروشگاه اینترنتی' }}{% endblock %}
 {% block meta_description %}{{ global_settings.meta_description|default:company_info.short_description }}{% endblock %}
@@ -30,12 +32,12 @@ home-style1
     <section class="tc-popular-cat-style1 pt-30 pb-50">
       <div class="container">
         <div class="search-cat d-block d-lg-none">
-          <div class="input-group">
-            <input class="form-control" placeholder="هر چیزی را جستجو کنید ..." type="text" />
-            <a class="search-btn" href="#">
+          <form class="input-group" method="get" action="{% url 'products:product_list' %}">
+            <input class="form-control" placeholder="هر چیزی را جستجو کنید ..." name="search" type="text" />
+            <button class="search-btn" type="submit">
               <i class="fal fa-search"></i>
-            </a>
-          </div>
+            </button>
+          </form>
         </div>
         <div class="sec-title">
           <div class="row align-items-center">
@@ -269,7 +271,7 @@ home-style1
                   <a href="#"> تماس بگیرین</a>
                 </p>
                 {% elif top_products.0.min_price %}
-                {{ top_products.0.min_price}} تومان
+                {{ top_products.0.min_price|intcomma }} تومان
                 {% else %}
                 <span class="text-danger"> عدم موجودی</span>
                 {% endif %}
@@ -322,7 +324,7 @@ home-style1
                   <a href="#"> تماس بگیرین</a>
                 </p>
                 {% elif top_products.1.min_price %}
-                {{ top_products.1.min_price}} تومان
+                {{ top_products.1.min_price|intcomma }} تومان
                 {% else %}
                 <span class="text-danger"> عدم موجودی</span>
                 {% endif %}
@@ -379,7 +381,7 @@ home-style1
                   <a href="#"> تماس بگیرین</a>
                 </p>
                 {% elif top_products.2.min_price %}
-                {{ top_products.2.min_price}} تومان
+                {{ top_products.2.min_price|intcomma }} تومان
                 {% else %}
                 <span class="text-danger"> عدم موجودی</span>
                 {% endif %}
@@ -432,7 +434,7 @@ home-style1
                   <a href="#"> تماس بگیرین</a>
                 </p>
                 {% elif top_products.3.min_price %}
-                {{ top_products.3.min_price}} تومان
+                {{ top_products.3.min_price|intcomma }} تومان
                 {% else %}
                 <span class="text-danger"> عدم موجودی</span>
                 {% endif %}
@@ -485,7 +487,7 @@ home-style1
                   <a href="#"> تماس بگیرین</a>
                 </p>
                 {% elif top_products.4.min_price %}
-                {{ top_products.4.min_price}} تومان
+                {{ top_products.4.min_price|intcomma }} تومان
                 {% else %}
                 <span class="text-danger"> عدم موجودی</span>
                 {% endif %}
@@ -537,7 +539,7 @@ home-style1
                   <a href="#"> تماس بگیرین</a>
                 </p>
                 {% elif top_products.5.min_price %}
-                {{top_products.5.min_price}} تومان
+                {{top_products.5.min_price|intcomma}} تومان
                 {% else %}
                 <span class="text-danger"> عدم موجودی</span>
                 {% endif %}
@@ -587,7 +589,7 @@ home-style1
                   <a href="#"> تماس بگیرین</a>
                 </p>
                 {% elif top_products.6.min_price %}
-                {{ top_products.6.min_price}} تومان
+                {{ top_products.6.min_price|intcomma }} تومان
                 {% else %}
                 <span class="text-danger"> عدم موجودی</span>
                 {% endif %}
@@ -829,7 +831,7 @@ home-style1
                       <a href="#"> تماس بگیرین</a>
                     </p>
                     {% elif top_products.5.min_price %}
-                    {{ top_products.5.min_price}} تومان
+                    {{ top_products.5.min_price|intcomma }} تومان
                     {% else %}
                     <span class="text-danger"> عدم موجودی</span>
                     {% endif %}
@@ -875,7 +877,7 @@ home-style1
                       <a href="#"> تماس بگیرین</a>
                     </p>
                     {% elif top_products.6.min_price %}
-                    {{ top_products.6.min_price}} تومان
+                    {{ top_products.6.min_price|intcomma }} تومان
                     {% else %}
                     <span class="text-danger"> عدم موجودی</span>
                     {% endif %}
@@ -927,11 +929,11 @@ home-style1
     <div class="container">
       <h3 class="fsz-30 mb-30">جستجوی محصولات</h3>
       <div class="links">
-        {% for tag in random_tags %}
-        <a class="link" href="#">{{ tag.name }}</a>
-        {% empty %}
-        <span class="text-muted fsz-12">تگی موجود نیست</span>
-        {% endfor %}
+  {% for tag in random_tags %}
+  <a class="link" href="{% url 'home:product_search' %}?search={{ tag.name }}">{{ tag.name }}</a>
+  {% empty %}
+  <span class="text-muted fsz-12">تگی موجود نیست</span>
+  {% endfor %}
 
       </div>
     </div>
@@ -947,57 +949,43 @@ home-style1
             <div class="title mb-40">
               <div class="row align-items-center">
                 <div class="col-lg-8">
-                <!-- <p class="text-muted mt-2">شرکت‌ها و برندهایی که با آنها همکاری می‌کنیم</p> -->
                   <h3 class="fsz-30">همکاران و برندهای ما</h3>
                 </div>
                 <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
-                  <a
-                    class="more-btn fsz-14 text-uppercase fw-500"
-                    href="#"
-                    >مشاهده همه<i class="fal fa-angle-left ms-1"></i>
-                  </a>
+                  <a class="more-btn fsz-14 text-uppercase fw-500" href="#">مشاهده همه<i class="fal fa-angle-left ms-1"></i></a>
                 </div>
               </div>
             </div>
             <div class="pupolar-slider">
               <div class="swiper-wrapper">
+                {# نمایش برندها #}
+                {% for brand in brands %}
                 <div class="swiper-slide">
                   <div class="card-overlay">
                     <div class="img">
-                      <img
-                        alt=""
-                        class="img-cover"
-                        src="{% static '/pages/img/brands/brand1.png' %}"
-                      />
+                      <a href="{% url 'products:product_list' %}?brand={{ brand.slug|default:brand.name }}">
+                        {% if brand.logo %}
+                          <img alt="{{ brand.name }}" class="img-cover img-fixed" style="width:100px;height:100px;object-fit:contain;" src="{{ brand.logo.url }}" />
+                        {% else %}
+                          <img alt="{{ brand.name }}" class="img-cover img-fixed" style="width:100px;height:100px;object-fit:contain;" src="/static/images/default-brand.png" />
+                        {% endif %}
+                      </a>
                     </div>
-                    <h6 class="text-center mt-3"><a href="#" class="fsz-19 fw-medium hover-blue1">برند 1</a></h6>
+                    <h6 class="text-center mt-3">
+                      <a href="{% url 'products:product_list' %}?brand={{ brand.slug|default:brand.name }}" class="fsz-19 fw-medium hover-blue1">{{ brand.name }}</a>
+                    </h6>
                   </div>
                 </div>
+                {% empty %}
                 <div class="swiper-slide">
                   <div class="card-overlay">
                     <div class="img">
-                      <img
-                        alt=""
-                        class="img-cover"
-                        src="{% static '/pages/img/brands/brand2.png' %}"
-                      />
+                      <img alt="" class="img-cover" src="/static/images/default-brand.png" />
                     </div>
-                    <h6 class="text-center mt-3"><a href="#" class="fsz-19 fw-medium hover-blue1">برند 2</a></h6>
+                    <h6 class="text-center mt-3">برندی یافت نشد</h6>
                   </div>
                 </div>
-                <div class="swiper-slide">
-                  <div class="card-overlay">
-                    <div class="img">
-                      <img
-                        alt=""
-                        class="img-cover"
-                        src="{% static '/pages/img/brands/brand3.png' %}"
-                      />
-                    </div>
-
-                    <h6 class="text-center mt-3"><a href="#" class="fsz-19 fw-medium hover-blue1">برند 3</a></h6>
-                  </div>
-                </div>
+                {% endfor %}
               </div>
               <div class="swiper-button-prev"></div>
               <div class="swiper-button-next"></div>
@@ -1085,7 +1073,7 @@ home-style1
                       <a href="#"> تماس بگیرین</a>
                     </p>
                     {% elif product.min_price %}
-                    {{ product.min_price}} تومان
+                    {{ product.min_price|intcomma }} تومان
                     {% else %}
                     <span class="text-danger"> عدم موجودی</span>
                     {% endif %}

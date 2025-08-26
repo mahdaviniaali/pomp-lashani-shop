@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from products.views import ProductListView
 
 app_name = 'home'
 
@@ -11,6 +12,6 @@ urlpatterns = [
     # Partials
     path('partials/address', views.UserAddressListView.as_view(), name='address'),
     path('partials/userinfo', views.UserInfoView.as_view(), name='userinfo'),
-    path('partials/product_search', views.ProductSearch.as_view(), name='product_search'),
+    path('partials/product_search', ProductListView.as_view(), name='product_search'),
     
 ]
