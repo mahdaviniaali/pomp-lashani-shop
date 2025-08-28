@@ -44,29 +44,12 @@ class Post(ModelMeta, models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title, allow_unicode=True)
-        super().save(*args, **kwargs)
-
-
-    def get_meta_image(self):
-        return self.image.url if self.image else None
-
-    def get_absolute_url(self):
-        from django.urls import reverse
-        return reverse('blog:blogdetail', args=[self.id, self.slug])
-        
-    def get_meta_url(self):
-        return self.get_absolute_url()
-
     class Meta:
         verbose_name = _("پست")
         verbose_name_plural = _("پست‌ها")
         ordering = ['-published_at']
 
 
-class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments', verbose_name=_("پست"))
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', verbose_name=_("کاربر"))
-    created_at = models.DateTimeField(_("تاریخ ایجاد"), auto_now_add=True)
     content = models.TextField(_("محتوا"))
     parent = models.ForeignKey(
         'self',
