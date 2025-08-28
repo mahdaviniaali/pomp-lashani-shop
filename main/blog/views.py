@@ -20,16 +20,23 @@ class Blog (View):
     
 class BlogDitail (View):
     def get (self ,request, pk=None, slug=None):
-        # اگر pk وجود داشته باشد، با آن جستجو می‌کنیم، در غیر این صورت با slug
-        if pk is not None:
-            post = Post.objects.get(id=pk)
-        else:
-            post = Post.objects.get(slug=slug)
-            
-        content= {
-            'post' : post
-        }
-        return render(request ,'single-blog.html' ,content )
+        try:
+            # اگر pk وجود داشته باشد، با آن جستجو می‌کنیم، در غیر این صورت با slug
+            if pk is not None:
+                post = Post.objects.get(id=pk)
+            else:
+                post = Post.objects.get(slug=slug)
+                
+            content= {
+                'post' : post
+            }
+            return render(request ,'single-blog.html' ,content )
+        except Post.DoesNotExist:
+            # در صورت عدم وجود پست، به صفحه لیست وبلاگ‌ها هدایت می‌کنیم
+            from django.contrib import messages
+            from django.shortcuts import redirect
+            messages.error(request, 'مقاله مورد نظر یافت نشد.')
+            return redirect('blog:bloglist')
     
 
 
