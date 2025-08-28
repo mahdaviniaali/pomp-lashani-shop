@@ -769,8 +769,8 @@
 
 .filters .filter-box .filter-groups .price-card .slider .progress {
     height: 100%;
-    right: 0%;
     left: 0%;
+    right: 0%;
     position: absolute;
     border-radius: 5px;
     background: var(--color-green2);
@@ -1794,8 +1794,8 @@
 
 .products-pg-style2 .tc-filter-wrapper-style2 .filter-body .price-card .slider .progress {
     height: 100%;
-    right: 0%;
     left: 0%;
+    right: 0%;
     position: absolute;
     border-radius: 5px;
     background: var(--color-darkGreen1);

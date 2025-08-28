@@ -53,15 +53,21 @@ class ProductQuerySet(QuerySet):
                 Q(tags__name__icontains=search)
             ).distinct()
 
-        # فیلتر قیمت
-        min_price = params.get('min_price')
-        max_price = params.get('max_price')
+        # فیلتر قیمت - اصلاح شده برای پشتیبانی از چندین پارامتر قیمت
+        min_prices = params.getlist('min_price')
+        max_prices = params.getlist('max_price')
         
-        if min_price and min_price.isdigit():
-            queryset = queryset.filter(min_price__gte=int(min_price))
+        # استفاده از اولین مقدار معتبر برای min_price
+        for min_price in min_prices:
+            if min_price and min_price.isdigit():
+                queryset = queryset.filter(min_price__gte=int(min_price))
+                break
         
-        if max_price and max_price.isdigit():
-            queryset = queryset.filter(max_price__lte=int(max_price))
+        # استفاده از اولین مقدار معتبر برای max_price
+        for max_price in max_prices:
+            if max_price and max_price.isdigit():
+                queryset = queryset.filter(max_price__lte=int(max_price))
+                break
 
         # فیلتر دسته‌بندی
         if category := params.get('category'):

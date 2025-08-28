@@ -313,6 +313,15 @@ $(document).ready(function() {
             return;
         }
         
+        // اگر قیمت‌ها در محدوده مجاز نیستند، هشدار بده
+        const minRange = parseInt(rangeInput[0].min) || 0;
+        const maxRange = parseInt(rangeInput[0].max) || 1000000;
+        
+        if (minPrice < minRange || maxPrice > maxRange) {
+            alert(`قیمت باید بین ${minRange.toLocaleString()} تا ${maxRange.toLocaleString()} تومان باشد`);
+            return;
+        }
+        
         updateUrlWithPrices(minPrice, maxPrice);
     });
 
@@ -324,6 +333,51 @@ $(document).ready(function() {
             }
         });
     });
+
+    // تابع برای آپدیت کردن محدوده قیمت
+    function updatePriceRange(categoryId = null) {
+        let url = '/products/price-range/';
+        if (categoryId) {
+            url += '?category=' + categoryId;
+        }
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // آپدیت کردن محدوده range inputs
+                rangeInput[0].min = data.min_price;
+                rangeInput[0].max = data.max_price;
+                rangeInput[1].min = data.min_price;
+                rangeInput[1].max = data.max_price;
+                
+                // آپدیت کردن مقادیر پیش‌فرض
+                rangeInput[0].value = data.min_price;
+                rangeInput[1].value = data.max_price;
+                priceInput[0].value = data.min_price;
+                priceInput[1].value = data.max_price;
+                
+                // آپدیت کردن محدوده input fields
+                priceInput[0].min = data.min_price;
+                priceInput[0].max = data.max_price;
+                priceInput[1].min = data.min_price;
+                priceInput[1].max = data.max_price;
+                
+                // آپدیت کردن progress bar
+                range.style.left = "0%";
+                range.style.right = "0%";
+            })
+            .catch(error => {
+                console.error('خطا در دریافت محدوده قیمت:', error);
+            });
+    }
+
+    // آپدیت کردن محدوده قیمت وقتی دسته‌بندی تغییر می‌کنه
+    const categorySelect = document.querySelector('select[name="category"]');
+    if (categorySelect) {
+        categorySelect.addEventListener('change', function() {
+            updatePriceRange(this.value);
+        });
+    }
 
     // کد موجود برای همگام‌سازی range و inputها
     priceInput.forEach((input) => {

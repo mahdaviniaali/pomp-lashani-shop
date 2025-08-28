@@ -121,23 +121,23 @@ home-style3 sin-prod-pg-1
                             </div>
                             <div class="range-input">
                               <input 
-                                name="min_price"  
-                                class="range-min" 
-                                max="99999990" 
-                                min="0" 
-                                step="100" 
+                                name="min_price_display"  
+                                class="range-min desktop-filter" 
+                                max="{{ price_range.max }}" 
+                                min="{{ price_range.min }}" 
+                                step="1000" 
                                 type="range" 
-                                value="0"
+                                value="{{ price_range.min }}"
                                 hx-trigger="change"  
                               />
                               <input 
-                                name="max_price"  
-                                class="range-max" 
-                                max="100000000" 
-                                min="0" 
-                                step="100" 
+                                name="max_price_display"  
+                                class="range-max desktop-filter" 
+                                max="{{ price_range.max }}" 
+                                min="{{ price_range.min }}" 
+                                step="1000" 
                                 type="range" 
-                                value="100000000"
+                                value="{{ price_range.max }}"
                                 hx-trigger="change" 
                               />
                             </div>
@@ -147,10 +147,12 @@ home-style3 sin-prod-pg-1
                                   <div class="field">
                                     <span class="sympol">تومان</span>
                                     <input
-                                      name="min_price"  
-                                      class="input-min"
+                                      name="min_price_display"  
+                                      class="input-min desktop-filter"
                                       type="number"
-                                      value="0"
+                                      value="{{ price_range.min }}"
+                                      min="{{ price_range.min }}"
+                                      max="{{ price_range.max }}"
                                       hx-trigger="change, keyup delay:500ms"  
                                     />
                                   </div>
@@ -158,10 +160,12 @@ home-style3 sin-prod-pg-1
                                   <div class="field">
                                     <span class="sympol">تومان</span>
                                     <input
-                                      name="max_price"  
-                                      class="input-max"
+                                      name="max_price_display"  
+                                      class="input-max desktop-filter"
                                       type="number"
-                                      value="10000000"
+                                      value="{{ price_range.max }}"
+                                      min="{{ price_range.min }}"
+                                      max="{{ price_range.max }}"
                                       hx-trigger="change, keyup delay:500ms"  
                                     />
                                   </div>
@@ -172,7 +176,7 @@ home-style3 sin-prod-pg-1
                                   type="button" 
                                   class="bttn"
                                   hx-get="{% url 'products:product_partial' %}"
-                                  hx-include="[name='min_price'], [name='max_price']"
+                                  hx-include="#hidden_min_price, #hidden_max_price"
                                   hx-target="#product-list"
                                 >
                                   رفتن
@@ -202,7 +206,7 @@ home-style3 sin-prod-pg-1
                                 hx-get="{% url 'products:product_partial' %}"
                                 hx-target="#product-list"
                                 hx-trigger="change"
-                                hx-include="[name='min_price'], [name='max_price'], [name='brand'], [name='category']"
+                                hx-include="#hidden_min_price, #hidden_max_price, [name='brand'], [name='category']"
                                 hx-indicator="#loading-spinner">
                           
                           <option value="">پیش فرض</option>
@@ -232,7 +236,7 @@ home-style3 sin-prod-pg-1
                                 hx-get="{% url 'products:product_partial' %}"
                                 hx-target="#product-list"
                                 hx-trigger="change"
-                                hx-include="[name='min_price'], [name='max_price'], [name='brand'], [name='category']"
+                                hx-include="#hidden_min_price, #hidden_max_price, [name='brand'], [name='category']"
                                 hx-indicator="#loading-spinner">
                           
                           <option value="">پیش فرض</option>
@@ -258,8 +262,8 @@ home-style3 sin-prod-pg-1
                         
                         <div id="product-list" 
                             hx-get="{% url 'products:product_partial' %}" 
-                            hx-trigger="change from:input, change from:select"
-                            hx-include="[name='min_price'], [name='max_price'], [name='brand'], [name='category'], [name='order'], [name='search']"
+                            hx-trigger="change from:input:not([disabled]), change from:select"
+                            hx-include="#hidden_min_price, #hidden_max_price, [name='brand'], [name='category'], [name='order'], [name='search']"
                             hx-indicator="#loading-spinner">
                           {% include 'product_cards.html' %}
                         </div>
@@ -284,6 +288,159 @@ home-style3 sin-prod-pg-1
         <!--End-Contents-->
       </div>
     </div>
+
+    <!-- اضافه کردن فیلدهای مخفی برای ارسال مقادیر واقعی -->
+    <input type="hidden" id="hidden_min_price" name="min_price" value="{{ price_range.min }}">
+    <input type="hidden" id="hidden_max_price" name="max_price" value="{{ price_range.max }}">
+
+    <!-- اسکریپت برای مدیریت فرم‌های فیلتر -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // فیلدهای مخفی برای ارسال مقادیر واقعی
+        const hiddenMinPrice = document.getElementById('hidden_min_price');
+        const hiddenMaxPrice = document.getElementById('hidden_max_price');
+        
+        // تابع برای مدیریت فیلدهای فیلتر بر اساس اندازه صفحه
+        function handleFilterForms() {
+          const isMobile = window.innerWidth < 992; // همان breakpoint که در Bootstrap برای lg استفاده می‌شود
+          
+          // فیلدهای دکوری دسکتاپ
+          const desktopFilters = document.querySelectorAll('.desktop-filter');
+          // فیلدهای دکوری موبایل
+          const mobileFilters = document.querySelectorAll('.mobile-filter');
+          
+          // غیرفعال کردن فرم‌های نامناسب برای نمایش
+          desktopFilters.forEach(filter => {
+            filter.disabled = isMobile;
+            // تبدیل به حالت دکوری
+            if (filter.type === 'number') {
+              filter.readOnly = true;
+            }
+          });
+          
+          mobileFilters.forEach(filter => {
+            filter.disabled = !isMobile;
+            // تبدیل به حالت دکوری
+            if (filter.type === 'number') {
+              filter.readOnly = true;
+            }
+          });
+        }
+        
+        // تابع به‌روزرسانی نوار پیشرفت قیمت در حالت موبایل
+        function updateMobilePriceProgress() {
+          const mobileMinRange = document.querySelector('.mobile-filter[name="min_price_display"][type="range"]');
+          const mobileMaxRange = document.querySelector('.mobile-filter[name="max_price_display"][type="range"]');
+          const progressBar = document.getElementById('mobile-price-progress');
+          
+          if (mobileMinRange && mobileMaxRange && progressBar) {
+            const minVal = parseInt(mobileMinRange.value);
+            const maxVal = parseInt(mobileMaxRange.value);
+            const minPossible = parseInt(mobileMinRange.min);
+            const maxPossible = parseInt(mobileMaxRange.max);
+            
+            // محاسبه درصد برای تنظیم نوار پیشرفت - اصلاح شده برای RTL
+            const rightPercent = ((minVal - minPossible) / (maxPossible - minPossible)) * 100;
+            const leftPercent = 100 - ((maxVal - minPossible) / (maxPossible - minPossible)) * 100;
+            
+            // تنظیم استایل نوار پیشرفت
+            progressBar.style.right = rightPercent + '%';
+            progressBar.style.left = leftPercent + '%';
+          }
+        }
+        
+        // تابع برای به‌روزرسانی فیلدهای مخفی و همگام‌سازی فیلدهای دکوری
+        function updateHiddenFields(name, value) {
+          // به‌روزرسانی فیلدهای مخفی
+          if (name === 'min_price_display') {
+            hiddenMinPrice.value = value;
+          } else if (name === 'max_price_display') {
+            hiddenMaxPrice.value = value;
+          }
+          
+          // به‌روزرسانی همه فیلدهای دکوری
+          updateAllDisplayFields();
+        }
+        
+        // تابع برای به‌روزرسانی همه فیلدهای دکوری بر اساس مقادیر مخفی
+        function updateAllDisplayFields() {
+          const minValue = hiddenMinPrice.value;
+          const maxValue = hiddenMaxPrice.value;
+          
+          // به‌روزرسانی فیلدهای دکوری دسکتاپ
+          const desktopMinRange = document.querySelector('.desktop-filter[name="min_price_display"][type="range"]');
+          const desktopMaxRange = document.querySelector('.desktop-filter[name="max_price_display"][type="range"]');
+          const desktopMinInput = document.querySelector('.desktop-filter.input-min');
+          const desktopMaxInput = document.querySelector('.desktop-filter.input-max');
+          
+          if (desktopMinRange) desktopMinRange.value = minValue;
+          if (desktopMaxRange) desktopMaxRange.value = maxValue;
+          if (desktopMinInput) desktopMinInput.value = minValue;
+          if (desktopMaxInput) desktopMaxInput.value = maxValue;
+          
+          // به‌روزرسانی فیلدهای دکوری موبایل
+          const mobileMinRange = document.querySelector('.mobile-filter[name="min_price_display"][type="range"]');
+          const mobileMaxRange = document.querySelector('.mobile-filter[name="max_price_display"][type="range"]');
+          const mobileMinInput = document.querySelector('.mobile-filter.input-min');
+          const mobileMaxInput = document.querySelector('.mobile-filter.input-max');
+          
+          if (mobileMinRange) mobileMinRange.value = minValue;
+          if (mobileMaxRange) mobileMaxRange.value = maxValue;
+          if (mobileMinInput) mobileMinInput.value = minValue;
+          if (mobileMaxInput) mobileMaxInput.value = maxValue;
+          
+          // به‌روزرسانی نوار پیشرفت
+          updateMobilePriceProgress();
+        }
+        
+        // اضافه کردن رویدادهای تغییر برای همگام‌سازی مقادیر اسلایدرها و فیلدهای عددی
+        const priceRanges = document.querySelectorAll('input[type="range"][name="min_price_display"], input[type="range"][name="max_price_display"]');
+        
+        priceRanges.forEach(range => {
+          range.addEventListener('input', function(event) {
+            const name = event.target.name;
+            const value = event.target.value;
+            
+            // به‌روزرسانی فیلدهای مخفی و همگام‌سازی فیلدهای دکوری
+            updateHiddenFields(name, value);
+            
+            // به‌روزرسانی فیلد عددی متناظر
+            const isMobileFilter = event.target.classList.contains('mobile-filter');
+            const correspondingInput = document.querySelector(`input[type="number"]${isMobileFilter ? '.mobile-filter' : '.desktop-filter'}.input-${name.includes('min') ? 'min' : 'max'}`);
+            if (correspondingInput) correspondingInput.value = value;
+          });
+        });
+        
+        // دکمه‌های «رفتن» برای اعمال فیلترها
+        const goButtons = document.querySelectorAll('button.bttn[hx-get]');
+        
+        goButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            // اطمینان از اینکه درخواست HTMX با مقادیر به‌روز ارسال می‌شود
+            const hxInclude = this.getAttribute('hx-include');
+            if (hxInclude && hxInclude.includes('mobile-filter')) {
+              // برای درخواست‌های موبایل
+              this.setAttribute('hx-include', '#hidden_min_price, #hidden_max_price');
+            } else {
+              // برای درخواست‌های دسکتاپ
+              this.setAttribute('hx-include', '#hidden_min_price, #hidden_max_price');
+            }
+          });
+        });
+        
+        // اجرای اولیه
+        handleFilterForms();
+        
+        // به‌روزرسانی اولیه نوار پیشرفت قیمت
+        setTimeout(updateMobilePriceProgress, 100);
+        
+        // اجرا در هنگام تغییر اندازه صفحه
+        window.addEventListener('resize', function() {
+          handleFilterForms();
+          setTimeout(updateMobilePriceProgress, 100);
+        });
+      });
+    </script>
 
     <!-- Offcanvas Filter -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFilter">
@@ -358,34 +515,42 @@ home-style3 sin-prod-pg-1
             <div class="group-body">
               <div class="price-card">
                 <div class="slider">
-                  <div class="progress"></div>
+                  <div class="progress" id="mobile-price-progress"></div>
                 </div>
                 <div class="range-input">
-                  <input name="min_price" class="range-min" max="99999990" min="0" step="100" type="range"
-                         value="0" hx-trigger="change" />
-                  <input name="max_price" class="range-max" max="100000000" min="0" step="100" type="range"
-                         value="100000000" hx-trigger="change" />
+                  <input name="min_price_display" class="range-min mobile-filter" max="{{ price_range.max }}" min="{{ price_range.min }}" step="1000" type="range"
+                         value="{{ price_range.min }}" hx-trigger="change, input delay:500ms" hx-get="{% url 'products:product_partial' %}" hx-target="#product-list" hx-include="#hidden_min_price, #hidden_max_price" />
+                  <input name="max_price_display" class="range-max mobile-filter" max="{{ price_range.max }}" min="{{ price_range.min }}" step="1000" type="range"
+                         value="{{ price_range.max }}" hx-trigger="change, input delay:500ms" hx-get="{% url 'products:product_partial' %}" hx-target="#product-list" hx-include="#hidden_min_price, #hidden_max_price" />
                 </div>
                 <div class="row mt-20 align-items-center gx-0">
                   <div class="col-9">
                     <div class="price-input">
                       <div class="field">
                         <span class="sympol">تومان</span>
-                        <input name="min_price" class="input-min" type="number" value="0"
-                               hx-trigger="change, keyup delay:500ms" />
+                        <input name="min_price_display" class="input-min mobile-filter" type="number" value="{{ price_range.min }}"
+                               min="{{ price_range.min }}" max="{{ price_range.max }}"
+                               hx-trigger="change, keyup delay:500ms" 
+                               hx-get="{% url 'products:product_partial' %}" 
+                               hx-target="#product-list" 
+                               hx-include="#hidden_min_price, #hidden_max_price" />
                       </div>
                       <div class="separator"></div>
                       <div class="field">
                         <span class="sympol">تومان</span>
-                        <input name="max_price" class="input-max" type="number" value="10000000"
-                               hx-trigger="change, keyup delay:500ms" />
+                        <input name="max_price_display" class="input-max mobile-filter" type="number" value="{{ price_range.max }}"
+                               min="{{ price_range.min }}" max="{{ price_range.max }}"
+                               hx-trigger="change, keyup delay:500ms" 
+                               hx-get="{% url 'products:product_partial' %}" 
+                               hx-target="#product-list" 
+                               hx-include="#hidden_min_price, #hidden_max_price" />
                       </div>
                     </div>
                   </div>
                   <div class="col-3 text-end">
                     <button type="button" class="bttn"
                             hx-get="{% url 'products:product_partial' %}"
-                            hx-include="[name='min_price'], [name='max_price']"
+                            hx-include="#hidden_min_price, #hidden_max_price"
                             hx-target="#product-list">
                       رفتن
                     </button>

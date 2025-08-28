@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from categories.models import Category, Brand
 from .models import Product
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 
 
@@ -29,9 +30,27 @@ class ProductPartials(ProductBaseView):
         products = self.get_filtered_products(request)
         page_obj = self.paginate_products(request, products)
         
+        # محاسبه محدوده قیمت برای محصولات فیلتر شده
+        from django.db.models import Min, Max
+        price_range = products.aggregate(
+            min_price=Min('variants__price', filter=Q(variants__available=True, variants__stock__gt=0)),
+            max_price=Max('variants__price', filter=Q(variants__available=True, variants__stock__gt=0))
+        )
+        
+        # مقادیر پیش‌فرض اگر محصولی وجود نداره
+        min_price = price_range.get('min_price', 0) or 0
+        max_price = price_range.get('max_price', 1000000) or 1000000
+        
+        # گرد کردن به نزدیکترین 1000
+        min_price = (min_price // 1000) * 1000
+        max_price = ((max_price // 1000) + 1) * 1000
         
         context = {
             'page_obj': page_obj,
+            'price_range': {
+                'min': min_price,
+                'max': max_price,
+            }
         }
         return render(request, "product_cards.html", context)
 
@@ -54,11 +73,51 @@ class ProductListView(ProductBaseView):
         brands = Brand.objects.filter(product__in=products).distinct()
         page_obj = self.paginate_products(request, products)
         
+        # محاسبه محدوده قیمت واقعی محصولات
+        from django.db.models import Min, Max
+        price_range = Product.objects.filter(
+            variants__isnull=False, 
+            variants__available=True,
+            variants__stock__gt=0,
+            available=True
+        ).aggregate(
+            min_price=Min('variants__price'),
+            max_price=Max('variants__price')
+        )
+        
+        # اگر فیلتر دسته‌بندی اعمال شده، محدوده قیمت رو برای اون دسته محاسبه کن
+        if pk:
+            category_price_range = Product.objects.filter(
+                category__id=pk,
+                variants__isnull=False, 
+                variants__available=True,
+                variants__stock__gt=0,
+                available=True
+            ).aggregate(
+                min_price=Min('variants__price'),
+                max_price=Max('variants__price')
+            )
+            # اگر محصولی در این دسته وجود داره، از محدوده دسته استفاده کن
+            if category_price_range['min_price'] is not None:
+                price_range = category_price_range
+        
+        # مقادیر پیش‌فرض اگر محصولی وجود نداره
+        min_price = price_range.get('min_price', 0) or 0
+        max_price = price_range.get('max_price', 1000000) or 1000000
+        
+        # گرد کردن به نزدیکترین 1000
+        min_price = (min_price // 1000) * 1000
+        max_price = ((max_price // 1000) + 1) * 1000
+        
         context={
             'page_obj': page_obj,
             'categories': categories,
             'brands': brands,
             'get_params': request.GET,
+            'price_range': {
+                'min': min_price,
+                'max': max_price,
+            }
         }
         if parent_category is not None:
             context['catname']=parent_category
@@ -85,3 +144,41 @@ class ProductDetailView(View):
             
         }
         return render(request, 'product_detail.html', context)
+
+
+class PriceRangeView(View):
+    """ویو برای گرفتن محدوده قیمت محصولات"""
+    
+    def get(self, request):
+        from django.db.models import Min, Max
+        from django.http import JsonResponse
+        
+        # فیلتر بر اساس دسته‌بندی اگر وجود دارد
+        category_id = request.GET.get('category')
+        products = Product.objects.filter(
+            variants__isnull=False, 
+            variants__available=True,
+            variants__stock__gt=0,
+            available=True
+        )
+        
+        if category_id:
+            products = products.filter(category__id=category_id)
+        
+        price_range = products.aggregate(
+            min_price=Min('variants__price'),
+            max_price=Max('variants__price')
+        )
+        
+        # مقادیر پیش‌فرض اگر محصولی وجود نداره
+        min_price = price_range.get('min_price', 0) or 0
+        max_price = price_range.get('max_price', 1000000) or 1000000
+        
+        # گرد کردن به نزدیکترین 1000
+        min_price = (min_price // 1000) * 1000
+        max_price = ((max_price // 1000) + 1) * 1000
+        
+        return JsonResponse({
+            'min_price': min_price,
+            'max_price': max_price,
+        })
