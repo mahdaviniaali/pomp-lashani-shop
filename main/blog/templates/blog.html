@@ -56,7 +56,7 @@
                         </div>
                         <h4 class="mb-3">{{ post.title }}</h4>
                         <p class="text-muted">{{ post.summary|truncatewords:20 }}</p>
-                        <a href="{% url 'blog:blogdetail' post.slug %}" class="read-more">
+                        <a href="{% url 'blog:blogdetail' post.id post.slug %}" class="read-more">
                             ادامه مطلب
                             <i class="fas fa-arrow-left me-2"></i>
                         </a>

@@ -109,7 +109,7 @@
             
             {% for related in related_posts %}
             <div class="col-md-4">
-                <a href="{% url 'blog:detail' related.slug %}" class="text-decoration-none text-dark">
+                <a href="{% url 'blog:blogdetail' related.id related.slug %}" class="text-decoration-none text-dark">
                     <div class="related-post">
                         <div class="p-4">
                             <h5>{{ related.title }}</h5>

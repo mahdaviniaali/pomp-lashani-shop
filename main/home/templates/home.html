@@ -1118,7 +1118,7 @@ home-style1
                     </div>
                     <div class="info">
                       <h6>
-                        <a class="fsz-18 fw-bold hover-blue1" href="{% url 'blog:blogdetail' post.slug %}">
+                        <a class="fsz-18 fw-bold hover-blue1" href="{% url 'blog:blogdetail' post.id post.slug %}">
                           {{ post.title|truncatewords:8 }}
                         </a>
                       </h6>

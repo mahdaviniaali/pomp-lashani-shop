@@ -50,6 +50,10 @@ class Post(ModelMeta, models.Model):
     def get_meta_image(self):
         return self.image.url if self.image else None
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('blog:blogdetail', args=[self.id, self.slug])
+        
     def get_meta_url(self):
         return self.get_absolute_url()
 

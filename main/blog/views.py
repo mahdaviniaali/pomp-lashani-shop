@@ -19,8 +19,13 @@ class Blog (View):
         return render(request ,'blog.html' ,content )
     
 class BlogDitail (View):
-    def get (self ,request ,slug):
-        post = Post.objects.get(slug=slug)
+    def get (self ,request, pk=None, slug=None):
+        # اگر pk وجود داشته باشد، با آن جستجو می‌کنیم، در غیر این صورت با slug
+        if pk is not None:
+            post = Post.objects.get(id=pk)
+        else:
+            post = Post.objects.get(slug=slug)
+            
         content= {
             'post' : post
         }

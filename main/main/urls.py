@@ -71,7 +71,7 @@ urlpatterns = [
             'changefreq': 'weekly',
             'priority': 0.6,
             'items': staticmethod(lambda: Post.objects.filter(available=True)),
-            'location': staticmethod(lambda obj: reverse('blog:blogdetail', args=[obj.slug])),
+            'location': staticmethod(lambda obj: reverse('blog:blogdetail', args=[obj.id, obj.slug])),
             'lastmod': staticmethod(lambda obj: obj.updated_at),
         })(),
         'categories': type('CategorySitemap', (Sitemap,), {
