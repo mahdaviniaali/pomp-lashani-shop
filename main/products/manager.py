@@ -46,7 +46,12 @@ class ProductQuerySet(QuerySet):
         )
         #جستجو
         if search := params.get('search'):
-            queryset = queryset.filter(title__icontains=search)
+            queryset = queryset.filter(
+                Q(title__icontains=search) |
+                Q(description__icontains=search) |
+                Q(brand__name__icontains=search) |
+                Q(tags__name__icontains=search)
+            ).distinct()
 
         # فیلتر قیمت
         min_price = params.get('min_price')

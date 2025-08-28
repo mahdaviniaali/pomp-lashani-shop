@@ -98,11 +98,11 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="search-cat d-none d-lg-block">
-          <div class="input-group">
+          <form class="input-group" method="get" action="{% url 'home:product_search' %}">
             <input class="form-control" placeholder="هر چیزی را جستجو کنید ..." name="search" type="text"
               value="{{ request.GET.search }}" />
-            <a class="search-btn" href="#"> <i class="fal fa-search"></i> </a>
-          </div>
+            <button class="search-btn" type="submit"> <i class="fal fa-search"></i> </button>
+          </form>
         </div>
         <div class="hot-line d-none d-lg-flex">
           <span class="icon"> <i class="las la-tty"></i> </span>
@@ -147,7 +147,6 @@
   <!--  End Nav  -->
 
   <!--  Start Link Nav  -->
-    {% if not request.path|slice:":12" == "/products/d/" %}
   <div class="tc-links-nav-style1 d-none d-lg-block">
     <div class="container justify-content-center">
       <div class="links">
@@ -214,7 +213,7 @@
       </div>
     </div>
   </div>
-    {% endif %}
+
   <!-- End Link Nav -->
 
 

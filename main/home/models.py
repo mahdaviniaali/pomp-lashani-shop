@@ -141,7 +141,7 @@ class Partner(models.Model):
     name = models.CharField(max_length=100, verbose_name="نام شرکت/برند")
     logo = models.ImageField(upload_to='partners/logos/', verbose_name="لوگو")
     description = models.TextField(blank=True, null=True, verbose_name="توضیحات")
-    website_url = models.URLField(verbose_name="آدرس وبسایت")
+    website_url = models.URLField(verbose_name="آدرس وبسایت", blank=True, null=True)
     is_active = models.BooleanField(default=True, verbose_name="فعال")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
