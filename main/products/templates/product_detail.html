@@ -393,15 +393,18 @@
 
 
 <!-- Mobile fixed action bar -->
-<section class="fixed-section d-lg-none w-100" style="position:fixed; bottom: 0; left:0; z-index:1050; background:#fff; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 100;">
-  <div class="container d-flex align-items-center justify-content-between py-3">
-    <div class="fixed-section-actions d-flex justify-content-between w-100 align-items-center">
-      <div id="product-list" class="w-100">
-        {% include 'product_count.html' with product=product %}
-      </div>
-    </div>
+<section class="fixed-section d-lg-none w-100" style="position:fixed; bottom: 0; left:0; z-index:1050; background:#fff; box-shadow: 0 -2px 10px rgba(0,0,0,0.1);">
+  <div id="product-list-mobile" 
+       hx-get="{% url 'carts:cart_count_mobile' product_id=product.id %}" 
+       hx-include="[name='variant']" 
+       hx-target="#product-list-mobile" 
+       hx-trigger="load,change from:input">
+    {% include 'product_count_mobile.html' with product=product %}
   </div>
 </section>
+
+<!-- Add bottom padding for mobile to prevent content from being hidden behind fixed bar -->
+<div class="d-lg-none" style="height: 80px;"></div>
 
 
 {% endblock %}

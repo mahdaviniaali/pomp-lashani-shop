@@ -136,6 +136,138 @@ class ProductQuantityInCart(View):
             "variant": productvariant
         })
 
+#نمایش تعداد محصول در سبد برای موبایل
+class ProductQuantityInCartMobile(View):
+    def get(self, request, product_id):
+        user = request.user
+        quantity = 0
+        product = None
+        productvariant = None
+
+        try:
+            product = get_object_or_404(Product, id=product_id)
+            variant_id = request.GET.get('variant')
+            productvariant = get_object_or_404(ProductVariant, product=product, id=variant_id)
+
+            if user.is_authenticated:
+                cart = Cart.objects.filter(user=user).with_related().first()
+                item = CartItem.objects.get(cart=cart, product_id=product_id, productvariant=productvariant)
+                quantity = item.quantity
+            else:
+                cart = request.session.get('cart', {})
+                quantity = cart.get(str(variant_id), 0)
+
+
+        except Exception as e:
+            quantity = 0
+
+        return render(request, 'product_count_mobile.html', {
+            "quantity": quantity,
+            "product": product,
+            "variant": productvariant
+        })
+
+#افزایش تعداد محصول در سبد برای موبایل
+class CartAddMobile(View):
+    def post(self, request):
+        form = CartAddForm(request.POST)
+        product = None
+        product_variant = None
+        quantity = 0
+        message = None
+        success = False
+
+        if form.is_valid():
+            product_id = form.cleaned_data['product_id']
+            variant_id = form.cleaned_data['variant']
+
+            product = get_object_or_404(Product, id=product_id)
+            product_variant = get_object_or_404(ProductVariant, product=product, id=variant_id)
+
+            if request.user.is_authenticated:
+                user = request.user
+                cart, _ = Cart.objects.get_or_create(user=user)
+                cart_item, created = CartItem.objects.get_or_create(
+                    cart=cart,
+                    product=product,
+                    productvariant=product_variant,
+                    defaults={'price': product_variant.price}
+                )
+
+                current_quantity = cart_item.quantity if not created else 0
+                if current_quantity + 1 > product_variant.stock:
+                    message = f'موجودی کافی نیست. حداکثر موجودی: {product_variant.stock}'
+                    quantity = current_quantity
+                else:
+                    quantity = cart_item.add_one()
+                    success = True
+
+            else:
+                session_cart = request.session.get('cart', {})
+                variant_key = variant_id
+                current_quantity = session_cart.get(str(variant_key), 0)
+             
+
+                if current_quantity + 1 > product_variant.stock:
+                    message = f'موجودی کافی نیست. حداکثر موجودی: {product_variant.stock}'
+                    quantity = current_quantity
+                else:
+                    quantity = current_quantity + 1
+                    session_cart[str(variant_key)] = quantity
+                    request.session['cart'] = session_cart
+                    request.session.modified = True
+                    success = True
+        
+
+            return render(request, 'product_count_mobile.html', {
+                'message': message,
+                'quantity': quantity,
+                'product': product,
+                'variant': product_variant,
+                'success': success
+            })
+
+#کاهش تعداد محصول در سبد برای موبایل
+class CartDecreaseMobile(View):
+    def post(self, request):
+        form = CartRemoveForm(request.POST)
+        user = request.user
+        quantity = 0
+        product = None
+        product_variant = None
+        
+        if form.is_valid():
+            product_id = form.cleaned_data['product_id']
+            variant_id = form.cleaned_data['variant']
+
+            product = get_object_or_404(Product, id=product_id)
+            product_variant = get_object_or_404(ProductVariant, product=product, id=variant_id)
+            
+            if user.is_authenticated:
+                cart = Cart.objects.filter(user=user).first()
+                if cart:
+                    cart_item = cart.items.filter(product_id=product_id).first()
+                    if cart_item:
+                        quantity = cart_item.decrease_one()
+            else:
+                session_cart = request.session.get('cart', {})
+                variant_key = variant_id
+                current_quantity = session_cart.get(str(variant_key), 0)
+              
+
+                if current_quantity < 1:
+                    quantity = 0
+                else:
+                    quantity = current_quantity - 1  
+                    session_cart[variant_key] = quantity
+                    request.session['cart'] = session_cart
+                    request.session.modified = True
+        return render(request, 'product_count_mobile.html', {
+            'quantity': quantity,
+            'product': product,
+            'variant': product_variant,
+        })
+
 #فقط برای اعداد
 class ProductQuantityInCartJustNumber(View):
     def get(self, request, product_id):

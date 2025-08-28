@@ -1,16 +1,19 @@
 from django.urls import path
 from .views import (
-    CartAdd, CartRemove, CartDecrease, CartClear, CartDetail, ProductQuantityInCart, ProductQuantityInCartJustNumber, CartAddJustNumber
-,CartDecreaseJustNumber, CartTotalView, CartItemListViewHtmx
+    CartAdd, CartRemove, CartDecrease, CartClear, CartDetail, ProductQuantityInCart, ProductQuantityInCartMobile, ProductQuantityInCartJustNumber, CartAddJustNumber
+,CartDecreaseJustNumber, CartTotalView, CartItemListViewHtmx, CartAddMobile, CartDecreaseMobile
 )
 
 app_name = 'carts'
 
 urlpatterns = [
     path('cart/add', CartAdd.as_view(), name='cartadd'),
+    path('cart/add-mobile', CartAddMobile.as_view(), name='cartadd_mobile'),
     path('cart/count/<product_id>', ProductQuantityInCart.as_view(), name='cart_count'),
+    path('cart/count-mobile/<product_id>', ProductQuantityInCartMobile.as_view(), name='cart_count_mobile'),
     path('cart/remove/', CartRemove.as_view(), name='cart_remove'),
     path('cart/decrease/', CartDecrease.as_view(), name='cart_decrease'),
+    path('cart/decrease-mobile/', CartDecreaseMobile.as_view(), name='cart_decrease_mobile'),
     path('cart/clear/', CartClear.as_view(), name='cart_clear'),
     path('cart/', CartDetail.as_view(), name='cart_detail'),
     #partials

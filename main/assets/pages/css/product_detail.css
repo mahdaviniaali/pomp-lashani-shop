@@ -149,6 +149,116 @@
     margin: 1rem 0;
 }
 
+/* استایل‌های مخصوص موبایل */
+@media (max-width: 991px) {
+    .fixed-section {
+        padding: 10px 15px !important;
+        border-top: 1px solid #e0e0e0;
+        background: #fff !important;
+    }
+    
+    .fixed-section .quantity-control {
+        gap: 8px;
+        margin: 0;
+        justify-content: center;
+    }
+    
+    .fixed-section .btn-quantity {
+        width: 45px;
+        height: 45px;
+        border-radius: 8px;
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+    
+    .fixed-section .btn-quantity:hover {
+        background: #e9ecef;
+        border-color: #0d6efd;
+        transform: scale(1.05);
+    }
+    
+    .fixed-section .btn-quantity:active {
+        transform: scale(0.95);
+    }
+    
+    .fixed-section .quantity-input {
+        width: 70px;
+        height: 45px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        text-align: center;
+        background: #fff;
+    }
+    
+    .fixed-section .butn {
+        height: 45px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .fixed-section .butn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .fixed-section h4 {
+        font-size: 18px !important;
+        margin-bottom: 5px !important;
+        color: #0d6efd !important;
+    }
+    
+    .fixed-section small {
+        font-size: 11px !important;
+        color: #666 !important;
+    }
+    
+    .fixed-section p {
+        font-size: 11px !important;
+        margin: 5px 0 !important;
+    }
+    
+    /* بهبود نمایش در موبایل */
+    .fixed-section #product-list {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .fixed-section .price-section {
+        flex: 1;
+        text-align: right;
+        min-width: 120px;
+    }
+    
+    .fixed-section .action-section {
+        flex: 1;
+        text-align: left;
+        min-width: 200px;
+    }
+    
+    /* بهبود نمایش متن‌ها */
+    .fixed-section .fsz-12 {
+        font-size: 11px !important;
+    }
+    
+    .fixed-section .color-green2 {
+        color: #28a745 !important;
+    }
+    
+    .fixed-section .text-danger {
+        color: #dc3545 !important;
+    }
+}
+
 /* واکنشگرایی */
 @media (max-width: 768px) {
     .specs-row {
@@ -163,6 +273,32 @@
     .nav-pills .nav-link {
         padding: 0.5rem 1rem;
         font-size: 0.9rem;
+    }
+    
+    /* بهبود بیشتر برای موبایل‌های کوچک */
+    .fixed-section {
+        padding: 8px 10px !important;
+    }
+    
+    .fixed-section .btn-quantity {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+    }
+    
+    .fixed-section .quantity-input {
+        width: 60px;
+        height: 40px;
+        font-size: 14px;
+    }
+    
+    .fixed-section .butn {
+        height: 40px;
+        font-size: 13px;
+    }
+    
+    .fixed-section h4 {
+        font-size: 16px !important;
     }
 }
 
