@@ -44,12 +44,17 @@ class Post(ModelMeta, models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title, allow_unicode=True)
+        super().save(*args, **kwargs)
+        
     class Meta:
         verbose_name = _("پست")
         verbose_name_plural = _("پست‌ها")
         ordering = ['-published_at']
 
 
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments', verbose_name=_("پست"))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', verbose_name=_("کاربر"))
     content = models.TextField(_("محتوا"))
     parent = models.ForeignKey(
         'self',
@@ -59,6 +64,7 @@ class Post(ModelMeta, models.Model):
         related_name='replies',
         verbose_name=_("کامنت والد")
     )
+    created_at = models.DateTimeField(_("تاریخ ایجاد"), auto_now_add=True)
     likes_count = models.IntegerField(_("تعداد لایک‌ها"), default=0)
     available = models.BooleanField(_("فعال"), default=True)
     history = AuditlogHistoryField(verbose_name=_('تاریخچه'), null=True, blank=True)
