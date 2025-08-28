@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load main_filters %} 
 {% block title %}{{ post.title }} | {{ company_info.name|default:global_settings.site_title }}{% endblock %}
 {% block meta_title %}{{ post.title }} | {{ company_info.name|default:global_settings.site_title }}{% endblock %}
 {% block meta_description %}{{ post.summary|default:post.title }}{% endblock %}
@@ -42,8 +43,9 @@
                     <div class="article-meta">
                         <div class="meta-item">
                             <i class="far fa-calendar-alt"></i>
-                            <span>{{ post.created_at }}</span>
+                            <span>{{ post.created_at|to_jalali:"month_year" }}</span>
                         </div>
+
                         
                         <div class="meta-item">
                             <i class="far fa-clock"></i>
@@ -64,33 +66,34 @@
                     </div>
                     {% endif %}
                 </article>
+                
                 <!-- بخش نظرات -->
                 <div class="mt-5 pt-4 border-top">
-    <h4 class="mb-4">نظرات 
-    
-    <!-- فرم نظر با HTMX پیشرفته -->
-    <form hx-post="{% url 'blog:add_comment' post.id %}"
-          hx-target=".comments-list"
-          hx-swap="afterbegin"
-          _="on htmx:afterRequest reset() me"
-          class="comment-form mb-5">
-        {% csrf_token %}
-        <div class="row g-3">
-            <div class="col-12">
-                <textarea name="body" class="form-control" rows="4" placeholder="نظر شما..." required></textarea>
-            </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary px-4"
-                        _="on click if my.form.checkValidity() is false call event.preventDefault()">
-                    ارسال نظر
-                </button>
-            </div>
-        </div>
-    </form>
+                    <h4 class="mb-4">نظرات</h4>
+                    
+                    <!-- فرم نظر -->
+                    <form hx-post="{% url 'blog:add_comment' post.id %}"
+                          hx-target=".comments-list"
+                          hx-swap="afterbegin"
+                          _="on htmx:afterRequest reset() me"
+                          class="comment-form mb-5">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <textarea name="body" class="form-control" rows="4" placeholder="نظر شما..." required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary px-4"
+                                        _="on click if my.form.checkValidity() is false call event.preventDefault()">
+                                    ارسال نظر
+                                </button>
+                            </div>
+                        </div>
+                    </form>
 
-    <!-- لیست نظرات -->
-    <div class="comments-list" hx-get="{% url 'blog:comment_list' post.id %}" 
-                                            hx-trigger="load, new-comment from:body">
+                    <!-- لیست نظرات -->
+                    <div class="comments-list" hx-get="{% url 'blog:comment_list' post.id %}" 
+                         hx-trigger="load, new-comment from:body">
                         {% include 'comment_list.html' %}
                     </div>
                 </div>
@@ -112,7 +115,8 @@
                             <h5>{{ related.title }}</h5>
                             <p class="text-muted small">{{ related.summary|truncatewords:15 }}</p>
                             <div class="d-flex justify-content-between small">
-                                <span>{{ related.jalali_publish }}</span>
+                                <!-- استفاده از تاریخ شمسی برای مقالات مرتبط -->
+                                <span>{{ related.created_at|to_jalali:"short_month" }}</span>
                                 <span>{{ related.views }} بازدید</span>
                             </div>
                         </div>

@@ -5,10 +5,12 @@ from auditlog.models import AuditlogHistoryField
 from auditlog.registry import auditlog
 from django.utils.translation import gettext_lazy as _
 from meta.models import ModelMeta
+from slugify import slugify
+
 
 class Post(ModelMeta, models.Model):
     title = models.CharField(_("عنوان"), max_length=255)
-    slug = models.SlugField(_("اسلاگ"), unique=True)
+    slug = models.CharField(_("اسلاگ"), max_length=700, unique=True, blank=True)
     content = CKEditor5Field(_("محتوا"), config_name='default')
     image = models.ImageField(_("تصویر"), upload_to='post_images/')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts', verbose_name=_("نویسنده"))
@@ -38,6 +40,12 @@ class Post(ModelMeta, models.Model):
         import re
         plain = re.sub('<[^<]+?>', '', self.content)
         return plain.strip()[:160]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title, allow_unicode=True)
+        super().save(*args, **kwargs)
+
 
     def get_meta_image(self):
         return self.image.url if self.image else None

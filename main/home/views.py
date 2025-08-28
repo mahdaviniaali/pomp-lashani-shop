@@ -82,7 +82,7 @@ class Home(View):
         # 7. کش مقالات/خبرنامه (روزانه آپدیت)
         posts = cache.get_or_set(
             'home_posts',
-            Post.objects.all()[:4],  # فقط 3 مقاله
+            Post.objects.all()[:4], 
             60 * 60 * 24  # 1 روز
         )
 
