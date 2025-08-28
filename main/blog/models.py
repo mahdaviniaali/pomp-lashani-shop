@@ -45,6 +45,10 @@ class Post(ModelMeta, models.Model):
         if not self.slug:
             self.slug = slugify(self.title, allow_unicode=True)
         super().save(*args, **kwargs)
+    
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('blog:blogdetail', kwargs={'pk': self.id, 'slug': self.slug})
         
     class Meta:
         verbose_name = _("پست")

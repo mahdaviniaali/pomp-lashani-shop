@@ -23,6 +23,7 @@ class BlogDitail (View):
         try:
             # اگر pk وجود داشته باشد، با آن جستجو می‌کنیم، در غیر این صورت با slug
             if pk is not None:
+                # pk از urls.py به عنوان int دریافت می‌شود، پس نیازی به تبدیل نیست
                 post = Post.objects.get(id=pk)
             else:
                 post = Post.objects.get(slug=slug)
