@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحه پیدا نشد - 404</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Dana', 'Vazir', sans-serif;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+        
+        .error-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+        }
+        
+        .error-icon {
+            font-size: 120px;
+            color: #dc2626;
+            margin-bottom: 30px;
+            animation: bounce 2s infinite;
+        }
+        
+        .error-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+        
+        .error-message {
+            font-size: 18px;
+            color: #64748b;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+        
+        .error-code {
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            border-radius: 18px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(5, 150, 105, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(5, 150, 105, 0.4);
+            background: linear-gradient(135deg, #047857 0%, #059669 100%);
+        }
+        
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+        
+        .search-box {
+            display: flex;
+            max-width: 500px;
+            width: 100%;
+            margin: 30px 0;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 16px 24px;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px 0 0 18px;
+            font-size: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-button {
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            padding: 0 24px;
+            border-radius: 0 18px 18px 0;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(37, 99, 235, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .search-button:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+        }
+        
+        .footer {
+            background: #ffffff;
+            border-top: 1px solid #e8e8e8;
+            padding: 24px 20px;
+            color: #64748b;
+            font-size: 14px;
+            margin-top: auto;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .error-icon {
+                font-size: 80px;
+            }
+            
+            .error-title {
+                font-size: 28px;
+            }
+            
+            .error-message {
+                font-size: 16px;
+            }
+            
+            .btn {
+                padding: 14px 24px;
+                font-size: 15px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-content">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            
+            <div class="error-code">خطای ۴۰۴</div>
+            
+            <h1 class="error-title">صفحه مورد نظر پیدا نشد!</h1>
+            
+            <p class="error-message">
+                متأسفیم، صفحه‌ای که به دنبال آن هستید وجود ندارد یا منتقل شده است. 
+                می‌توانید از طریق جستجو یا دکمه‌های زیر به صفحه اصلی بازگردید.
+            </p>
+            
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="چه چیزی را جستجو می‌کنید؟">
+                <button class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="/" class="btn btn-primary">
+                    <i class="fas fa-home"></i>
+                    بازگشت به صفحه اصلی
+                </a>
+                
+                <a href="/products" class="btn btn-secondary">
+                    <i class="fas fa-shopping-bag"></i>
+                    مشاهده محصولات
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="container">
+            <p>© ۲۰۲۳ - تمام حقوق محفوظ است</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.querySelector('.search-button').addEventListener('click', function() {
+            const searchQuery = document.querySelector('.search-input').value;
+            if(searchQuery.trim() !== '') {
+                window.location.href = '/search?q=' + encodeURIComponent(searchQuery);
+            }
+        });
+        
+        document.querySelector('.search-input').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') {
+                document.querySelector('.search-button').click();
+            }
+        });
+    </script>
+</body>
+</html>

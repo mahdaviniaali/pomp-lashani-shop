@@ -27,6 +27,7 @@ class CartDetail(View):
             ).get(user=user)
             
             items = []
+            total_items = 0
             for item in cart.items.all():
                 items.append({
                     'id': item.id,
@@ -36,10 +37,12 @@ class CartDetail(View):
                     'price': item.productvariant.price,
                     'total': item.quantity * item.productvariant.price
                 })
+                total_items += item.quantity
             
             return {
                 'cart_items': items,
                 'total_price': cart.total_price,
+                'total_items': total_items,
                 'cart': cart
             }
         except Exception as e:
@@ -52,6 +55,7 @@ class CartDetail(View):
             variant_ids = [int(k) for k in session_cart.keys() if k.isdigit()]
             items = []
             total = 0
+            total_items = 0
             
             if variant_ids:
                 variants = ProductVariant.objects.filter(
@@ -72,10 +76,12 @@ class CartDetail(View):
                     })
                     
                     total += item_total
+                    total_items += quantity
             
             return {
                 'cart_items': items,
                 'total_price': total,
+                'total_items': total_items,
                 'cart': None  # برای یکسان‌سازی با حالت لاگین کرده
             }
         except Exception as e:
@@ -88,7 +94,8 @@ class CartDetail(View):
         context = {
             'total_price': 0,
             'cart_items': [],
-            'cart': None
+            'cart': None,
+            'total_items': 0,
         }
         
         if request.user.is_authenticated:
@@ -246,22 +253,24 @@ class CartDecreaseMobile(View):
             if user.is_authenticated:
                 cart = Cart.objects.filter(user=user).first()
                 if cart:
-                    cart_item = cart.items.filter(product_id=product_id).first()
+                    cart_item = cart.items.filter(product_id=product_id, productvariant=product_variant).first()
                     if cart_item:
                         quantity = cart_item.decrease_one()
             else:
                 session_cart = request.session.get('cart', {})
-                variant_key = variant_id
-                current_quantity = session_cart.get(str(variant_key), 0)
+                variant_key = str(variant_id)
+                current_quantity = session_cart.get(variant_key, 0)
               
 
-                if current_quantity < 1:
+                if current_quantity <= 1:
                     quantity = 0
+                    if variant_key in session_cart:
+                        del session_cart[variant_key]
                 else:
                     quantity = current_quantity - 1  
                     session_cart[variant_key] = quantity
-                    request.session['cart'] = session_cart
-                    request.session.modified = True
+                request.session['cart'] = session_cart
+                request.session.modified = True
         return render(request, 'product_count_mobile.html', {
             'quantity': quantity,
             'product': product,
@@ -337,14 +346,17 @@ class CartItemListViewHtmx(View):
         else:
             session_cart = request.session.get('cart', {})
             cart_items = []
-            variant = ProductVariant.objects.filter(id__in=session_cart.keys())
-            Product = Product.objects.filter(variants__in=variant)
-            for product in Product:
-                quantity = session_cart.get(str(product.variants.first().id), 0)
-                cart_items.append({
-                    'product': product,
-                    'quantity': quantity,
-                })
+            # اصلاح: بر اساس واریانت‌های موجود در سشن، آیتم‌ها را بساز
+            variant_ids = [int(k) for k in session_cart.keys() if str(k).isdigit()]
+            variants = ProductVariant.objects.filter(id__in=variant_ids).select_related('product')
+            for variant in variants:
+                quantity = session_cart.get(str(variant.id), 0)
+                if quantity > 0:
+                    cart_items.append({
+                        'product': variant.product,
+                        'quantity': quantity,
+                        'productvariant': variant,
+                    })
 
         return render(request, 'cart_items_list.html', {'cart_items': cart_items})
     
@@ -373,15 +385,15 @@ class CartRemove(View):
             if user.is_authenticated:
                 cart = Cart.objects.filter(user=user).first()
                 if cart:
-                    cart_item = cart.items.filter(product_id=product_id).first()
+                    cart_item = cart.items.filter(product_id=product_id, productvariant=product_variant).first()
                     if cart_item:
                         cart_item.delete()
             else:
                 session_cart = request.session.get('cart', {})
-                variant_key = variant_id
+                variant_key = str(variant_id)
                 
-                if str(variant_key) in session_cart:
-                    del session_cart[str(variant_key)]
+                if variant_key in session_cart:
+                    del session_cart[variant_key]
                     request.session['cart'] = session_cart
                     request.session.modified = True
 
@@ -421,22 +433,24 @@ class CartDecrease(View):
             if user.is_authenticated:
                 cart = Cart.objects.filter(user=user).first()
                 if cart:
-                    cart_item = cart.items.filter(product_id=product_id).first()
+                    cart_item = cart.items.filter(product_id=product_id, productvariant=product_variant).first()
                     if cart_item:
                         quantity = cart_item.decrease_one()
             else:
                 session_cart = request.session.get('cart', {})
-                variant_key = variant_id
-                current_quantity = session_cart.get(str(variant_key), 0)
+                variant_key = str(variant_id)
+                current_quantity = session_cart.get(variant_key, 0)
               
 
-                if current_quantity < 1:
+                if current_quantity <= 1:
                     quantity = 0
+                    if variant_key in session_cart:
+                        del session_cart[variant_key]
                 else:
                     quantity = current_quantity - 1  
                     session_cart[variant_key] = quantity
-                    request.session['cart'] = session_cart
-                    request.session.modified = True
+                request.session['cart'] = session_cart
+                request.session.modified = True
         return render(request, 'product_count.html', {
             'quantity': quantity,
             'product': product,
@@ -463,11 +477,13 @@ class CartDecreaseJustNumber(View):
                         quantity = cart_item.decrease_one()
             else:
                 session_cart = request.session.get('cart', {})
-                variant_key = variant_id
-                current_quantity = session_cart.get(str(variant_key), 0)
+                variant_key = str(variant_id)
+                current_quantity = session_cart.get(variant_key, 0)
             
-                if current_quantity < 1:
+                if current_quantity <= 1:
                     quantity = 0
+                    if variant_key in session_cart:
+                        del session_cart[variant_key]
                 else:
                     quantity = current_quantity - 1  
                     session_cart[variant_key] = quantity

@@ -207,6 +207,30 @@ class AddressListView(LoginRequiredMixin, View):
         return render(request, 'partials/user_addresses.html', context)
 
 
+# حذف آدرس
+class DeleteAddress(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        address = Address.objects.filter(pk=pk, user=request.user).first()
+        if address:
+            address.delete()
+        # برگرداندن لیست جدید آدرس‌ها به عنوان partial
+        addresses = Address.objects.filter(user=request.user)
+        return render(request, 'partials/user_addresses.html', { 'addresses': addresses })
+
+# ویرایش آدرس
+class EditAddress(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        address = Address.objects.filter(pk=pk, user=request.user).first()
+        if not address:
+            return JsonResponse({'success': False}, status=404)
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            for field, value in form.cleaned_data.items():
+                setattr(address, field, value)
+            address.save()
+            addresses = Address.objects.filter(user=request.user)
+            return render(request, 'partials/user_addresses.html', { 'addresses': addresses })
+        return render(request, 'partials/add_address_form.html', {'errors': form.errors})
 
 
 

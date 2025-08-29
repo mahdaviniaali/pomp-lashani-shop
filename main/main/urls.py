@@ -33,14 +33,14 @@ import re
 
 class PersianSlugConverter:
     # الگوی بهبود یافته برای اسلاگ‌های فارسی/انگلیسی
-    regex = r'[\w\-_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]+'
+    regex = r'[\w\-_[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF}]+'
     
     def to_python(self, value):
         return value
     
     def to_url(self, value):
         # اطمینان از URL-safe بودن مقدار
-        return re.sub(r'[^\w\-_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]', '', value)
+        return re.sub(r'[^\w\-_[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]]', '', value)
 
 # Register the PersianSlugConverter
 register_converter(PersianSlugConverter, 'persianslug')
@@ -114,3 +114,6 @@ def robots_txt(_request):
 urlpatterns += [
     path('robots.txt', robots_txt, name='robots_txt')
 ]
+
+# Custom error handlers
+handler404 = 'main.views.custom_404_view'

@@ -218,7 +218,7 @@
 
 
   <div class="mob-navbar-style5 offcanvas offcanvas-start" id="offcanvasExample" tabindex="-1" aria-modal="true"
-    role="dialog" style="visibility: visible;">
+    role="dialog">
     <div class="icons">
       <a href="{% url 'users:profile' %}"> <i class="fal fa-user"></i> </a>
       <a href="{% url 'carts:cart_detail' %}">
@@ -230,7 +230,7 @@
         <img alt="لوگو" src="{{company_info.logo.url}}" />
       </a>
       <!-- <span class="cls-menu fs-4"> <i class="fal fa-times"></i> </span> -->
-      <button aria-label="Close" class="btn-close text-reset" data-bs-dismiss="offcanvas" type="button"></button>
+      <button aria-label="Close" class="btn-close text-reset cls-menu" data-bs-dismiss="offcanvas" type="button"><i class="fal fa-times"></i></button>
     </div>
     <div class="hot-line">
       <span class="icon"> <i class="fal fa-tty"></i> </span>
@@ -256,31 +256,35 @@
               id="collapseTwo">
               <div class="accordion-body p-0">
                 <ul class="links">
-                  <li>
-                    <a href="#">
-                      <span>لیست محصولات</span>
+                  {% for category in global_categories %}
+                  <li class="mb-1">
+                    <a href="{{ category.get_absolute_url }}">
+                      <span>{{ category.title }}</span>
                     </a>
+                    {% if category.children.all %}
+                    <ul class="ps-3 mt-2 list-unstyled">
+                      {% for child in category.children.all %}
+                      <li class="mb-1">
+                        <a href="{{ child.get_absolute_url }}">
+                          <span>{{ child.title }}</span>
+                        </a>
+                        {% if child.children.all %}
+                        <ul class="ps-3 mt-1 list-unstyled">
+                          {% for subchild in child.children.all %}
+                          <li>
+                            <a href="{{ subchild.get_absolute_url }}">
+                              <span>{{ subchild.title }}</span>
+                            </a>
+                          </li>
+                          {% endfor %}
+                        </ul>
+                        {% endif %}
+                      </li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
                   </li>
-                  <li>
-                    <a href="#">
-                      <span>شبکه محصولات</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <span>جزئیات محصول 1</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <span>جزئیات محصول 2</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <span>سبد خرید</span>
-                    </a>
-                  </li>
+                  {% endfor %}
                 </ul>
               </div>
             </div>

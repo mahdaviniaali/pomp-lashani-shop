@@ -43,12 +43,12 @@
                                     hx-trigger="click"
                                     hx-vals='{"product_id": "{{ item.product.id }}", "variant": "{{ item.productvariant.id }}"}'
                                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                                    hx-target="#number{{item.id}}"
+                                    hx-target="#number-{{ item.productvariant.id }}"
                                     hx-indicator="#loading-overlay">
                                     <i class="fas fa-minus"></i>
                                 </span>
                                 
-                                <p id="number{{item.id}}" type="text" class="quantity-input" >{{ item.quantity }}</p>
+                                <p id="number-{{ item.productvariant.id }}" type="text" class="quantity-input" >{{ item.quantity }}</p>
                                 
                                 <!-- دکمه افزایش -->
                                 <span class="quantity-btn qt-plus"
@@ -56,7 +56,7 @@
                                     hx-trigger="click"
                                     hx-vals='{"product_id": "{{ item.product.id }}", "variant": "{{ item.productvariant.id }}"}'
                                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                                    hx-target="#number{{item.id}}"
+                                    hx-target="#number-{{ item.productvariant.id }}"
                                     hx-indicator="#loading-overlay">
                                     <i class="fas fa-plus"></i>
                                 </span>
@@ -68,7 +68,8 @@
                             hx-trigger="click"
                             hx-vals='{"product_id": "{{ item.product.id }}", "variant": "{{ item.productvariant.id }}"}'
                             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                            hx-swap="outerHTML"
+                            hx-target="closest .product-card"
+                            hx-swap="delete"
                             hx-indicator="#loading-overlay">
                             <i class="fas fa-trash-alt"></i>
                         </div>
@@ -85,7 +86,7 @@
                 
                 <div class="summary-item">
                     <span>تعداد کل</span>
-                    <span id="total-items">{{ cart_items|length }}</span>
+                    <span id="total-items">{{ total_items|default:cart_items|length }}</span>
                 </div>
                 <div class="summary-item summary-total">
                     <span>مبلغ قابل پرداخت</span>

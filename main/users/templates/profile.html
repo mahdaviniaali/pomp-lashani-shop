@@ -241,10 +241,14 @@ home-style3 profile-pg-1
                                       <p class="mb-0">{{ address.address }}</p>
                                     </div>
                                     <div class="address-actions">
-                                      <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editAddressModal" data-address-id="{{ address.id }}">
-                                        ویرایش
-                                      </button>
-                                      <button class="btn btn-sm btn-outline-danger" onclick="confirmDeleteAddress({{ address.id }})">
+                                      <!-- حذف: با htmx، حذف کارت درجا -->
+                                      <button 
+                                        class="btn btn-sm btn-outline-danger"
+                                        hx-post="{% url 'users:address_delete' pk=address.id %}"
+                                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                        hx-target="closest .address-card"
+                                        hx-swap="delete"
+                                      >
                                         حذف
                                       </button>
                                     </div>
