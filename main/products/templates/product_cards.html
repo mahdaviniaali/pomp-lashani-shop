@@ -69,12 +69,11 @@
   <ul class="pagination justify-content-center mt-4">
     {% if page_obj.has_previous %}
       <li class="page-item">
-        <a class="page-link" 
-           hx-get="{% url 'products:product_partial' %}?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}" 
-           hx-target="#product-list"
-           hx-indicator="#loading-spinner"
-           hx-push-url="true"
-           aria-label="Previous">
+  <a class="page-link" 
+     hx-get="{% url 'products:product_partial' %}?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}" 
+     hx-target="#product-list"
+     hx-indicator="#loading-spinner"
+     aria-label="Previous">
           <i class="fas fa-angle-right me-1"></i> قبلی
         </a>
       </li>
@@ -86,11 +85,10 @@
 
     {% if page_obj.number > 3 %}
       <li class="page-item">
-        <a class="page-link" 
-           hx-get="{% url 'products:product_partial' %}?page=1&{{ request.GET.urlencode }}" 
-           hx-target="#product-list"
-           hx-indicator="#loading-spinner"
-           hx-push-url="true">1</a>
+  <a class="page-link" 
+     hx-get="{% url 'products:product_partial' %}?page=1&{{ request.GET.urlencode }}" 
+     hx-target="#product-list"
+     hx-indicator="#loading-spinner">1</a>
       </li>
       <li class="page-item disabled">
         <span class="page-link">...</span>
@@ -100,11 +98,10 @@
     {% for num in page_obj.paginator.page_range %}
       {% if num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
         <li class="page-item {% if num == page_obj.number %}active{% endif %}">
-          <a class="page-link" 
-             hx-get="{% url 'products:product_partial' %}?page={{ num }}&{{ request.GET.urlencode }}" 
-             hx-target="#product-list"
-             hx-indicator="#loading-spinner"
-             hx-push-url="true">{{ num }}</a>
+       <a class="page-link" 
+         hx-get="{% url 'products:product_partial' %}?page={{ num }}&{{ request.GET.urlencode }}" 
+         hx-target="#product-list"
+         hx-indicator="#loading-spinner">{{ num }}</a>
         </li>
       {% endif %}
     {% endfor %}
@@ -114,22 +111,20 @@
         <span class="page-link">...</span>
       </li>
       <li class="page-item">
-        <a class="page-link" 
-           hx-get="{% url 'products:product_partial' %}?page={{ page_obj.paginator.num_pages }}&{{ request.GET.urlencode }}" 
-           hx-target="#product-list"
-           hx-indicator="#loading-spinner"
-           hx-push-url="true">{{ page_obj.paginator.num_pages }}</a>
+  <a class="page-link" 
+     hx-get="{% url 'products:product_partial' %}?page={{ page_obj.paginator.num_pages }}&{{ request.GET.urlencode }}" 
+     hx-target="#product-list"
+     hx-indicator="#loading-spinner">{{ page_obj.paginator.num_pages }}</a>
       </li>
     {% endif %}
 
     {% if page_obj.has_next %}
       <li class="page-item">
-        <a class="page-link" 
-           hx-get="{% url 'products:product_partial' %}?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}" 
-           hx-target="#product-list"
-           hx-indicator="#loading-spinner"
-           hx-push-url="true"
-           aria-label="Next">
+  <a class="page-link" 
+     hx-get="{% url 'products:product_partial' %}?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}" 
+     hx-target="#product-list"
+     hx-indicator="#loading-spinner"
+     aria-label="Next">
           بعدی <i class="fas fa-angle-left ms-1"></i>
         </a>
       </li>
