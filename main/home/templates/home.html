@@ -13,6 +13,7 @@
 
 {% block css %}
 <link href="{% static 'css/home_1_style.rtl.css' %}" rel="stylesheet" />
+<link href="{% static 'css/mobile-best-seller-fix.css' %}" rel="stylesheet" />
 {% endblock %}
 
 {% block bodystyle %}
@@ -461,14 +462,8 @@ home-style1
                   </div>
                 </div>
                 <p class="fsz-12 mt-3">فروخته شده:{{ top_products.3.sold_count }}</p>
-
-
-
-
               </div>
-
             </div>
-
             <div class="deal-card">
               <div class="top">
               </div>
@@ -624,286 +619,61 @@ home-style1
 
         </div>
 
-        <!-- Products Catds Mobile  -->
+        <!-- Products Cards Mobile  -->
         <div class="deals-cards deals-cards-mobile d-block d-lg-none">
-            <div class="swiper-wrapper">
-
-              <div class="swiper-slide">
-                <div class="deal-card">
-                  <div class="top">
+          <div class="swiper-wrapper">
+            {% for product in top_products %}
+            <div class="swiper-slide">
+              <div class="deal-card">
+                <div class="top"></div>
+                <a class="img th-140 mb-20 d-block"
+                  href="{% url 'products:product_detail' pk=product.id slug=product.slug %}">
+                  <img alt="" class="img-contain" src="{{ product.image.url }}" />
+                </a>
+                <div class="info">
+                  {% if forloop.first %}
+                  <span class="label fsz-11 py-1 px-3 rounded-pill bg-blue1 text-white text-uppercase">محصولات</span>
+                  {% elif forloop.counter == 3 %}
+                  <span class="label fsz-11 py-1 px-3 rounded-pill bg-green1 text-white text-uppercase">دارای رتبه برتر</span>
+                  {% elif forloop.counter == 4 %}
+                  <span class="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white">از پیش سفارش دادن</span>
+                  {% endif %}
+                  <a class="title fsz-14 mt-15 fw-600 hover-blue1"
+                    href="{% url 'products:product_detail' pk=product.id slug=product.slug %}">{{ product.title }}</a>
+                  {% if product.need_to_call %}
+                  <p class="fsz-12 mt-2">
+                    <i class="fas fa-phone-alt me-1"></i>
+                    <a href="#"> تماس بگیرین</a>
+                  </p>
+                  {% elif product.min_price %}
+                  {{ product.min_price }} تومان
+                  {% else %}
+                  <span class="text-danger"> عدم موجودی</span>
+                  {% endif %}
+                  {% if product.last_stock_change_value %}
+                  <div class="stock-change-notice mt-2">
+                    <i class="fas fa-user-shield fsz-12 me-1"></i>
+                    <small class="fsz-10 text-muted">
+                      آخرین بروزرسانی موجودی:
+                      {% if product.last_stock_change_time %}
+                      در {{ product.last_stock_change_time|date:"Y/m/d" }}
+                      {% endif %}
+                    </small>
                   </div>
-                  <a class="img th-140 mb-20 d-block"
-                    href="{% url 'products:product_detail' pk=top_products.1.id slug=top_products.1.slug %}">
-                    <img alt="" class="img-contain" src="{{ top_products.1.image.url }}" />
-                  </a>
-                  <div class="info">
-                    <a class="title fsz-14 mt-15 fw-600 hover-blue1"
-                      href="{% url 'products:product_detail' pk=top_products.1.id slug=top_products.1.slug %}">{{top_products.1.title}}</a>
-                    {% if top_products.1.need_to_call %}
-                    <p class="fsz-12 mt-2">
-                      <i class="fas fa-phone-alt me-1"></i>
-                      <a href="#"> تماس بگیرین</a>
-                    </p>
-                    {% elif top_products.1.min_price %}
-                    {{ top_products.1.min_price}} تومان
-                    {% else %}
-                    <span class="text-danger"> عدم موجودی</span>
-                    {% endif %}
-                    <!-- بخش نمایش آخرین تغییر موجودی توسط ادمین -->
-                    {% if top_products.1.last_stock_change_value %}
-                    <div class="stock-change-notice mt-2">
-                      <i class="fas fa-user-shield fsz-12 me-1"></i>
-                      <small class="fsz-10 text-muted">
-                        آخرین بروزرسانی موجودی:
-                        {% if top_products.1.last_stock_change_time %}
-                        در {{ top_products.1.last_stock_change_time|date:"Y/m/d" }}
-                        {% endif %}
-                      </small>
+                  {% endif %}
+                  <!-- نوار پیشرفت فروش -->
+                  <div class="progress mt-20">
+                    <div aria-valuemax="{{ product.last_stock_change_value }}" aria-valuemin="0"
+                      aria-valuenow="{{ product.min_price_stock }}" class="progress-bar bg-blue1"
+                      role="progressbar"
+                      style="width: {% widthratio product.min_price_stock product.last_stock_change_value 100 %}%">
                     </div>
-                    {% endif %}
-                    <!-- نوار پیشرفت فروش -->
-                    <div class="progress mt-20">
-                      <div aria-valuemax="{{ top_products.1.last_stock_change_value }}" aria-valuemin="0"
-                        aria-valuenow="{{ top_products.1.min_price_stock }}" class="progress-bar bg-blue1"
-                        role="progressbar"
-                        style="width: {% widthratio top_products.1.min_price_stock top_products.1.last_stock_change_value 100 %}%">
-                      </div>
-                    </div>
-                    <p class="fsz-12 mt-3">فروخته شده:{{ top_products.1.sold_count }}</p>
                   </div>
+                  <p class="fsz-12 mt-3">فروخته شده:{{ product.sold_count }}</p>
                 </div>
               </div>
-
-              <div class="swiper-slide">
-                <div class="deal-card">
-                  <div class="top">
-                  </div>
-                  <a class="img th-600 mb-20 d-block"
-                    href="{% url 'products:product_detail' pk=top_products.2.id slug=top_products.2.slug %}">
-                    <img alt="" class="img-contain" src="{{ top_products.2.image.url }}" />
-                  </a>
-                  <div class="info">
-                    <span class="label fsz-11 py-1 px-3 rounded-pill bg-blue1 text-white text-uppercase">محصولات</span>
-                    <a class="title fsz-14 mt-15 fw-600 hover-blue1"
-                      href="{% url 'products:product_detail' pk=top_products.2.id slug=top_products.2.slug %}">{{top_products.2.title}}</a>
-                    {% if top_products.2.need_to_call %}
-                    <p class="fsz-12 mt-2">
-                      <i class="fas fa-phone-alt me-1"></i>
-                      <a href="#"> تماس بگیرین</a>
-                    </p>
-                    {% elif top_products.2.min_price %}
-                    {{ top_products.2.min_price}} تومان
-                    {% else %}
-                    <span class="text-danger"> عدم موجودی</span>
-                    {% endif %}
-                    {% if top_products.2.last_stock_change_value %}
-                    <div class="stock-change-notice mt-2">
-                      <i class="fas fa-user-shield fsz-12 me-1"></i>
-                      <small class="fsz-10 text-muted">
-                        آخرین بروزرسانی موجودی:
-                        {% if top_products.2.last_stock_change_time %}
-                        در {{ top_products.2.last_stock_change_time|date:"Y/m/d" }}
-                        {% endif %}
-                      </small>
-                    </div>
-                    {% endif %}
-                    <!-- نوار پیشرفت فروش -->
-                    <div class="progress mt-20">
-                      <div aria-valuemax="{{ top_products.2.last_stock_change_value }}" aria-valuemin="0"
-                        aria-valuenow="{{ top_products.2.min_price_stock }}" class="progress-bar bg-blue1"
-                        role="progressbar"
-                        style="width: {% widthratio top_products.2.min_price_stock top_products.2.last_stock_change_value 100 %}%">
-                      </div>
-                    </div>
-                    <p class="fsz-12 mt-3">فروخته شده:{{ top_products.2.sold_count }}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="swiper-slide">
-                <div class="deal-card">
-                  <div class="top">
-                  </div>
-                  <a class="img th-140 mb-20 d-block"
-                    href="{% url 'products:product_detail' pk=top_products.3.id slug=top_products.3.slug %}">
-                    <img alt="" class="img-contain" src="{{ top_products.3.image.url }}" />
-                  </a>
-                  <div class="info">
-                    <span class="label fsz-11 py-1 px-3 rounded-pill bg-green1 text-white text-uppercase">دارای رتبه
-                      برتر</span>
-                    <a class="title fsz-14 mt-15 fw-600 hover-blue1"
-                      href="{% url 'products:product_detail' pk=top_products.3.id slug=top_products.3.slug %}">{{top_products.3.title }}</a>
-                    {% if top_products.3.need_to_call %}
-                    <p class="fsz-12 mt-2">
-                      <i class="fas fa-phone-alt me-1"></i>
-                      <a href="#"> تماس بگیرین</a>
-                    </p>
-                    {% elif top_products.3.min_price %}
-                    {{ top_products.3.min_price}} تومان
-                    {% else %}
-                    <span class="text-danger"> عدم موجودی</span>
-                    {% endif %}
-                    {% if top_products.3.last_stock_change_value %}
-                    <div class="stock-change-notice mt-2">
-                      <i class="fas fa-user-shield fsz-12 me-1"></i>
-                      <small class="fsz-10 text-muted">
-                        آخرین بروزرسانی موجودی:
-                        {% if top_products.3.last_stock_change_time %}
-                        در {{ top_products.3.last_stock_change_time|date:"Y/m/d" }}
-                        {% endif %}
-                      </small>
-                    </div>
-                    {% endif %}
-                    <!-- نوار پیشرفت فروش -->
-                    <div class="progress mt-20">
-                      <div aria-valuemax="{{ top_products.3.last_stock_change_value }}" aria-valuemin="0"
-                        aria-valuenow="{{ top_products.3.min_price_stock }}" class="progress-bar bg-blue1"
-                        role="progressbar"
-                        style="width: {% widthratio top_products.3.min_price_stock top_products.3.last_stock_change_value 100 %}%">
-                      </div>
-                    </div>
-                    <p class="fsz-12 mt-3">فروخته شده:{{ top_products.3.sold_count }}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="swiper-slide">
-                <div class="deal-card">
-                  <div class="top">
-                  </div>
-                  <a class="img th-140 mb-20 d-block"
-                    href="{% url 'products:product_detail' pk=top_products.4.id slug=top_products.4.slug %}">
-                    <img alt="" class="img-contain" src="{{ top_products.4.image.url }}" />
-                  </a>
-                  <div class="info">
-                    <span class="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white">از پیش سفارش دادن</span>
-                    <a class="title fsz-14 mt-15 fw-600 hover-blue1"
-                      href="{% url 'products:product_detail' pk=top_products.4.id slug=top_products.4.slug %}"> {{top_products.4.title }} </a>
-                    {% if top_products.4.need_to_call %}
-                    <p class="fsz-12 mt-2">
-                      <i class="fas fa-phone-alt me-1"></i>
-                      <a href="#"> تماس بگیرین</a>
-                    </p>
-                    {% elif top_products.4.min_price %}
-                    {{ top_products.4.min_price}} تومان
-                    {% else %}
-                    <span class="text-danger"> عدم موجودی</span>
-                    {% endif %}
-                    {% if top_products.4.last_stock_change_value %}
-                    <div class="stock-change-notice mt-2">
-                      <i class="fas fa-user-shield fsz-12 me-1"></i>
-                      <small class="fsz-10 text-muted">
-                        آخرین بروزرسانی موجودی:
-                        {% if top_products.4.last_stock_change_time %}
-                        در {{ top_products.4.last_stock_change_time|date:"Y/m/d" }}
-                        {% endif %}
-                      </small>
-                    </div>
-                    {% endif %}
-                    <!-- نوار پیشرفت فروش -->
-                    <div class="progress mt-20">
-                      <div aria-valuemax="{{ top_products.4.last_stock_change_value }}" aria-valuemin="0"
-                        aria-valuenow="{{ top_products.4.min_price_stock }}" class="progress-bar bg-blue1"
-                        role="progressbar"
-                        style="width: {% widthratio top_products.4.min_price_stock top_products.4.last_stock_change_value 100 %}%">
-                      </div>
-                    </div>
-                    <p class="fsz-12 mt-3">فروخته شده:{{ top_products.4.sold_count }}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="swiper-slide">
-                <div class="deal-card">
-                  <div class="top">
-                  </div>
-                  <a class="img th-140 mb-20 d-block"
-                    href="{% url 'products:product_detail' pk=top_products.5.id slug=top_products.5.slug %}">
-                    <img alt="" class="img-contain" src="{{ top_products.5.image.url }}" />
-                  </a>
-                  <div class="info">
-                    <a class="title fsz-14 mt-15 fw-600 hover-blue1"
-                      href="{% url 'products:product_detail' pk=top_products.5.id slug=top_products.5.slug %}">{{
-                      top_products.5.title }}</a>
-                    {% if top_products.5.need_to_call %}
-                    <p class="fsz-12 mt-2">
-                      <i class="fas fa-phone-alt me-1"></i>
-                      <a href="#"> تماس بگیرین</a>
-                    </p>
-                    {% elif top_products.5.min_price %}
-                    {{ top_products.5.min_price|intcomma }} تومان
-                    {% else %}
-                    <span class="text-danger"> عدم موجودی</span>
-                    {% endif %}
-                    {% if top_products.5.last_stock_change_value %}
-                    <div class="stock-change-notice mt-2">
-                      <i class="fas fa-user-shield fsz-12 me-1"></i>
-                      <small class="fsz-10 text-muted">
-                        آخرین بروزرسانی موجودی:
-                        {% if top_products.5.last_stock_change_time %}
-                        در {{ top_products.5.last_stock_change_time|date:"Y/m/d" }}
-                        {% endif %}
-                      </small>
-                    </div>
-                    {% endif %}
-                    <!-- نوار پیشرفت فروش -->
-                    <div class="progress mt-20">
-                      <div aria-valuemax="{{ top_products.5.last_stock_change_value }}" aria-valuemin="0"
-                        aria-valuenow="{{ top_products.5.min_price_stock }}" class="progress-bar bg-blue1"
-                        role="progressbar"
-                        style="width: {% widthratio top_products.5.min_price_stock top_products.5.last_stock_change_value 100 %}%">
-                      </div>
-                    </div>
-                    <p class="fsz-12 mt-3">فروخته شده:{{ top_products.5.sold_count }}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="swiper-slide">
-                <div class="deal-card">
-                  <div class="top">
-                  </div>
-                  <a class="img th-140 mb-20 d-block"
-                    href="{% url 'products:product_detail' pk=top_products.6.id slug=top_products.6.slug %}">
-                    <img alt="" class="img-contain" src="{{ top_products.6.image.url }}" />
-                  </a>
-                  <div class="info">
-                    <a class="title fsz-14 mt-15 fw-600 hover-blue1"
-                      href="{% url 'products:product_detail' pk=top_products.6.id slug=top_products.6.slug %}">{{
-                      top_products.6.title }}</a>
-                    {% if top_products.6.need_to_call %}
-                    <p class="fsz-12 mt-2">
-                      <i class="fas fa-phone-alt me-1"></i>
-                      <a href="#"> تماس بگیرین</a>
-                    </p>
-                    {% elif top_products.6.min_price %}
-                    {{ top_products.6.min_price|intcomma }} تومان
-                    {% else %}
-                    <span class="text-danger"> عدم موجودی</span>
-                    {% endif %}
-                    {% if top_products.5.last_stock_change_value %}
-                    <div class="stock-change-notice mt-2">
-                      <i class="fas fa-user-shield fsz-12 me-1"></i>
-                      <small class="fsz-10 text-muted">
-                        آخرین بروزرسانی موجودی:
-                        {% if top_products.6.last_stock_change_time %}
-                        در {{ top_products.6.last_stock_change_time|date:"Y/m/d" }}
-                        {% endif %}
-                      </small>
-                    </div>
-                    {% endif %}
-                    <!-- نوار پیشرفت فروش -->
-                    <div class="progress mt-20">
-                      <div aria-valuemax="{{ top_products.6.last_stock_change_value }}" aria-valuemin="0"
-                        aria-valuenow="{{ top_products.6.min_price_stock }}" class="progress-bar bg-blue1"
-                        role="progressbar"
-                        style="width: {% widthratio top_products.6.min_price_stock top_products.6.last_stock_change_value 100 %}%">
-                      </div>
-                    </div>
-                    <p class="fsz-12 mt-3">فروخته شده:{{ top_products.6.sold_count }}</p>
-                  </div>
-                </div>
-              </div>
+            </div>
+            {% endfor %}
             </div>
 
             <div class="slider-controls">

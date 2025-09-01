@@ -41,20 +41,21 @@
                         {% endif %}
 
                         <!-- فرم OTP -->
-                        <form method="post" id="otpForm">
+                        <form method="post" id="otpForm" href="{% url 'users:verify' %}">
                             {% csrf_token %}
                             <input type="hidden" name="phone_number" value="{{ phone_number }}">
                             <input type="hidden" name="next" value="{{ next }}">
                             
                             <div class="mb-4">
                                 <label class="form-label mb-3">کد ۵ رقمی را وارد کنید</label>
-                                <div class="d-flex justify-content-center flex-row-reverse mb-3">
-                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required name="otp5" autofocus>
-                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required name="otp4">
-                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required name="otp3">
+                                <div class="d-flex justify-content-center mb-3" style="direction: ltr; text-align: left;">
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required name="otp1" autofocus>
                                     <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required name="otp2">
-                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required name="otp1">
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required name="otp3">
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required name="otp4">
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required name="otp5">
                                 </div>
+                                <input type="hidden" name="otp_code" id="otp_code" />
                                 <div class="text-center mt-2">
                                     <p class="text-muted small">زمان باقیمانده: <span id="countdown" class="timer">02:00</span></p>
                                 </div>
@@ -85,7 +86,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'pages/js/otp.js' %}"></script>
-
    
 </body>
 </html>
