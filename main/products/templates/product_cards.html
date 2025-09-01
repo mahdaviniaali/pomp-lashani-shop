@@ -1,4 +1,5 @@
 {% load main_filters %}
+{% load clean_query %}
 {% load humanize %}
 <div class="row">
   {% if page_obj %}
@@ -70,7 +71,7 @@
     {% if page_obj.has_previous %}
       <li class="page-item">
   <a class="page-link" 
-     hx-get="{% url 'products:product_partial' %}?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}" 
+     hx-get="{% url 'products:product_partial' %}?page={{ page_obj.previous_page_number }}{% if request.GET %}&{% clean_query %}{% endif %}" 
      hx-target="#product-list"
      hx-indicator="#loading-spinner"
      aria-label="Previous">
@@ -86,7 +87,7 @@
     {% if page_obj.number > 3 %}
       <li class="page-item">
   <a class="page-link" 
-     hx-get="{% url 'products:product_partial' %}?page=1&{{ request.GET.urlencode }}" 
+     hx-get="{% url 'products:product_partial' %}?page=1{% if request.GET %}&{% clean_query %}{% endif %}" 
      hx-target="#product-list"
      hx-indicator="#loading-spinner">1</a>
       </li>
@@ -99,7 +100,7 @@
       {% if num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
         <li class="page-item {% if num == page_obj.number %}active{% endif %}">
        <a class="page-link" 
-         hx-get="{% url 'products:product_partial' %}?page={{ num }}&{{ request.GET.urlencode }}" 
+         hx-get="{% url 'products:product_partial' %}?page={{ num }}{% if request.GET %}&{% clean_query %}{% endif %}" 
          hx-target="#product-list"
          hx-indicator="#loading-spinner">{{ num }}</a>
         </li>
@@ -112,7 +113,7 @@
       </li>
       <li class="page-item">
   <a class="page-link" 
-     hx-get="{% url 'products:product_partial' %}?page={{ page_obj.paginator.num_pages }}&{{ request.GET.urlencode }}" 
+     hx-get="{% url 'products:product_partial' %}?page={{ page_obj.paginator.num_pages }}{% if request.GET %}&{% clean_query %}{% endif %}" 
      hx-target="#product-list"
      hx-indicator="#loading-spinner">{{ page_obj.paginator.num_pages }}</a>
       </li>
@@ -121,7 +122,7 @@
     {% if page_obj.has_next %}
       <li class="page-item">
   <a class="page-link" 
-     hx-get="{% url 'products:product_partial' %}?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}" 
+     hx-get="{% url 'products:product_partial' %}?page={{ page_obj.next_page_number }}{% if request.GET %}&{% clean_query %}{% endif %}" 
      hx-target="#product-list"
      hx-indicator="#loading-spinner"
      aria-label="Next">
