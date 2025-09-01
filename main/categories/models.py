@@ -5,6 +5,9 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Category(MPTTModel):
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('products:product_list_by_category', args=[self.id, self.slug])
     title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True , blank=True, verbose_name="اسلاگ") 
     logo  = models.ImageField(_("logo"), upload_to="catlogos/", height_field=None, width_field=None, max_length=None, blank=True, null=True)

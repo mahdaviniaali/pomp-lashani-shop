@@ -1,21 +1,29 @@
 /* استایل‌های سفارشی برای لوگو */
 .navbar-brand .logo {
-    max-height: 60px;
+    max-height: 100px;
     width: auto;
     object-fit: contain;
     transition: all 0.3s ease;
+    display: block;
+    margin: 0 auto;
+    height: 90px;
+    max-width: 320px;
 }
 
 /* تنظیمات responsive برای لوگو */
 @media screen and (max-width: 991px) {
     .navbar-brand .logo {
-        max-height: 45px;
+        max-height: 130px;
+        height: 120px;
+        max-width: 360px;
     }
 }
 
 @media screen and (max-width: 576px) {
     .navbar-brand .logo {
-        max-height: 40px;
+        max-height: 96px;
+        height: 88px;
+        max-width: 240px;
     }
 }
 

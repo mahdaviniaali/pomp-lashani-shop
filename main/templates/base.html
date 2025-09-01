@@ -261,28 +261,6 @@
                     <a href="{{ category.get_absolute_url }}">
                       <span>{{ category.title }}</span>
                     </a>
-                    {% if category.children.all %}
-                    <ul class="ps-3 mt-2 list-unstyled">
-                      {% for child in category.children.all %}
-                      <li class="mb-1">
-                        <a href="{{ child.get_absolute_url }}">
-                          <span>{{ child.title }}</span>
-                        </a>
-                        {% if child.children.all %}
-                        <ul class="ps-3 mt-1 list-unstyled">
-                          {% for subchild in child.children.all %}
-                          <li>
-                            <a href="{{ subchild.get_absolute_url }}">
-                              <span>{{ subchild.title }}</span>
-                            </a>
-                          </li>
-                          {% endfor %}
-                        </ul>
-                        {% endif %}
-                      </li>
-                      {% endfor %}
-                    </ul>
-                    {% endif %}
                   </li>
                   {% endfor %}
                 </ul>
