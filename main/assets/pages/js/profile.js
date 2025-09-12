@@ -9,4 +9,16 @@ document.addEventListener('DOMContentLoaded', function() {
             saveBtn.classList.add('bg-green2');
         });
     });
+
+    // Auto-dismiss success messages after 5 seconds
+    const successAlert = document.querySelector('.alert-success');
+    if (successAlert) {
+        setTimeout(function() {
+            successAlert.style.opacity = '0';
+            successAlert.style.transform = 'translateY(-20px)';
+            setTimeout(function() {
+                successAlert.remove();
+            }, 500);
+        }, 5000);
+    }
 });

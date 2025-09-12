@@ -20,37 +20,28 @@ class Home(View):
             60 * 60 * 24 * 7  # 7 روز
         )
 
-        # 2. کش کارت‌های تبلیغاتی (روزانه آپدیت)
+        # 2. کش کارت‌های تبلیغاتی (روزانه آپدیت) - بهینه‌سازی شده
         promo_cards = cache.get_or_set(
-            'home_promo_cards',
-            {
-                'large': PromoCard.objects.filter(
-                    card_type='large', 
-                    is_active=True
-                ).order_by('order')[:1],  # فقط 1 کارت بزرگ
-                'medium': PromoCard.objects.filter(
-                    card_type='medium', 
-                    is_active=True
-                ).order_by('order')[:1],  # فقط 1 کارت متوسط
-                'small': PromoCard.objects.filter(
-                    card_type='small', 
-                    is_active=True
-                ).order_by('order')[:2]  # 2 کارت کوچک
-            },
+            'home_promo_cards_optimized',
+            self._get_promo_cards_optimized(),
             60 * 60 * 24  # 1 روز
         )
 
-        # 3. کش دسته‌بندی‌ها (هفته‌ای یکبار آپدیت)
+        # 3. کش دسته‌بندی‌ها (هفته‌ای یکبار آپدیت) - بهینه‌سازی شده
         categories = cache.get_or_set(
-            'home_categories',
-            Category.objects.all()[:10],  # فقط 10 مورد
+            'home_categories_optimized',
+            Category.objects.filter(available=True)
+                           .select_related('parent')
+                           .prefetch_related('children')
+                           .order_by('title')[:10],
             60 * 60 * 24 * 7  # 7 روز
         )
 
-        # کش برندها (هفته‌ای یکبار آپدیت)
+        # کش برندها (هفته‌ای یکبار آپدیت) - بهینه‌سازی شده
         brands = cache.get_or_set(
-            'home_brands',
-            Brand.objects.all()[:20],  # حداکثر 20 برند
+            'home_brands_optimized',
+            Brand.objects.filter(available=True)
+                        .order_by('name')[:20],
             60 * 60 * 24 * 7  # 7 روز
         )
 
@@ -79,10 +70,12 @@ class Home(View):
             60 * 60 * 24  # 1 روز
         )
 
-        # 7. کش مقالات/خبرنامه (روزانه آپدیت)
+        # 7. کش مقالات/خبرنامه (روزانه آپدیت) - بهینه‌سازی شده
         posts = cache.get_or_set(
-            'home_posts',
-            Post.objects.all()[:4], 
+            'home_posts_optimized',
+            Post.objects.filter(available=True, status='published')
+                       .select_related('author')
+                       .order_by('-published_at')[:4],
             60 * 60 * 24  # 1 روز
         )
 
@@ -98,6 +91,27 @@ class Home(View):
             'new_products': new_products,
             'posts': posts,        }
         return render(request, 'home.html', context)
+
+    def _get_promo_cards_optimized(self):
+        """
+        بهینه‌سازی کوئری کارت‌های تبلیغاتی
+        یک کوئری به جای 3 کوئری جداگانه
+        """
+        # یک کوئری برای دریافت همه کارت‌ها
+        all_cards = PromoCard.objects.filter(is_active=True).order_by('order')
+        
+        # تقسیم‌بندی در Python به جای کوئری‌های جداگانه
+        cards_dict = {
+            'large': [],
+            'medium': [],
+            'small': []
+        }
+        
+        for card in all_cards:
+            if card.card_type in cards_dict and len(cards_dict[card.card_type]) < (2 if card.card_type == 'small' else 1):
+                cards_dict[card.card_type].append(card)
+        
+        return cards_dict
 
 
 class AboutUs (View):

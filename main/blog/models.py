@@ -10,7 +10,7 @@ from slugify import slugify
 
 class Post(ModelMeta, models.Model):
     title = models.CharField(_("عنوان"), max_length=255)
-    slug = models.CharField(_("اسلاگ"), max_length=700, unique=True, blank=True)
+    slug = models.SlugField(_("اسلاگ"), max_length=700, unique=True, blank=True)
     content = CKEditor5Field(_("محتوا"), config_name='default')
     image = models.ImageField(_("تصویر"), upload_to='post_images/')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts', verbose_name=_("نویسنده"))
