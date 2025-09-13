@@ -26,7 +26,22 @@ class CartNumber(models.Model):
     cart_name = models.CharField(_("نام کارت"), max_length=50)
     number = models.CharField(_("شماره کارت"), max_length=30, unique=True)
     bank_name = models.CharField(_("نام بانک"), max_length=20)
+    sheba_number = models.CharField(_("شماره شبا"), max_length=26, blank=True, null=True, help_text="شماره شبا 24 رقمی")
     available = models.BooleanField(_("فعال"), default=True)
+    def get_formatted_sheba(self):
+        """دریافت شماره شبا با فرمت مناسب"""
+        if not self.sheba_number:
+            return None
+        
+        # پاک کردن فاصله و کاراکترهای اضافی
+        cleaned = self.sheba_number.replace(' ', '').replace('-', '').replace('_', '').upper()
+        if not cleaned:
+            return None
+        
+        # فرمت کردن: IR12 3456 7890 1234 5678 9012 34
+        formatted = f"{cleaned[:4]} {cleaned[4:8]} {cleaned[8:12]} {cleaned[12:16]} {cleaned[16:20]} {cleaned[20:24]}"
+        return formatted
+
     def __str__(self):
         return f"Cart #{self.cart_name} - Number: {self.number}"
 
