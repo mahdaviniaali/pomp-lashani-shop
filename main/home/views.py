@@ -89,29 +89,24 @@ class Home(View):
             'top_products': top_products,
             'random_tags': random_tags,
             'new_products': new_products,
-            'posts': posts,        }
+            'posts': posts,
+        }
         return render(request, 'home.html', context)
 
     def _get_promo_cards_optimized(self):
         """
         بهینه‌سازی کوئری کارت‌های تبلیغاتی
-        یک کوئری به جای 3 کوئری جداگانه
         """
-        # یک کوئری برای دریافت همه کارت‌ها
-        all_cards = PromoCard.objects.filter(is_active=True).order_by('order')
+        # دریافت کارت‌ها بر اساس نوع
+        large_cards = PromoCard.objects.filter(is_active=True, card_type='large').order_by('order')[:1]
+        medium_cards = PromoCard.objects.filter(is_active=True, card_type='medium').order_by('order')[:1]
+        small_cards = PromoCard.objects.filter(is_active=True, card_type='small').order_by('order')[:2]
         
-        # تقسیم‌بندی در Python به جای کوئری‌های جداگانه
-        cards_dict = {
-            'large': [],
-            'medium': [],
-            'small': []
+        return {
+            'large': list(large_cards),
+            'medium': list(medium_cards),
+            'small': list(small_cards)
         }
-        
-        for card in all_cards:
-            if card.card_type in cards_dict and len(cards_dict[card.card_type]) < (2 if card.card_type == 'small' else 1):
-                cards_dict[card.card_type].append(card)
-        
-        return cards_dict
 
 
 class AboutUs (View):

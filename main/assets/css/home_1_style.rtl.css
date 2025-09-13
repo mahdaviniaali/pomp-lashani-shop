@@ -795,22 +795,63 @@
 
 .tc-header-style1 .content .card-overlay.card-center .info {
     width: 100%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-line-pack: justify;
-    align-content: space-between;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    text-align: center;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
+    height: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding: 50px !important;
 }
 
-.tc-header-style1 .content .card-overlay .color-lightGreen {
-    color: #b9f34f;
+/* استایل برای کارت بزرگ - متن بالا وسط، دکمه پایین وسط */
+.tc-header-style1 .content .card-overlay.card-center .info .cont {
+    flex: 1;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding-top: 20px;
 }
+
+.tc-header-style1 .content .card-overlay.card-center .info .butn {
+    margin-top: auto !important;
+    align-self: center !important;
+    margin-bottom: 20px !important;
+}
+
+/* اطمینان از اینکه کارت بزرگ درست نمایش داده می‌شود */
+.tc-header-style1 .content .card-overlay.card-center {
+    position: relative;
+    overflow: hidden;
+}
+
+.tc-header-style1 .content .card-overlay.card-center .info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+}
+
+/* حذف تداخل CSS با inline styles */
+.tc-header-style1 .content .card-overlay .info h3,
+.tc-header-style1 .content .card-overlay .info h6,
+.tc-header-style1 .content .card-overlay .info p,
+.tc-header-style1 .content .card-overlay .info small {
+    /* حذف color: inherit !important; */
+}
+
+.tc-header-style1 .content .card-overlay .info .butn {
+    /* حذف color: inherit !important; */
+}
+
+/* حذف کلاس‌های رنگی که با inline styles تداخل دارند */
+/* .tc-header-style1 .content .card-overlay .color-lightGreen {
+    color: #b9f34f;
+} */
 
 @media screen and (max-width: 991px) {
     .tc-header-style1 .content .main-slider .slide-card .info {

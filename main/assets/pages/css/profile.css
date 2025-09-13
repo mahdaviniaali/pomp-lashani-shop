@@ -164,44 +164,12 @@
     cursor: pointer;
 }
 
-/* Success message styling */
-.alert-success {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
-    border-radius: 8px;
-    border: 1px solid #c3e6cb;
-    padding: 12px 16px;
-    margin-bottom: 20px;
-    animation: slideInDown 0.5s ease-out;
+/* دکمه ذخیره */
+#save-btn {
+    transition: all 0.3s ease;
 }
 
-.alert-success .fas {
-    color: #28a745;
-}
-
-.alert-success .btn-close {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: #155724;
+#save-btn:disabled {
     opacity: 0.7;
-    cursor: pointer;
-    padding: 0;
-    margin-left: 10px;
-}
-
-.alert-success .btn-close:hover {
-    opacity: 1;
-}
-
-@keyframes slideInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    cursor: not-allowed;
 }

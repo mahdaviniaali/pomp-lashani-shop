@@ -93,6 +93,23 @@ class MainSliderAdmin(admin.ModelAdmin):
     list_filter = ('is_active',)
     readonly_fields = ('image_preview',)
     
+    fieldsets = (
+        ('اطلاعات اصلی', {
+            'fields': ('title', 'subtitle', 'image', 'image_preview', 'button_text', 'button_url')
+        }),
+        ('تنظیمات نمایش', {
+            'fields': ('is_active', 'order')
+        }),
+        ('رنگ‌بندی متن', {
+            'fields': ('title_color', 'subtitle_color', 'button_text_color'),
+            'classes': ('collapse',)
+        }),
+        ('اندازه فونت', {
+            'fields': ('title_font_size', 'subtitle_font_size'),
+            'classes': ('collapse',)
+        }),
+    )
+    
     def image_preview(self, obj):
         if obj.image:
             return format_html('<img src="{}" style="max-height: 50px;" />', obj.image.url)
@@ -105,6 +122,23 @@ class PromoCardAdmin(admin.ModelAdmin):
     list_editable = ('is_active', 'order')
     list_filter = ('is_active', 'card_type')
     readonly_fields = ('image_preview',)
+    
+    fieldsets = (
+        ('اطلاعات اصلی', {
+            'fields': ('card_type', 'title', 'subtitle', 'price_text', 'image', 'image_preview', 'button_text', 'button_url')
+        }),
+        ('تنظیمات نمایش', {
+            'fields': ('is_active', 'order')
+        }),
+        ('رنگ‌بندی متن', {
+            'fields': ('title_color', 'subtitle_color', 'price_text_color', 'button_text_color'),
+            'classes': ('collapse',)
+        }),
+        ('اندازه فونت', {
+            'fields': ('title_font_size', 'subtitle_font_size', 'price_font_size'),
+            'classes': ('collapse',)
+        }),
+    )
     
     def image_preview(self, obj):
         if obj.image:

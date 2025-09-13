@@ -9,16 +9,23 @@ document.addEventListener('DOMContentLoaded', function() {
             saveBtn.classList.add('bg-green2');
         });
     });
-
-    // Auto-dismiss success messages after 5 seconds
-    const successAlert = document.querySelector('.alert-success');
-    if (successAlert) {
-        setTimeout(function() {
-            successAlert.style.opacity = '0';
-            successAlert.style.transform = 'translateY(-20px)';
-            setTimeout(function() {
-                successAlert.remove();
-            }, 500);
-        }, 5000);
-    }
 });
+
+// تابع مدیریت پاسخ ذخیره
+function handleSaveResponse(event) {
+    const button = document.getElementById('save-btn');
+    const btnText = button.querySelector('.btn-text');
+    
+    if (event.detail.xhr.status === 200) {
+        // نمایش پیام موفقیت
+        btnText.textContent = 'تغییرات ثبت شد';
+        button.classList.remove('bg-green2');
+        button.classList.add('bg-gray');
+        button.disabled = true;
+        
+        // بعد از 2 ثانیه دکمه را به حالت اولیه برگردان
+        setTimeout(function() {
+            btnText.textContent = 'ذخیره کردن';
+        }, 2000);
+    }
+}

@@ -250,8 +250,7 @@ class EditUserView(LoginRequiredMixin , View):
         if form.is_valid(): 
             cleaned_data = form.cleaned_data
             user.add_and_edit_user_info(cleaned_data)
-            success_message = "پروفایل شما با موفقیت به‌روزرسانی شد!"
-            return render(request, 'partials/user_info.html', {'user':user, 'success_message': success_message})    
+            return render(request, 'partials/user_info.html', {'user':user})    
         else:
             errors = form.errors  # خطاهای اعتبارسنجی
             return render(request, 'partials/add_user_info_form.html', {'errors': errors})    

@@ -89,6 +89,16 @@ class MainSlider(models.Model):
     button_url = models.CharField(_("لینک دکمه"), max_length=200, default="/")
     is_active = models.BooleanField(_("فعال"), default=True)
     order = models.PositiveIntegerField(_("ترتیب"), default=0)
+    
+    # فیلدهای رنگ متن
+    title_color = models.CharField(_("رنگ عنوان"), max_length=7, default="#ffffff", help_text="کد رنگ hex (مثال: #ffffff)")
+    subtitle_color = models.CharField(_("رنگ زیرعنوان"), max_length=7, default="#ffffff", help_text="کد رنگ hex (مثال: #ffffff)")
+    button_text_color = models.CharField(_("رنگ متن دکمه"), max_length=7, default="#ffffff", help_text="کد رنگ hex (مثال: #ffffff)")
+    
+    
+    # فیلدهای اندازه فونت
+    title_font_size = models.PositiveIntegerField(_("اندازه فونت عنوان"), default=35, help_text="اندازه فونت به پیکسل")
+    subtitle_font_size = models.PositiveIntegerField(_("اندازه فونت زیرعنوان"), default=12, help_text="اندازه فونت به پیکسل")
 
     class Meta:
         verbose_name = _("اسلایدر اصلی")
@@ -115,6 +125,17 @@ class PromoCard(models.Model):
     button_url = models.CharField(_("لینک دکمه"), max_length=200, blank=True)
     is_active = models.BooleanField(_("فعال"), default=True)
     order = models.PositiveIntegerField(_("ترتیب"), default=0)
+    
+    # فیلدهای رنگ متن
+    title_color = models.CharField(_("رنگ عنوان"), max_length=7, default="#ffffff", help_text="کد رنگ hex (مثال: #ffffff)")
+    subtitle_color = models.CharField(_("رنگ زیرعنوان"), max_length=7, default="#ffffff", help_text="کد رنگ hex (مثال: #ffffff)")
+    price_text_color = models.CharField(_("رنگ متن قیمت"), max_length=7, default="#ffffff", help_text="کد رنگ hex (مثال: #ffffff)")
+    button_text_color = models.CharField(_("رنگ متن دکمه"), max_length=7, default="#ffffff", help_text="کد رنگ hex (مثال: #ffffff)")
+   
+    # فیلدهای اندازه فونت
+    title_font_size = models.PositiveIntegerField(_("اندازه فونت عنوان"), default=30, help_text="اندازه فونت به پیکسل")
+    subtitle_font_size = models.PositiveIntegerField(_("اندازه فونت زیرعنوان"), default=13, help_text="اندازه فونت به پیکسل")
+    price_font_size = models.PositiveIntegerField(_("اندازه فونت قیمت"), default=13, help_text="اندازه فونت به پیکسل")
 
     class Meta:
         verbose_name = _("کارت تبلیغاتی")

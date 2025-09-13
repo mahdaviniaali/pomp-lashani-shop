@@ -68,172 +68,276 @@ home-style1
     <!--  Start header  -->
 
     <section class="tc-header-style1">
-          <div class="container">
-            <div class="content">
-              <div class="row">
-                <!-- اسلایدر اصلی -->   
-                <div class="col-lg-8">
-                  <div class="main-slider">
-                    <div class="swiper-wrapper">
-                      {% for slide in main_slides %}
-                      <div class="swiper-slide">
-                        <div class="slide-card">
-                          <div class="img th-450">
-                            <img 
-                              alt="{{ slide.title }}"
-                              class="img-cover" 
-                              src="{{ slide.image.url }}"
-                            />
-                          </div>
-                          <div class="info text-white">
-                            <div class="cont">
-                              <h2 class="fsz-35 fw-200">
-                                {{ slide.title|linebreaksbr }}
-                              </h2>
-                              {% if slide.subtitle %}
-                              <p class="fsz-12 mt-15 text-uppercase">
-                                {{ slide.subtitle }}
-                              </p>
-                              {% endif %}
-                              <a
-                                class="butn px-5 py-3 bg-blue1 text-white rounded-pill mt-60 fw-600"
-                                href="{{ slide.button_url }}"
-                              >
-                                <span>{{ slide.button_text }}</span>
-                              </a>
-                            </div>
-                          </div>
+      <div class="container">
+        <div class="content">
+          <div class="row">
+            <!-- اسلایدر اصلی -->   
+            <div class="col-lg-8">
+              <div class="main-slider">
+                <div class="swiper-wrapper">
+                  {% for slide in main_slides %}
+                  <div class="swiper-slide">
+                    <div class="slide-card">
+                      <div class="img th-450">
+                        <img 
+                          alt="{{ slide.title }}"
+                          class="img-cover" 
+                          src="{{ slide.image.url }}"
+                        />
+                      </div>
+                      <div class="info text-white">
+                        <div class="cont">
+                          <h2 class="fw-200" style="{% if slide.title_color %}color: {{ slide.title_color }};{% endif %} font-size: {{ slide.title_font_size|default:35 }}px;">
+                            {{ slide.title|linebreaksbr }}
+                          </h2>
+                          {% if slide.subtitle %}
+                          <p class="mt-15 text-uppercase" style="{% if slide.subtitle_color %}color: {{ slide.subtitle_color }};{% endif %} font-size: {{ slide.subtitle_font_size|default:12 }}px;">
+                            {{ slide.subtitle }}
+                          </p>
+                          {% endif %}
+                          <a
+                            class="butn px-5 py-3 bg-blue1 rounded-pill mt-60 fw-600"
+                            href="{{ slide.button_url }}"
+                            style="{% if slide.button_text_color %}color: {{ slide.button_text_color }};{% endif %}"
+                          >
+                            <span>{{ slide.button_text }}</span>
+                          </a>
                         </div>
                       </div>
-                      {% endfor %}
-                    </div>
-                    <div class="slider-controls">
-                      <div class="swiper-button-prev"></div>
-                      <div class="swiper-pagination"></div>
-                      <div class="swiper-button-next"></div>
                     </div>
                   </div>
-                </div>
-
-                <!-- کارت بزرگ سمت راست -->
-                {% with promo_cards.large.first as card %}
-                <div class="col-lg-4">
-                  <div class="card-overlay card-center">
-                    <div class="img th-450">
-                      <img 
-                        alt="{{ card.title }}"
-                        class="img-cover"
-                        src="{{ card.image.url }}"
-                      />
-                    </div>
-                    <div class="info text-white p-50">
-                      <div class="cont">
-                        <h3 class="fsz-30">{{ card.title }}</h3>
-                        {% if card.price_text %}
-                        <p class="fsz-13 mt-1">{{ card.price_text }}</p>
-                        {% endif %}
-                      </div>
-                      <a
-                        class="butn px-5 py-3 bg-white color-000 rounded-pill fw-600"
-                        href="{{ card.button_url|default:'#' }}"
-                      >
-                        <span>{{ card.button_text|default:'اکنون کشف کنید' }}</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                {% endwith %}
-
-                <!-- کارت متوسط -->
-                {% with promo_cards.medium.first as card %}
-                <div class="col-lg-6">
-                  <div class="card-overlay wow fadeInUp slow" data-wow-delay="0.2s">
-                    <div class="img th-230">
-                      <img 
-                        alt="{{ card.title }}"
-                        class="img-cover"
-                        src="{{ card.image.url }}"
-                      />
-                    </div>
-                    <div class="info color-000 p-30">
-                      <div class="cont">
-                        <h3 class="fsz-30">{{ card.title|linebreaksbr }}</h3>
-                        {% if card.subtitle %}
-                        <p class="fsz-13 mt-1 color-666">{{ card.subtitle }}</p>
-                        {% endif %}
-                      </div>
-                      <a
-                        class="butn px-4 py-2 bg-dark text-white rounded-pill fw-600 fsz-12 mt-30"
-                        href="{{ card.button_url|default:'#' }}"
-                      >
-                        <span>{{ card.button_text|default:'اکنون خرید کنید' }}</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                {% endwith %}
-
-                <!-- کارت کوچک اول -->
-                {% with promo_cards.small.0 as card %}
-                <div class="col-lg-3">
-                  <div class="card-overlay wow fadeInUp slow" data-wow-delay="0.4s">
-                    <div class="img th-230">
-                      <img 
-                        alt="{{ card.title }}"
-                        class="img-cover"
-                        src="{{ card.image.url }}"
-                      />
-                    </div>
-                    <div class="info text-white p-30">
-                      <div class="cont">
-                        <h6 class="fsz-20">{{ card.title|linebreaksbr }}</h6>
-                        {% if card.price_text %}
-                        <small class="fsz-10 color-999 d-block text-uppercase mt-2">
-                          از
-                        </small>
-                        <p class="fsz-20 color-lightGreen">{{ card.price_text }}</p>
-                        {% endif %}
+                  {% empty %}
+                  <div class="swiper-slide">
+                    <div class="slide-card">
+                      <div class="img th-450 bg-light"></div>
+                      <div class="info text-white">
+                        <div class="cont">
+                          <h2 class="fw-200">اسلایدری موجود نیست</h2>
+                          <p class="mt-15 text-uppercase">لطفاً از پنل مدیریت اسلایدرها را اضافه کنید</p>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  {% endfor %}
                 </div>
-                {% endwith %}
-
-                <!-- کارت کوچک دوم -->
-                {% with promo_cards.small.1 as card %}
-                <div class="col-lg-3">
-                  <div class="card-overlay wow fadeInUp slow" data-wow-delay="0.6s">
-                    <div class="img th-230">
-                      <img 
-                        alt="{{ card.title }}"
-                        class="img-cover"
-                        src="{{ card.image.url }}"
-                      />
-                    </div>
-                    <div class="info text-white p-30">
-                      <div class="cont">
-                        {% if card.subtitle %}
-                        <small class="fsz-10 d-block text-uppercase mb-2">
-                          {{ card.subtitle }}
-                        </small>
-                        {% endif %}
-                        <h6 class="fsz-20">{{ card.title|linebreaksbr }}</h6>
-                      </div>
-                      {% if card.button_text %}
-                      <a
-                        class="butn px-4 py-2 bg-white color-000 rounded-pill fw-600 fsz-12 mt-50"
-                        href="{{ card.button_url|default:'#' }}"
-                      >
-                        <span>{{ card.button_text }}</span>
-                      </a>
-                      {% endif %}
-                    </div>
-                  </div>
+                {% if main_slides|length > 1 %}
+                <div class="slider-controls">
+                  <div class="swiper-button-prev"></div>
+                  <div class="swiper-pagination"></div>
+                  <div class="swiper-button-next"></div>
                 </div>
-                {% endwith %}
+                {% endif %}
               </div>
             </div>
+    
+            <!-- کارت بزرگ سمت راست -->
+            <!-- Debug: {{ promo_cards.large|length }} large cards -->
+            {% if promo_cards.large %}
+              {% with promo_cards.large.0 as card %}
+              <!-- Debug: Card title={{ card.title }}, title_color={{ card.title_color }}, button_text_color={{ card.button_text_color }} -->
+              <div class="col-lg-4">
+                <div class="card-overlay card-center">
+                  <div class="img th-450">
+                    <img 
+                      alt="{{ card.title }}"
+                      class="img-cover"
+                      src="{{ card.image.url }}"
+                    />
+                  </div>
+                  <div class="info">
+                    <div class="cont">
+                      <h3 style="color: {{ card.title_color|default:'#ffffff' }}; font-size: {{ card.title_font_size|default:30 }}px;">{{ card.title }}</h3>
+                      {% if card.price_text %}
+                      <p class="mt-1" style="color: {{ card.price_text_color|default:'#ffffff' }}; font-size: {{ card.price_font_size|default:13 }}px;">{{ card.price_text }}</p>
+                      {% endif %}
+                    </div>
+                    <a
+                      class="butn px-5 py-3 bg-white rounded-pill fw-600"
+                      href="{{ card.button_url|default:'#' }}"
+                      style="color: {{ card.button_text_color|default:'#000000' }};"
+                    >
+                      <span>{{ card.button_text|default:'اکنون کشف کنید' }}</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              {% endwith %}
+            {% else %}
+            <div class="col-lg-4">
+              <div class="card-overlay card-center bg-secondary">
+                <div class="img th-450 bg-light"></div>
+                <div class="info text-white p-50">
+                  <div class="cont">
+                    <h3>کارت بزرگ موجود نیست</h3>
+                    <p class="mt-1">لطفاً از پنل مدیریت یک کارت بزرگ اضافه کنید</p>
+                  </div>
+                  <a class="butn px-5 py-3 bg-white rounded-pill fw-600" href="#" style="color: #000000;">
+                    <span>برو به مدیریت</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+    
+            <!-- کارت متوسط -->
+            <!-- Debug: {{ promo_cards.medium|length }} medium cards -->
+            {% if promo_cards.medium %}
+              {% with promo_cards.medium.0 as card %}
+              <!-- Debug: Card title={{ card.title }}, title_color={{ card.title_color }}, button_text_color={{ card.button_text_color }} -->
+              <div class="col-lg-6">
+                <div class="card-overlay wow fadeInUp slow" data-wow-delay="0.2s">
+                  <div class="img th-230">
+                    <img 
+                      alt="{{ card.title }}"
+                      class="img-cover"
+                      src="{{ card.image.url }}"
+                    />
+                  </div>
+                  <div class="info p-30">
+                    <div class="cont">
+                      <h3 style="color: {{ card.title_color|default:'#000000' }}; font-size: {{ card.title_font_size|default:30 }}px;">{{ card.title|linebreaksbr }}</h3>
+                      {% if card.subtitle %}
+                      <p class="mt-1" style="color: {{ card.subtitle_color|default:'#666666' }}; font-size: {{ card.subtitle_font_size|default:13 }}px;">{{ card.subtitle }}</p>
+                      {% endif %}
+                    </div>
+                    <a
+                      class="butn px-4 py-2 bg-dark text-white rounded-pill fw-600 fsz-12 mt-30"
+                      href="{{ card.button_url|default:'#' }}"
+                      style="color: {{ card.button_text_color|default:'#ffffff' }};"
+                    >
+                      <span>{{ card.button_text|default:'اکنون خرید کنید' }}</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              {% endwith %}
+            {% else %}
+            <div class="col-lg-6">
+              <div class="card-overlay wow fadeInUp slow bg-light" data-wow-delay="0.2s">
+                <div class="img th-230 bg-secondary"></div>
+                <div class="info color-000 p-30">
+                  <div class="cont">
+                    <h3 style="color: #000000;">کارت متوسط موجود نیست</h3>
+                    <p class="mt-1" style="color: #666666;">لطفاً از پنل مدیریت یک کارت متوسط اضافه کنید</p>
+                  </div>
+                  <a class="butn px-4 py-2 bg-dark text-white rounded-pill fw-600 fsz-12 mt-30" href="#">
+                    <span>برو به مدیریت</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+    
+            <!-- کارت کوچک اول -->
+            <!-- Debug: {{ promo_cards.small|length }} small cards -->
+            {% if promo_cards.small.0 %}
+              {% with promo_cards.small.0 as card %}
+              <!-- Debug: Card title={{ card.title }}, title_color={{ card.title_color }}, button_text_color={{ card.button_text_color }} -->
+              <div class="col-lg-3">
+                <div class="card-overlay wow fadeInUp slow" data-wow-delay="0.4s">
+                  <div class="img th-230">
+                    <img 
+                      alt="{{ card.title }}"
+                      class="img-cover"
+                      src="{{ card.image.url }}"
+                    />
+                  </div>
+                  <div class="info p-30">
+                    <div class="cont">
+                      <h6 style="color: {{ card.title_color|default:'#ffffff' }}; font-size: {{ card.title_font_size|default:20 }}px;">{{ card.title|linebreaksbr }}</h6>
+                      {% if card.price_text %}
+                      <small class="fsz-10 color-999 d-block text-uppercase mt-2">
+                        از
+                      </small>
+                      <p style="color: {{ card.price_text_color|default:'#4CAF50' }}; font-size: {{ card.price_font_size|default:20 }}px;">{{ card.price_text }}</p>
+                      {% endif %}
+                    </div>
+                    {% if card.button_text %}
+                    <a
+                      class="butn px-4 py-2 bg-white rounded-pill fw-600 fsz-12 mt-50"
+                      href="{{ card.button_url|default:'#' }}"
+                      style="color: {{ card.button_text_color|default:'#000000' }};"
+                    >
+                      <span>{{ card.button_text }}</span>
+                    </a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {% endwith %}
+            {% else %}
+            <div class="col-lg-3">
+              <div class="card-overlay wow fadeInUp slow bg-secondary" data-wow-delay="0.4s">
+                <div class="img th-230 bg-light"></div>
+                <div class="info text-white p-30">
+                  <div class="cont">
+                    <h6>کارت کوچک موجود نیست</h6>
+                    <small class="fsz-10 color-999 d-block text-uppercase mt-2">
+                      از
+                    </small>
+                    <p style="color: #4CAF50;">0 تومان</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+    
+            <!-- کارت کوچک دوم -->
+            {% if promo_cards.small.1 %}
+              {% with promo_cards.small.1 as card %}
+              <!-- Debug: Card title={{ card.title }}, title_color={{ card.title_color }}, button_text_color={{ card.button_text_color }} -->
+              <div class="col-lg-3">
+                <div class="card-overlay wow fadeInUp slow" data-wow-delay="0.6s">
+                  <div class="img th-230">
+                    <img 
+                      alt="{{ card.title }}"
+                      class="img-cover"
+                      src="{{ card.image.url }}"
+                    />
+                  </div>
+                  <div class="info p-30">
+                    <div class="cont">
+                      {% if card.subtitle %}
+                      <small class="fsz-10 d-block text-uppercase mb-2" style="color: {{ card.subtitle_color|default:'#ffffff' }};">
+                        {{ card.subtitle }}
+                      </small>
+                      {% endif %}
+                      <h6 style="color: {{ card.title_color|default:'#ffffff' }}; font-size: {{ card.title_font_size|default:20 }}px;">{{ card.title|linebreaksbr }}</h6>
+                    </div>
+                    {% if card.button_text %}
+                    <a
+                      class="butn px-4 py-2 bg-white rounded-pill fw-600 fsz-12 mt-50"
+                      href="{{ card.button_url|default:'#' }}"
+                      style="color: {{ card.button_text_color|default:'#000000' }};"
+                    >
+                      <span>{{ card.button_text }}</span>
+                    </a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {% endwith %}
+            {% else %}
+            <div class="col-lg-3">
+              <div class="card-overlay wow fadeInUp slow bg-secondary" data-wow-delay="0.6s">
+                <div class="img th-230 bg-light"></div>
+                <div class="info text-white p-30">
+                  <div class="cont">
+                    <small class="fsz-10 d-block text-uppercase mb-2">
+                      نمونه متن
+                    </small>
+                    <h6>کارت کوچک موجود نیست</h6>
+                  </div>
+                  <a class="butn px-4 py-2 bg-white rounded-pill fw-600 fsz-12 mt-50" href="#" style="color: #000000;">
+                    <span>برو به مدیریت</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            {% endif %}
           </div>
+        </div>
+      </div>
     </section>
     <!--  End header  -->
   </header>

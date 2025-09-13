@@ -150,8 +150,9 @@ home-style3 profile-pg-1
                         hx-include="#user-info-form"
                         hx-swap="none"
                         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                        hx-on::after-request="handleSaveResponse(event)"
                     >
-                        <span>ذخیره کردن</span>
+                        <span class="btn-text">ذخیره کردن</span>
                     </button>
                 </div>
             </div>
