@@ -1,0 +1,183 @@
+{% extends "dashboard/base.html" %}
+{% load humanize %}
+
+{% block dashboard_content %}
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>کل محصولات</h3>
+        <p class="number">{{ total_products|floatformat:0 }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>محصولات موجود</h3>
+        <p class="number">{{ available_products|floatformat:0 }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>محصولات تمام شده</h3>
+        <p class="number">{{ out_of_stock_products|floatformat:0 }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>محصولات جدید (30 روز)</h3>
+        <p class="number">{{ new_products|floatformat:0 }}</p>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>محصولات نیازمند تماس</h3>
+        <p class="number">{{ need_call_products|floatformat:0 }}</p>
+    </div>
+</div>
+
+<div class="table-container">
+    <h3>پرفروش‌ترین محصولات</h3>
+    {% if top_selling_products %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>نام محصول</th>
+                <th>دسته‌بندی</th>
+                <th>برند</th>
+                <th>تعداد فروخته شده</th>
+                <th>وضعیت</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in top_selling_products %}
+            <tr>
+                <td>{{ product.title }}</td>
+                <td>{{ product.category.title }}</td>
+                <td>{{ product.brand.name|default:"-" }}</td>
+                <td>{{ product.sold_count|floatformat:0 }}</td>
+                <td>
+                    {% if product.available %}
+                        <span style="color: green;">موجود</span>
+                    {% else %}
+                        <span style="color: red;">تمام شده</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>هیچ محصولی یافت نشد.</p>
+    {% endif %}
+</div>
+
+<div class="stats-grid">
+    <div class="table-container">
+        <h3>آمار دسته‌بندی‌ها</h3>
+        {% if category_stats %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>دسته‌بندی</th>
+                    <th>تعداد محصول</th>
+                    <th>کل فروش</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in category_stats %}
+                <tr>
+                    <td>{{ category.category__title|default:"نامشخص" }}</td>
+                    <td>{{ category.count }}</td>
+                    <td>{{ category.total_sold|floatformat:0 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>هیچ دسته‌بندی‌ای یافت نشد.</p>
+        {% endif %}
+    </div>
+    
+    <div class="table-container">
+        <h3>آمار برندها</h3>
+        {% if brand_stats %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>برند</th>
+                    <th>تعداد محصول</th>
+                    <th>کل فروش</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for brand in brand_stats %}
+                <tr>
+                    <td>{{ brand.brand__name|default:"نامشخص" }}</td>
+                    <td>{{ brand.count }}</td>
+                    <td>{{ brand.total_sold|floatformat:0 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>هیچ برندی یافت نشد.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% if category_stats %}
+<div class="chart-container">
+    <h3>نمودار توزیع محصولات بر اساس دسته‌بندی</h3>
+    <canvas id="categoryChart" width="400" height="200"></canvas>
+</div>
+{% endif %}
+
+{% if category_stats %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('categoryChart').getContext('2d');
+    const categoryData = {{ category_stats|safe }};
+    
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: categoryData.map(item => item.category__title || 'نامشخص'),
+            datasets: [{
+                data: categoryData.map(item => item.count),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(199, 199, 199, 0.2)',
+                    'rgba(83, 102, 255, 0.2)',
+                    'rgba(255, 99, 255, 0.2)',
+                    'rgba(99, 255, 132, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 205, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(199, 199, 199, 1)',
+                    'rgba(83, 102, 255, 1)',
+                    'rgba(255, 99, 255, 1)',
+                    'rgba(99, 255, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                title: {
+                    display: true,
+                    text: 'توزیع محصولات بر اساس دسته‌بندی'
+                }
+            }
+        }
+    });
+});
+</script>
+{% endif %}
+{% endblock %}

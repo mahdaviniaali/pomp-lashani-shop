@@ -59,6 +59,7 @@ urlpatterns = [
     path('notifications/', include('notifications.urls', namespace='notifications')),  # ارسال پیامک و نوتیفیکیشن‌ها
     path('support/', include('support.urls', namespace='support')),  # سیستم تیکت و پشتیبانی
     path('discounts/', include('discounts.urls', namespace='discounts')),  # سیستم تخفیف و کوپن
+    path('dashboard/', include('dashboard.urls', namespace='dashboard')),  # داشبورد مدیریت
     path('sitemap.xml', sitemap, {'sitemaps': {
         'products': type('ProductSitemap', (Sitemap,), {
             'changefreq': 'daily',

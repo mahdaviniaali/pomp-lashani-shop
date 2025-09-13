@@ -1,0 +1,194 @@
+{% extends "dashboard/base.html" %}
+{% load humanize %}
+
+{% block dashboard_content %}
+<div class="filter-form">
+    <form method="get">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="date_from">از تاریخ:</label>
+                <input type="date" id="date_from" name="date_from" value="{{ date_from }}">
+            </div>
+            <div class="form-group">
+                <label for="date_to">تا تاریخ:</label>
+                <input type="date" id="date_to" name="date_to" value="{{ date_to }}">
+            </div>
+            <div class="form-group">
+                <label for="status">وضعیت:</label>
+                <select id="status" name="status">
+                    <option value="all" {% if status == 'all' %}selected{% endif %}>همه</option>
+                    <option value="paid" {% if status == 'paid' %}selected{% endif %}>پرداخت شده</option>
+                    <option value="success" {% if status == 'success' %}selected{% endif %}>موفق (قدیمی)</option>
+                    <option value="pending" {% if status == 'pending' %}selected{% endif %}>در انتظار پرداخت</option>
+                    <option value="failed" {% if status == 'failed' %}selected{% endif %}>ناموفق</option>
+                    <option value="canceled" {% if status == 'canceled' %}selected{% endif %}>لغو شده</option>
+                    <option value="waiting_approval" {% if status == 'waiting_approval' %}selected{% endif %}>در انتظار تایید</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">فیلتر</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>کل سفارشات</h3>
+        <p class="number">{{ total_orders|floatformat:0 }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>کل درآمد</h3>
+        <p class="number">{{ total_revenue|floatformat:0|intcomma }} تومان</p>
+    </div>
+    <div class="stat-card">
+        <h3>میانگین ارزش سفارش</h3>
+        <p class="number">{{ avg_order_value|floatformat:0|intcomma }} تومان</p>
+    </div>
+</div>
+
+{% if daily_sales %}
+<div class="chart-container">
+    <h3>نمودار فروش روزانه</h3>
+    <canvas id="dailySalesChart" width="400" height="200"></canvas>
+</div>
+{% endif %}
+
+<div class="table-container">
+    <h3>پرفروش‌ترین محصولات</h3>
+    {% if top_products %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>نام محصول</th>
+                <th>تعداد فروخته شده</th>
+                <th>درآمد</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in top_products %}
+            <tr>
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.total_sold|floatformat:0 }}</td>
+                <td>{{ product.total_revenue|floatformat:0|intcomma }} تومان</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>هیچ محصولی یافت نشد.</p>
+    {% endif %}
+</div>
+
+<div class="stats-grid">
+    <div class="table-container">
+        <h3>آمار وضعیت سفارشات</h3>
+        {% if order_status_stats %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>وضعیت</th>
+                    <th>تعداد</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in order_status_stats %}
+                <tr>
+                    <td>{{ stat.status }}</td>
+                    <td>{{ stat.count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+    
+    <div class="table-container">
+        <h3>آمار روش‌های پرداخت</h3>
+        {% if payment_method_stats %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>روش پرداخت</th>
+                    <th>تعداد</th>
+                    <th>درآمد</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in payment_method_stats %}
+                <tr>
+                    <td>{{ stat.payment_method }}</td>
+                    <td>{{ stat.count }}</td>
+                    <td>{{ stat.revenue|floatformat:0|intcomma }} تومان</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+
+{% if daily_sales %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('dailySalesChart').getContext('2d');
+    const salesData = {{ daily_sales|safe }};
+    
+    console.log('Daily sales data:', salesData); // Debug log
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: salesData.map(item => item.day),
+            datasets: [{
+                label: 'تعداد سفارشات',
+                data: salesData.map(item => item.count),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }, {
+                label: 'درآمد (هزار تومان)',
+                data: salesData.map(item => Math.round(item.revenue / 1000)),
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+                yAxisID: 'y1'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'فروش روزانه'
+                }
+            },
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    grid: {
+                        drawOnChartArea: false,
+                    },
+                }
+            }
+        }
+    });
+});
+</script>
+{% else %}
+<div class="chart-container">
+    <h3>فروش روزانه</h3>
+    <p style="text-align: center; color: #6c757d;">داده‌ای برای نمایش وجود ندارد</p>
+</div>
+{% endif %}
+{% endblock %}

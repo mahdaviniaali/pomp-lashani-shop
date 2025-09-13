@@ -1,0 +1,109 @@
+{% extends "dashboard/base.html" %}
+{% load humanize %}
+
+{% block dashboard_content %}
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>سفارشات امروز</h3>
+        <p class="number" id="today-orders">-</p>
+    </div>
+    <div class="stat-card">
+        <h3>درآمد امروز</h3>
+        <p class="number" id="today-revenue">-</p>
+    </div>
+    <div class="stat-card">
+        <h3>کاربران جدید امروز</h3>
+        <p class="number" id="today-users">-</p>
+    </div>
+    <div class="stat-card">
+        <h3>کل محصولات</h3>
+        <p class="number" id="total-products">-</p>
+    </div>
+</div>
+
+<div class="chart-container">
+    <h3>نمودار فروش 7 روز گذشته</h3>
+    <canvas id="salesChart" width="400" height="200"></canvas>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>سفارشات این هفته</h3>
+        <p class="number" id="week-orders">-</p>
+    </div>
+    <div class="stat-card">
+        <h3>سفارشات این ماه</h3>
+        <p class="number" id="month-orders">-</p>
+    </div>
+    <div class="stat-card">
+        <h3>کاربران جدید این هفته</h3>
+        <p class="number" id="week-users">-</p>
+    </div>
+    <div class="stat-card">
+        <h3>کاربران جدید این ماه</h3>
+        <p class="number" id="month-users">-</p>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // بارگذاری داده‌های کلی
+    fetch('{% url "dashboard:ajax_data" %}?type=overview')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Overview data:', data); // Debug log
+            document.getElementById('today-orders').textContent = data.orders.today;
+            document.getElementById('today-revenue').textContent = data.revenue.today.toLocaleString('fa-IR') + ' تومان';
+            document.getElementById('today-users').textContent = data.users.today;
+            document.getElementById('total-products').textContent = data.products.total;
+            document.getElementById('week-orders').textContent = data.orders.week;
+            document.getElementById('month-orders').textContent = data.orders.month;
+            document.getElementById('week-users').textContent = data.users.week;
+            document.getElementById('month-users').textContent = data.users.month;
+        })
+        .catch(error => console.error('Error:', error));
+    
+    // بارگذاری نمودار فروش
+    fetch('{% url "dashboard:ajax_data" %}?type=sales_chart')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Chart data:', data); // Debug log
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.days.reverse(),
+                    datasets: [{
+                        label: 'تعداد سفارشات',
+                        data: data.sales.reverse().map(item => item.orders),
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'فروش روزانه'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Chart Error:', error);
+            document.getElementById('salesChart').innerHTML = '<p style="text-align: center; color: red;">خطا در بارگذاری نمودار</p>';
+        });
+});
+</script>
+{% endblock %}

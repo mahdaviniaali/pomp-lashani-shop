@@ -1,0 +1,177 @@
+{% extends "dashboard/base.html" %}
+{% load humanize %}
+
+{% block dashboard_content %}
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>کل کاربران</h3>
+        <p class="number">{{ total_users|floatformat:0 }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>کاربران فعال</h3>
+        <p class="number">{{ active_users|floatformat:0 }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>کاربران تأیید شده</h3>
+        <p class="number">{{ verified_users|floatformat:0 }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>کاربران جدید (30 روز)</h3>
+        <p class="number">{{ new_users|floatformat:0 }}</p>
+    </div>
+</div>
+
+<div class="chart-container">
+    <h3>نمودار ثبت‌نام روزانه</h3>
+    {% if daily_registrations %}
+    <canvas id="registrationsChart" width="400" height="200"></canvas>
+    {% else %}
+    <p style="text-align: center; color: #6c757d;">داده‌ای برای نمایش وجود ندارد</p>
+    {% endif %}
+</div>
+
+<div class="stats-grid">
+    <div class="table-container">
+        <h3>آمار تأیید کاربران</h3>
+        <canvas id="verificationChart" width="300" height="300"></canvas>
+    </div>
+    
+    <div class="table-container">
+        <h3>آمار نویسندگان</h3>
+        {% if author_stats %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>نویسنده</th>
+                    <th>تعداد پست</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for author in author_stats %}
+                <tr>
+                    <td>{{ author.author__fullname|default:"نامشخص" }}</td>
+                    <td>{{ author.post_count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>هیچ نویسنده‌ای یافت نشد.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="table-container">
+    <h3>مشتریان برتر (بر اساس خرید)</h3>
+    {% if top_customers %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>نام کاربر</th>
+                <th>تعداد سفارش</th>
+                <th>کل خرید</th>
+                <th>وضعیت تأیید</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in top_customers %}
+            <tr>
+                <td>{{ customer.fullname|default:customer.username }}</td>
+                <td>{{ customer.order_count }}</td>
+                <td>{{ customer.total_spent|floatformat:0|intcomma }} تومان</td>
+                <td>
+                    {% if customer.is_verified %}
+                        <span style="color: green;">✓ تأیید شده</span>
+                    {% else %}
+                        <span style="color: red;">✗ تأیید نشده</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>هیچ مشتری‌ای یافت نشد.</p>
+    {% endif %}
+</div>
+
+{% if daily_registrations %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // نمودار ثبت‌نام روزانه
+    const ctx1 = document.getElementById('registrationsChart').getContext('2d');
+    const registrationsData = {{ daily_registrations|safe }};
+    
+    console.log('Registrations data:', registrationsData); // Debug log
+    
+    new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: registrationsData.map(item => item.day),
+            datasets: [{
+                label: 'تعداد ثبت‌نام',
+                data: registrationsData.map(item => item.count),
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'ثبت‌نام روزانه'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    
+    // نمودار تأیید کاربران
+    const ctx2 = document.getElementById('verificationChart').getContext('2d');
+    new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            labels: ['تأیید شده', 'تأیید نشده'],
+            datasets: [{
+                data: [{{ verification_stats.verified }}, {{ verification_stats.unverified }}],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(255, 99, 132, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                title: {
+                    display: true,
+                    text: 'وضعیت تأیید کاربران'
+                }
+            }
+        }
+    });
+});
+</script>
+{% else %}
+<script>
+console.log('No daily registrations data available');
+</script>
+{% endif %}
+{% endblock %}

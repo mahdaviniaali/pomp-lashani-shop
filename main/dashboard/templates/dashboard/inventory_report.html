@@ -1,0 +1,166 @@
+{% extends "dashboard/base.html" %}
+{% load humanize %}
+
+{% block dashboard_content %}
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>کل واریانت‌ها</h3>
+        <p class="number">{{ total_variants|floatformat:0 }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>موجودی موجود</h3>
+        <p class="number">{{ in_stock_variants|floatformat:0 }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>تمام شده</h3>
+        <p class="number">{{ out_of_stock_variants|floatformat:0 }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>موجودی کم</h3>
+        <p class="number">{{ low_stock_variants|floatformat:0 }}</p>
+    </div>
+</div>
+
+<div class="table-container">
+    <h3>محصولات با موجودی کم (کمتر از 10 عدد)</h3>
+    {% if low_stock_products %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>نام محصول</th>
+                <th>واریانت</th>
+                <th>موجودی فعلی</th>
+                <th>دسته‌بندی</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for variant in low_stock_products %}
+            <tr>
+                <td>{{ variant.product.title }}</td>
+                <td>{{ variant.name }}</td>
+                <td>
+                    <span style="color: {% if variant.stock <= 5 %}red{% else %}orange{% endif %};">
+                        {{ variant.stock }}
+                    </span>
+                </td>
+                <td>{{ variant.product.category.title }}</td>
+                <td>
+                    <a href="/admin/products/product/{{ variant.product.id }}/change/" class="btn btn-primary" target="_blank">
+                        ویرایش
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>همه محصولات موجودی کافی دارند.</p>
+    {% endif %}
+</div>
+
+<div class="table-container">
+    <h3>محصولات تمام شده</h3>
+    {% if out_of_stock_products %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>نام محصول</th>
+                <th>واریانت</th>
+                <th>دسته‌بندی</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for variant in out_of_stock_products %}
+            <tr>
+                <td>{{ variant.product.title }}</td>
+                <td>{{ variant.name }}</td>
+                <td>{{ variant.product.category.title }}</td>
+                <td>
+                    <a href="/admin/products/product/{{ variant.product.id }}/change/" class="btn btn-primary" target="_blank">
+                        ویرایش
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>هیچ محصولی تمام نشده است.</p>
+    {% endif %}
+</div>
+
+<div class="table-container">
+    <h3>آمار موجودی بر اساس دسته‌بندی</h3>
+    {% if category_inventory %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>دسته‌بندی</th>
+                <th>تعداد واریانت</th>
+                <th>کل موجودی</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in category_inventory %}
+            <tr>
+                <td>{{ category.product__category__title|default:"نامشخص" }}</td>
+                <td>{{ category.variant_count }}</td>
+                <td>{{ category.total_stock|floatformat:0 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>هیچ داده‌ای یافت نشد.</p>
+    {% endif %}
+</div>
+
+{% if category_inventory %}
+<div class="chart-container">
+    <h3>نمودار موجودی بر اساس دسته‌بندی</h3>
+    <canvas id="inventoryChart" width="400" height="200"></canvas>
+</div>
+{% endif %}
+
+{% if category_inventory %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('inventoryChart').getContext('2d');
+    const inventoryData = {{ category_inventory|safe }};
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: inventoryData.map(item => item.product__category__title || 'نامشخص'),
+            datasets: [{
+                label: 'کل موجودی',
+                data: inventoryData.map(item => item.total_stock),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'موجودی بر اساس دسته‌بندی'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+</script>
+{% endif %}
+{% endblock %}

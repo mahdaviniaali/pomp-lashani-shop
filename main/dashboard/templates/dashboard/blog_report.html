@@ -1,0 +1,148 @@
+{% extends "dashboard/base.html" %}
+{% load humanize %}
+
+{% block dashboard_content %}
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>کل پست‌ها</h3>
+        <p class="number">{{ total_posts|floatformat:0 }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>پست‌های منتشر شده</h3>
+        <p class="number">{{ published_posts|floatformat:0 }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>پیش‌نویس‌ها</h3>
+        <p class="number">{{ draft_posts|floatformat:0 }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>پست‌های آرشیو شده</h3>
+        <p class="number">{{ archived_posts|floatformat:0 }}</p>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>پست‌های جدید (30 روز)</h3>
+        <p class="number">{{ new_posts|floatformat:0 }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>پست‌های فعال</h3>
+        <p class="number">{{ active_posts|floatformat:0 }}</p>
+    </div>
+</div>
+
+<div class="table-container">
+    <h3>آمار نویسندگان</h3>
+    {% if author_stats %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>نویسنده</th>
+                <th>تعداد پست</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for author in author_stats %}
+            <tr>
+                <td>{{ author.author__fullname|default:"نامشخص" }}</td>
+                <td>{{ author.post_count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>هیچ نویسنده‌ای یافت نشد.</p>
+    {% endif %}
+</div>
+
+<div class="stats-grid">
+    <div class="chart-container">
+        <h3>نمودار وضعیت پست‌ها</h3>
+        <canvas id="postStatusChart" width="300" height="300"></canvas>
+    </div>
+    
+    <div class="chart-container">
+        <h3>نمودار نویسندگان</h3>
+        {% if author_stats %}
+        <canvas id="authorsChart" width="300" height="300"></canvas>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // نمودار وضعیت پست‌ها
+    const ctx1 = document.getElementById('postStatusChart').getContext('2d');
+    new Chart(ctx1, {
+        type: 'doughnut',
+        data: {
+            labels: ['منتشر شده', 'پیش‌نویس', 'آرشیو شده'],
+            datasets: [{
+                data: [{{ published_posts }}, {{ draft_posts }}, {{ archived_posts }}],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(255, 99, 132, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 205, 86, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                title: {
+                    display: true,
+                    text: 'وضعیت پست‌ها'
+                }
+            }
+        }
+    });
+    
+    {% if author_stats %}
+    // نمودار نویسندگان
+    const ctx2 = document.getElementById('authorsChart').getContext('2d');
+    const authorsData = {{ author_stats|safe }};
+    
+    new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: authorsData.map(item => item.author__fullname || 'نامشخص'),
+            datasets: [{
+                label: 'تعداد پست',
+                data: authorsData.map(item => item.post_count),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'تعداد پست‌های نویسندگان'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    {% endif %}
+});
+</script>
+{% endblock %}
