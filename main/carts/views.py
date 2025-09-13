@@ -4,6 +4,8 @@ from .models import *
 from products.models import Product, ProductVariant
 from .forms import *
 from django.http import JsonResponse, HttpResponse
+from django.db import models
+from django.contrib import messages
 import logging
 
 # Create your views here.
@@ -462,6 +464,22 @@ class CartDecrease(View):
 
 # فقط برای نشون دادن یدونه عدد
 class CartDecreaseJustNumber(View):
+    def get_total_cart_count(self, request):
+        """محاسبه تعداد کل آیتم‌های سبد خرید"""
+        try:
+            if request.user.is_authenticated:
+                cart = Cart.objects.filter(user=request.user).first()
+                if cart:
+                    return cart.items.aggregate(total=models.Sum('quantity'))['total'] or 0
+                else:
+                    return 0
+            else:
+                session_cart = request.session.get('cart', {})
+                return sum(session_cart.values()) if session_cart else 0
+        except Exception as e:
+            logger.error(f"خطا در محاسبه تعداد کل سبد خرید: {str(e)}")
+            return 0
+    
     def post(self, request):
         form = CartRemoveForm(request.POST)
         user = request.user
@@ -490,11 +508,77 @@ class CartDecreaseJustNumber(View):
                     request.session['cart'] = session_cart
                     request.session.modified = True
 
+            # به‌روزرسانی تعداد کل سبد خرید
+            total_count = self.get_total_cart_count(request)
+            
             return render(request, 'product_count_number.html', {
                 'quantity': quantity,
-            
+                'total_count': total_count
             })
-    
+
+
+# برای به‌روزرسانی تعداد کل آیتم‌های سبد خرید در navbar
+class CartCountUpdate(View):
+    def get(self, request):
+        """برگرداندن تعداد کل آیتم‌های سبد خرید"""
+        try:
+            if request.user.is_authenticated:
+                cart = Cart.objects.filter(user=request.user).first()
+                if cart:
+                    total_count = cart.items.aggregate(total=models.Sum('quantity'))['total'] or 0
+                else:
+                    total_count = 0
+            else:
+                session_cart = request.session.get('cart', {})
+                total_count = sum(session_cart.values()) if session_cart else 0
+            
+            return HttpResponse(str(total_count))
+        except Exception as e:
+            logger.error(f"خطا در محاسبه تعداد کل سبد خرید: {str(e)}")
+            return HttpResponse("0")
+
+
+# اضافه کردن شماره شبا به کارت
+class CartAddSheba(View):
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'لطفاً ابتدا وارد شوید'}, status=401)
+        
+        form = CartShebaForm(request.POST)
+        if form.is_valid():
+            try:
+                cart = Cart.objects.get(user=request.user)
+                cart.sheba_number = form.cleaned_data['sheba_number']
+                cart.save()
+                
+                return JsonResponse({
+                    'success': True, 
+                    'message': 'شماره شبا با موفقیت اضافه شد',
+                    'sheba': cart.get_formatted_sheba() if cart.sheba_number else None
+                })
+            except Cart.DoesNotExist:
+                return JsonResponse({'error': 'سبد خرید یافت نشد'}, status=404)
+        else:
+            return JsonResponse({'error': form.errors}, status=400)
+
+
+# حذف شماره شبا از کارت
+class CartRemoveSheba(View):
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'لطفاً ابتدا وارد شوید'}, status=401)
+        
+        try:
+            cart = Cart.objects.get(user=request.user)
+            cart.sheba_number = None
+            cart.save()
+            
+            return JsonResponse({
+                'success': True, 
+                'message': 'شماره شبا حذف شد'
+            })
+        except Cart.DoesNotExist:
+            return JsonResponse({'error': 'سبد خرید یافت نشد'}, status=404)
 
 
 # اینو حس میکنم نمیشه با htmx زد چون مشخص نیست کجا میره... سعی کن تو خود سبد هندلش کنی
@@ -582,6 +666,22 @@ class CartAdd(View):
 
 # برای اضافه کردن و ایجاد یدونه عدد
 class CartAddJustNumber(View):
+    def get_total_cart_count(self, request):
+        """محاسبه تعداد کل آیتم‌های سبد خرید"""
+        try:
+            if request.user.is_authenticated:
+                cart = Cart.objects.filter(user=request.user).first()
+                if cart:
+                    return cart.items.aggregate(total=models.Sum('quantity'))['total'] or 0
+                else:
+                    return 0
+            else:
+                session_cart = request.session.get('cart', {})
+                return sum(session_cart.values()) if session_cart else 0
+        except Exception as e:
+            logger.error(f"خطا در محاسبه تعداد کل سبد خرید: {str(e)}")
+            return 0
+    
     def post(self, request):
         form = CartAddForm(request.POST)
         product = None
@@ -629,8 +729,12 @@ class CartAddJustNumber(View):
                     success = True
         
 
+            # به‌روزرسانی تعداد کل سبد خرید
+            total_count = self.get_total_cart_count(request)
+            
             return render(request, 'product_count_number.html', {
                 'quantity': quantity,
+                'total_count': total_count
             })
 
 

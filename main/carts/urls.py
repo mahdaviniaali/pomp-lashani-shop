@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     CartAdd, CartRemove, CartDecrease, CartClear, CartDetail, ProductQuantityInCart, ProductQuantityInCartMobile, ProductQuantityInCartJustNumber, CartAddJustNumber
-,CartDecreaseJustNumber, CartTotalView, CartItemListViewHtmx, CartAddMobile, CartDecreaseMobile
+,CartDecreaseJustNumber, CartTotalView, CartItemListViewHtmx, CartAddMobile, CartDecreaseMobile, CartCountUpdate, CartAddSheba, CartRemoveSheba
 )
 
 app_name = 'carts'
@@ -22,6 +22,9 @@ urlpatterns = [
     path('partials/decrease', CartDecreaseJustNumber.as_view(), name='cart_decrease_just_number' ),
     path('cart/total/', CartTotalView.as_view(), name='get_cart_total'),
     path('cart/items/', CartItemListViewHtmx.as_view(), name='cart_items_partial'),
+    path('cart/count-update/', CartCountUpdate.as_view(), name='cart_count_update'),
+    path('cart/sheba/add/', CartAddSheba.as_view(), name='cart_add_sheba'),
+    path('cart/sheba/remove/', CartRemoveSheba.as_view(), name='cart_remove_sheba'),
 
 
 ]

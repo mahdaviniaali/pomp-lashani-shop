@@ -66,13 +66,57 @@ class OTPVerify(View):
         
         if not phone_number:
             return redirect('users:login')
+        
+        # محاسبه زمان باقیمانده OTP
+        remaining_time = 120  # پیش‌فرض 2 دقیقه
+        try:
+            otp = OTP.objects.get(phone_number=phone_number)
+            if otp.is_valid():
+                from django.utils import timezone
+                remaining_seconds = (otp.expires_at - timezone.now()).total_seconds()
+                remaining_time = max(0, int(remaining_seconds))
+        except OTP.DoesNotExist:
+            pass
             
         return render(request, 'otp.html', {
             'phone_number': phone_number,
-            'next': next_url
+            'next': next_url,
+            'remaining_time': remaining_time
         })
 
     def post(self, request):
+        # بررسی درخواست ارسال مجدد
+        if request.POST.get('resend') == 'true':
+            phone_number = request.session.get('otp_phone')
+            if not phone_number:
+                return JsonResponse({'error': 'شماره تلفن یافت نشد'}, status=400)
+            
+            # حذف کد قبلی
+            OTP.objects.filter(phone_number=phone_number).delete()
+            
+            # ایجاد کد جدید
+            code = OTP.objects.create_otp_code(phone_number)
+            if not code:
+                return JsonResponse({'error': 'خطا در ایجاد کد OTP'}, status=500)
+            
+            # ارسال SMS
+            success = SendSMS.send_verify_code(
+                number=phone_number,
+                template_id=settings.SMSIR_VERIFY_TEMPLATE_ID,
+                parameters=[
+                    {
+                        "name": "Code",
+                        "value": code
+                    }
+                ]
+            )
+            
+            if success:
+                return JsonResponse({'success': True, 'message': 'کد جدید ارسال شد'})
+            else:
+                return JsonResponse({'error': 'خطا در ارسال SMS'}, status=500)
+        
+        # پردازش کد OTP
         phone_number = request.POST.get("phone_number")
         input_code = request.POST.get("otp_code")
         next_url = request.POST.get("next", "")

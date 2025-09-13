@@ -12,6 +12,7 @@ class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='carts')
     total_price = models.IntegerField(default=0)
     discount_price = models.IntegerField(null=True, blank=True, default=0)
+    sheba_number = models.CharField(_("شماره شبا"), max_length=26, blank=True, null=True, help_text="شماره شبا 24 رقمی")
     created_at = models.DateTimeField(auto_now_add=True)
     update_at= models.DateTimeField(auto_now=True)
     objects = CartManager()
@@ -36,6 +37,47 @@ class Cart(models.Model):
             return self.total_price, True
         else:
             return False
+
+    def clean_sheba_number(self):
+        """پاک کردن و فرمت کردن شماره شبا"""
+        if self.sheba_number:
+            # حذف فاصله و کاراکترهای اضافی
+            cleaned = self.sheba_number.replace(' ', '').replace('-', '').replace('_', '')
+            # تبدیل به حروف بزرگ
+            return cleaned.upper()
+        return None
+    
+    def is_valid_sheba(self):
+        """اعتبارسنجی شماره شبا"""
+        if not self.sheba_number:
+            return False
+        
+        sheba = self.clean_sheba_number()
+        if not sheba or len(sheba) != 24:
+            return False
+        
+        # بررسی اینکه با IR شروع شود
+        if not sheba.startswith('IR'):
+            return False
+        
+        # بررسی اینکه بقیه کاراکترها عدد باشند
+        if not sheba[2:].isdigit():
+            return False
+        
+        return True
+    
+    def get_formatted_sheba(self):
+        """دریافت شماره شبا با فرمت مناسب"""
+        if not self.sheba_number:
+            return None
+        
+        sheba = self.clean_sheba_number()
+        if not sheba:
+            return None
+        
+        # فرمت کردن: IR12 3456 7890 1234 5678 9012 34
+        formatted = f"{sheba[:4]} {sheba[4:8]} {sheba[8:12]} {sheba[12:16]} {sheba[16:20]} {sheba[20:24]}"
+        return formatted
 
     def __str__(self):
         return f"Cart {self.id} - {self.user.username}"

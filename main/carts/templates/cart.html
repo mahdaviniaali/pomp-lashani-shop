@@ -93,6 +93,35 @@
                     <span class="text-primary">{{ total_price|floatformat:"0" }} تومان</span>
                 </div>
                 
+                <!-- بخش شماره شبا -->
+                <div class="sheba-section mt-4">
+                    <h6 class="sheba-title">شماره شبا (اختیاری)</h6>
+                    <div id="sheba-display" class="sheba-display" style="display: none;">
+                        <div class="sheba-info">
+                            <span class="sheba-label">شماره شبا:</span>
+                            <span id="sheba-number" class="sheba-number"></span>
+                            <button type="button" class="btn btn-sm btn-outline-danger ms-2" onclick="removeSheba()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="sheba-form" class="sheba-form">
+                        <div class="input-group">
+                            <input type="text" 
+                                   id="sheba-input" 
+                                   class="form-control" 
+                                   placeholder="IR123456789012345678901234"
+                                   maxlength="26"
+                                   pattern="IR[0-9]{22}"
+                                   title="شماره شبا باید با IR شروع شود و 24 کاراکتر باشد">
+                            <button type="button" class="btn btn-outline-primary" onclick="addSheba()">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <small class="text-muted">شماره شبا 24 رقمی (مثال: IR123456789012345678901234)</small>
+                    </div>
+                </div>
+                
                 <a href="{% url 'payments:checkout' %}" class="btn-checkout">
                     ادامه خرید
                 </a>

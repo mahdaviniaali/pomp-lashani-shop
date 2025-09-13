@@ -116,7 +116,7 @@
         <div class="icons d-none d-lg-block">
           <a href="{% url 'users:profile' %}"> <i class="la la-user"></i> </a>
           <a href="{% url 'carts:cart_detail' %}">
-            <i class="la la-shopping-cart"></i> <span class="num">{{ cart_count|default:0 }}</span>
+            <i class="la la-shopping-cart"></i> <span class="num" id="cart-count-navbar">{{ cart_count|default:0 }}</span>
           </a>
         </div>
       </div>
@@ -136,7 +136,7 @@
         <div class="icons d-flex align-items-center">
           <a href="{% url 'users:profile' %}"> <i class="la la-user"></i> </a>
           <a href="{% url 'carts:cart_detail' %}">
-            <i class="la la-shopping-cart"></i> <span class="num">{{ cart_count|default:0 }}</span>
+            <i class="la la-shopping-cart"></i> <span class="num" id="cart-count-mobile-navbar">{{ cart_count|default:0 }}</span>
           </a>
         </div>
       </div>
@@ -222,7 +222,7 @@
     <div class="icons">
       <a href="{% url 'users:profile' %}"> <i class="fal fa-user"></i> </a>
       <a href="{% url 'carts:cart_detail' %}">
-        <i class="fal fa-shopping-bag"></i> <span class="num">{{ cart_count|default:0 }}</span>
+        <i class="fal fa-shopping-bag"></i> <span class="num" id="cart-count-offcanvas">{{ cart_count|default:0 }}</span>
       </a>
     </div>
     <div class="ntop">
@@ -503,6 +503,9 @@
 
   <!-- اسکریپت مشترک -->
   <script src="{% static 'common/js/common_js.js' %}"></script>
+  
+  <!-- اسکریپت به‌روزرسانی سبد خرید -->
+  <script src="{% static 'custom/cart-update.js' %}"></script>
 
   <!-- اسکریپت‌های اختصاصی صفحه -->
   {% block js %}{% endblock %}
