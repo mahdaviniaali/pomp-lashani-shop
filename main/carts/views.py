@@ -538,49 +538,6 @@ class CartCountUpdate(View):
             return HttpResponse("0")
 
 
-# اضافه کردن شماره شبا به کارت
-class CartAddSheba(View):
-    def post(self, request):
-        if not request.user.is_authenticated:
-            return JsonResponse({'error': 'لطفاً ابتدا وارد شوید'}, status=401)
-        
-        form = CartShebaForm(request.POST)
-        if form.is_valid():
-            try:
-                cart = Cart.objects.get(user=request.user)
-                cart.sheba_number = form.cleaned_data['sheba_number']
-                cart.save()
-                
-                return JsonResponse({
-                    'success': True, 
-                    'message': 'شماره شبا با موفقیت اضافه شد',
-                    'sheba': cart.get_formatted_sheba() if cart.sheba_number else None
-                })
-            except Cart.DoesNotExist:
-                return JsonResponse({'error': 'سبد خرید یافت نشد'}, status=404)
-        else:
-            return JsonResponse({'error': form.errors}, status=400)
-
-
-# حذف شماره شبا از کارت
-class CartRemoveSheba(View):
-    def post(self, request):
-        if not request.user.is_authenticated:
-            return JsonResponse({'error': 'لطفاً ابتدا وارد شوید'}, status=401)
-        
-        try:
-            cart = Cart.objects.get(user=request.user)
-            cart.sheba_number = None
-            cart.save()
-            
-            return JsonResponse({
-                'success': True, 
-                'message': 'شماره شبا حذف شد'
-            })
-        except Cart.DoesNotExist:
-            return JsonResponse({'error': 'سبد خرید یافت نشد'}, status=404)
-
-
 # اینو حس میکنم نمیشه با htmx زد چون مشخص نیست کجا میره... سعی کن تو خود سبد هندلش کنی
 #htmx
 #پاک کردن کل سبد
