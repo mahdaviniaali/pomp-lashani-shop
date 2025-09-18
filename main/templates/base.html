@@ -20,7 +20,7 @@
 
   <meta property="og:title" content="{% block meta_title %}{% if global_settings and global_settings.site_title %}{{ global_settings.site_title }}{% else %}فروشگاه اینترنتی{% endif %}{% endblock %}">
   <meta property="og:description" content="{% block og_description %}{% if global_settings and global_settings.meta_description %}{{ global_settings.meta_description }}{% else %}{{ company_info.short_description|default:'فروشگاه اینترنتی' }}{% endif %}{% endblock %}">
-  <meta property="og:image" content="{% if company_info and company_info.logo %}{% absolute_url company_info.logo.url %}{% elif global_settings and global_settings.favicon %}{% absolute_url global_settings.favicon.url %}{% else %}{% static 'img/fav.png' %}{% endif %}">
+  <meta property="og:image" content="{% block og_image %}{% if company_info and company_info.logo %}{% absolute_url company_info.logo.url %}{% elif global_settings and global_settings.favicon %}{% absolute_url global_settings.favicon.url %}{% else %}{% static 'img/fav.png' %}{% endif %}{% endblock %}">
   <meta property="og:url" content="{% canonical_url %}">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fa_IR">
@@ -33,7 +33,16 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{% block twitter_title %}{% if global_settings and global_settings.site_title %}{{ global_settings.site_title }}{% else %}فروشگاه اینترنتی{% endif %}{% endblock %}">
   <meta name="twitter:description" content="{% block twitter_description %}{% if global_settings and global_settings.meta_description %}{{ global_settings.meta_description }}{% else %}{{ company_info.short_description|default:'فروشگاه اینترنتی' }}{% endif %}{% endblock %}">
-  <meta property="twitter:image" content="{% if company_info and company_info.logo %}{% absolute_url company_info.logo.url %}{% elif global_settings and global_settings.favicon %}{% absolute_url global_settings.favicon.url %}{% else %}{% static 'img/fav.png' %}{% endif %}">
+  <meta property="twitter:image" content="{% block twitter_image %}{% if company_info and company_info.logo %}{% absolute_url company_info.logo.url %}{% elif global_settings and global_settings.favicon %}{% absolute_url global_settings.favicon.url %}{% else %}{% static 'img/fav.png' %}{% endif %}{% endblock %}">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-27K5Y640RL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-27K5Y640RL');
+  </script>
 
   <!-- عنوان صفحه -->
   <title>

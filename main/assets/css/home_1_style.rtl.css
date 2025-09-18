@@ -813,6 +813,7 @@
     align-items: center !important;
     text-align: center !important;
     padding-top: 20px;
+    min-height: 120px; /* حداقل ارتفاع برای ثابت نگه داشتن موقعیت دکمه */
 }
 
 .tc-header-style1 .content .card-overlay.card-center .info .butn {

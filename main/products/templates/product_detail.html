@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load humanize %}
+{% load main_filters %}
 
 
 
@@ -11,6 +12,8 @@
 {% block og_description %}خرید {{ product.title }} با بهترین قیمت از {{ company_info.name|default:global_settings.site_title }}{% endblock %}
 {% block twitter_title %}{{ product.title }} | {{ company_info.name|default:global_settings.site_title }}{% endblock %}
 {% block twitter_description %}خرید {{ product.title }} با بهترین قیمت از {{ company_info.name|default:global_settings.site_title }}{% endblock %}
+{% block og_image %}{% absolute_url product.image.url %}{% endblock %}
+{% block twitter_image %}{% absolute_url product.image.url %}{% endblock %}
 {% block extra_meta %}
   <meta property="og:type" content="product">
 {% endblock %}
