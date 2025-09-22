@@ -155,10 +155,9 @@ $(document).ready(function () {
     // ------------ tc-best-seller-style1 -----------
     var swiper = new Swiper('.tc-best-seller-style1 .products-slider', {
         slidesPerView: 5,
-        spaceBetween: 30,
-        // centeredSlides: true,
+        spaceBetween: 20,
+        centeredSlides: false,
         speed: 1000,
-        pagination: false,
         pagination: {
             el: '.swiper-pagination',
             clickable: true,
@@ -170,24 +169,42 @@ $(document).ready(function () {
         mousewheel: false,
         keyboard: true,
         autoplay: {
-            delay: 5000,
+            delay: 4000,
+            disableOnInteraction: false,
         },
         loop: true,
         breakpoints: {
             0: {
                 slidesPerView: 1,
+                spaceBetween: 15,
+            },
+            320: {
+                slidesPerView: 1.5,
+                spaceBetween: 15,
             },
             480: {
                 slidesPerView: 2,
+                spaceBetween: 15,
             },
-            787: {
+            640: {
+                slidesPerView: 2.5,
+                spaceBetween: 18,
+            },
+            768: {
                 slidesPerView: 3,
+                spaceBetween: 20,
             },
             991: {
                 slidesPerView: 4,
+                spaceBetween: 20,
             },
             1200: {
                 slidesPerView: 5,
+                spaceBetween: 25,
+            },
+            1400: {
+                slidesPerView: 6,
+                spaceBetween: 30,
             }
         }
     });
@@ -196,10 +213,9 @@ $(document).ready(function () {
     // ------------ tc-pupolar-brands-style1 -----------
     var swiper = new Swiper('.tc-pupolar-brands-style1 .pupolar-slider', {
         slidesPerView: 5,
-        spaceBetween: 30,
-        centeredSlides: true,
+        spaceBetween: 20,
+        centeredSlides: false,
         speed: 1000,
-        pagination: false,
         pagination: false,
         navigation: {
             prevEl: '.swiper-button-next',
@@ -208,24 +224,42 @@ $(document).ready(function () {
         mousewheel: false,
         keyboard: true,
         autoplay: {
-            delay: 5000,
+            delay: 4000,
+            disableOnInteraction: false,
         },
         loop: true,
         breakpoints: {
             0: {
                 slidesPerView: 1,
+                spaceBetween: 15,
+            },
+            320: {
+                slidesPerView: 1.5,
+                spaceBetween: 15,
             },
             480: {
                 slidesPerView: 2,
+                spaceBetween: 15,
             },
-            787: {
-                slidesPerView: 4,
+            640: {
+                slidesPerView: 2.5,
+                spaceBetween: 18,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
             },
             991: {
-                slidesPerView: 5,
+                slidesPerView: 4,
+                spaceBetween: 20,
             },
             1200: {
+                slidesPerView: 5,
+                spaceBetween: 25,
+            },
+            1400: {
                 slidesPerView: 6,
+                spaceBetween: 30,
             }
         }
     });

@@ -835,28 +835,30 @@ home-style1
                 {# نمایش برندها #}
                 {% for brand in brands %}
                 <div class="swiper-slide">
-                  <div class="card-overlay">
-                    <div class="img">
+                  <div class="brand-card">
+                    <div class="brand-logo">
                       <a href="{% url 'products:product_list' %}?brand={{ brand.slug|default:brand.name }}">
                         {% if brand.logo %}
-                          <img alt="{{ brand.name }}" class="img-cover img-fixed" style="width:100px;height:100px;object-fit:contain;" src="{{ brand.logo.url }}" />
+                          <img alt="{{ brand.name }}" class="brand-img" src="{{ brand.logo.url }}" />
                         {% else %}
-                          <img alt="{{ brand.name }}" class="img-cover img-fixed" style="width:100px;height:100px;object-fit:contain;" src="/static/images/default-brand.png" />
+                          <img alt="{{ brand.name }}" class="brand-img" src="/static/images/default-brand.png" />
                         {% endif %}
                       </a>
                     </div>
-                    <h6 class="text-center mt-3">
-                      <a href="{% url 'products:product_list' %}?brand={{ brand.slug|default:brand.name }}" class="fsz-19 fw-medium hover-blue1">{{ brand.name }}</a>
-                    </h6>
+                    <div class="brand-name">
+                      <a href="{% url 'products:product_list' %}?brand={{ brand.slug|default:brand.name }}" class="brand-link">{{ brand.name }}</a>
+                    </div>
                   </div>
                 </div>
                 {% empty %}
                 <div class="swiper-slide">
-                  <div class="card-overlay">
-                    <div class="img">
-                      <img alt="" class="img-cover" src="/static/images/default-brand.png" />
+                  <div class="brand-card">
+                    <div class="brand-logo">
+                      <img alt="" class="brand-img" src="/static/images/default-brand.png" />
                     </div>
-                    <h6 class="text-center mt-3">برندی یافت نشد</h6>
+                    <div class="brand-name">
+                      <span class="brand-link">برندی یافت نشد</span>
+                    </div>
                   </div>
                 </div>
                 {% endfor %}
@@ -872,32 +874,9 @@ home-style1
   <!--  Start main-banner  -->
   <section class="tc-main-banner-style1 wow fadeInUp slow" data-wow-delay="0.2s">
     <div class="container">
-      <div class="banner">
-        <div class="row align-items-center">
-          <div class="col-lg-2">
-            <h6 class="fsz-24 text-uppercase color-cyan1 lh-1">
-              پیش سفارش
-            </h6>
-            <small class="fsz-10 color-999 text-uppercase">اولین کسی باشد که مالکیت دارد</small>
-            <p class="fsz-14 mt-2 text-white">از 399 تومان</p>
-          </div>
-          <div class="col-lg-4 order-last order-lg-0">
-            <div class="img">
-              <img alt="" src="{% static 'img/products/banner.png' %}" />
-            </div>
-          </div>
-          <div class="col-lg-4 mt-3 mt-lg-0">
-            <small class="fsz-12 color-cyan1">Opplo Watch Sport<br />سری 8</small>
-            <h3 class="fsz-30 mt-10 fw-300 text-white">یک جهش سالم جلو</h3>
-          </div>
-          <div class="col-lg-2 mt-4 mt-lg-0">
-            <div class="text-lg-end">
-              <a class="butn px-4 pt-10 pb-10 bg-white color-000 rounded-pill fw-600"
-                href="../pages/single_product.html">
-                <span>اکنون کشف کنید</span>
-              </a>
-            </div>
-          </div>
+      <div class="banner text-center">
+        <div class="img">
+          <img alt="Long Banner" src="{% static 'img/products/longbaner.jpg' %}" class="img-fluid" />
         </div>
       </div>
     </div>
