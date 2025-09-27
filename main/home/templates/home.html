@@ -2,6 +2,7 @@
 {% load static %}
 {% load main_filters %}
 {% load humanize %}
+{% load imagekit_tags %}
 
 {% block title %}{{ global_settings.site_title|default:'فروشگاه اینترنتی' }}{% endblock %}
 {% block meta_title %}{{ global_settings.site_title|default:'فروشگاه اینترنتی' }}{% endblock %}
@@ -56,7 +57,7 @@ home-style1
          {% for cat in categories %}
             <a class="cat-card" href="{% url 'products:product_list_by_category' pk=cat.id slug=cat.slug %}">
               <div class="img">
-                <img alt="{{cat.title}}" src="{{cat.logo_url}}" />
+                <img alt="{{cat.title}}" src="{% category_logo_url cat.logo %}" />
               </div>
               <p class="fsz-13 fw-bold mt-15">{{cat.title}}</p>
             </a>
@@ -360,7 +361,7 @@ home-style1
               </div>
               <a class="img th-140 mb-20 d-block"
                 href="{% url 'products:product_detail' pk=top_products.0.id slug=top_products.0.slug %}">
-                <img alt="" class="img-contain" src="{{top_products.0.image.url}}" />
+                <img alt="" class="img-contain" src="{% product_thumbnail_url top_products.0.image %}" />
               </a>
 
               <div class="info">
@@ -418,7 +419,7 @@ home-style1
               </div>
               <a class="img th-140 mb-20 d-block"
                 href="{% url 'products:product_detail' pk=top_products.1.id slug=top_products.1.slug %}">
-                <img alt="" class="img-contain" src="{{ top_products.1.image.url }}" />
+                <img alt="" class="img-contain" src="{% product_thumbnail_url top_products.1.image %}" />
               </a>
               <div class="info">
                 <a class="title fsz-14 mt-15 fw-600 hover-blue1"
@@ -473,7 +474,7 @@ home-style1
               </div>
               <a class="img th-600 mb-20 d-block"
                 href="{% url 'products:product_detail' pk=top_products.2.id slug=top_products.2.slug %}">
-                <img alt="" class="img-contain" src="{{ top_products.2.image.url }}" />
+                <img alt="" class="img-contain" src="{% product_large_url top_products.2.image %}" />
               </a>
               <div class="info">
                 <span class="label fsz-11 py-1 px-3 rounded-pill bg-blue1 text-white text-uppercase">محصولات</span>
@@ -526,7 +527,7 @@ home-style1
               </div>
               <a class="img th-140 mb-20 d-block"
                 href="{% url 'products:product_detail' pk=top_products.3.id slug=top_products.3.slug %}">
-                <img alt="" class="img-contain" src="{{ top_products.3.image.url }}" />
+                <img alt="" class="img-contain" src="{% product_thumbnail_url top_products.3.image %}" />
               </a>
               <div class="info">
                 <span class="label fsz-11 py-1 px-3 rounded-pill bg-green1 text-white text-uppercase">دارای رتبه
@@ -573,7 +574,7 @@ home-style1
               </div>
               <a class="img th-140 mb-20 d-block"
                 href="{% url 'products:product_detail' pk=top_products.4.id slug=top_products.4.slug %}">
-                <img alt="" class="img-contain" src="{{ top_products.4.image.url }}" />
+                <img alt="" class="img-contain" src="{% product_thumbnail_url top_products.4.image %}" />
               </a>
               <div class="info">
                 <span class="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white">از پیش سفارش دادن</span>
@@ -626,7 +627,7 @@ home-style1
               </div>
               <a class="img th-140 mb-20 d-block"
                 href="{% url 'products:product_detail' pk=top_products.5.id slug=top_products.5.slug %}">
-                <img alt="" class="img-contain" src="{{ top_products.5.image.url }}" />
+                <img alt="" class="img-contain" src="{% product_thumbnail_url top_products.5.image %}" />
               </a>
               <div class="info">
                 <a class="title fsz-14 mt-15 fw-600 hover-blue1"
@@ -677,7 +678,7 @@ home-style1
               </div>
               <a class="img th-140 mb-20 d-block"
                 href="{% url 'products:product_detail' pk=top_products.6.id slug=top_products.6.slug %}">
-                <img alt="" class="img-contain" src="{{ top_products.6.image.url }}" />
+                <img alt="" class="img-contain" src="{% product_thumbnail_url top_products.6.image %}" />
               </a>
               <div class="info">
                 <a class="title fsz-14 mt-15 fw-600 hover-blue1"
@@ -732,7 +733,7 @@ home-style1
                 <div class="top"></div>
                 <a class="img th-140 mb-20 d-block"
                   href="{% url 'products:product_detail' pk=product.id slug=product.slug %}">
-                  <img alt="" class="img-contain" src="{{ product.image.url }}" />
+                  <img alt="" class="img-contain" src="{% product_thumbnail_url product.image %}" />
                 </a>
                 <div class="info">
                   {% if forloop.first %}
@@ -839,7 +840,7 @@ home-style1
                     <div class="brand-logo">
                       <a href="{% url 'products:product_list' %}?brand={{ brand.slug|default:brand.name }}">
                         {% if brand.logo %}
-                          <img alt="{{ brand.name }}" class="brand-img" src="{{ brand.logo.url }}" />
+                          <img alt="{{ brand.name }}" class="brand-img" src="{% brand_logo_url brand.logo %}" />
                         {% else %}
                           <img alt="{{ brand.name }}" class="brand-img" src="/static/images/default-brand.png" />
                         {% endif %}
@@ -876,7 +877,7 @@ home-style1
     <div class="container">
       <div class="banner text-center">
         <div class="img">
-          <img alt="Long Banner" src="{% static 'img/products/longbaner.jpg' %}" class="img-fluid" />
+          <img alt="Long Banner" src="{% static 'img/products/longbrand2.jpg' %}" class="img-fluid" />
         </div>
       </div>
     </div>
@@ -911,7 +912,7 @@ home-style1
                   </div>
                   <a class="img th-160 mb-20 d-block"
                     href="{% url 'products:product_detail' pk=product.id slug=product.slug %}">
-                    <img alt="" class="img-contain" src="{{product.image.url}}" />
+                    <img alt="" class="img-contain" src="{% product_thumbnail_url product.image %}" />
                   </a>
                   <div class="info">
                     <div class="tags">
@@ -967,7 +968,7 @@ home-style1
                 <div class="col-12 col-md-6">
                   <div class="advc-item">
                     <div class="img">
-                       <img alt="{{ post.title }}" class="img-cover" src="{{ post.image.url }}">
+                       <img alt="{{ post.title }}" class="img-cover" src="{% product_card_url post.image %}">
                     </div>
                     <div class="info">
                       <h6>

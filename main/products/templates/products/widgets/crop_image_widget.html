@@ -1,0 +1,142 @@
+<div class="crop-image-widget">
+    <div class="image-upload-area">
+        {% if value %}
+            <div class="current-image">
+                <img src="{{ value.url }}" alt="تصویر فعلی" style="max-width: 200px; max-height: 150px;">
+                <p class="image-info">تصویر فعلی</p>
+            </div>
+        {% endif %}
+        
+        <div class="upload-section">
+            <input type="file" 
+                   name="{{ name }}" 
+                   id="id_{{ name }}" 
+                   accept="image/*"
+                   {% for attr, value in attrs.items %}{{ attr }}="{{ value }}"{% endfor %}>
+            
+            <div class="upload-preview" id="preview_{{ name }}" style="display: none;">
+                <img id="preview_img_{{ name }}" src="" alt="پیش‌نمایش">
+                <button type="button" class="btn btn-sm btn-info crop-btn" id="crop_btn_{{ name }}">
+                    <i class="fas fa-crop"></i> کراپ تصویر
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="crop-info">
+        <small class="text-muted">
+            اندازه نهایی: {{ target_size.width }} × {{ target_size.height }} پیکسل
+        </small>
+    </div>
+</div>
+
+<style>
+.crop-image-widget {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    background: #f8f9fa;
+}
+
+.current-image {
+    text-align: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+}
+
+.current-image img {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.image-info {
+    margin: 5px 0 0 0;
+    font-size: 12px;
+    color: #666;
+}
+
+.upload-section {
+    text-align: center;
+}
+
+.upload-preview {
+    margin-top: 15px;
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+}
+
+.upload-preview img {
+    max-width: 200px;
+    max-height: 150px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
+.crop-btn {
+    background: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.crop-btn:hover {
+    background: #138496;
+    border-color: #117a8b;
+}
+
+.crop-info {
+    margin-top: 10px;
+    text-align: center;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('id_{{ name }}');
+    const preview = document.getElementById('preview_{{ name }}');
+    const previewImg = document.getElementById('preview_img_{{ name }}');
+    const cropBtn = document.getElementById('crop_btn_{{ name }}');
+    
+    if (fileInput && preview && previewImg && cropBtn) {
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        cropBtn.addEventListener('click', function() {
+            if (previewImg.src) {
+                const targetSize = {{ target_size|safe }};
+                startImageCrop(previewImg.src, targetSize, function(croppedDataUrl) {
+                    // تبدیل data URL به blob و تنظیم در input
+                    fetch(croppedDataUrl)
+                        .then(res => res.blob())
+                        .then(blob => {
+                            const file = new File([blob], 'cropped-image.jpg', {type: 'image/jpeg'});
+                            const dataTransfer = new DataTransfer();
+                            dataTransfer.items.add(file);
+                            fileInput.files = dataTransfer.files;
+                            
+                            // به‌روزرسانی preview
+                            previewImg.src = croppedDataUrl;
+                        });
+                });
+            }
+        });
+    }
+});
+</script>

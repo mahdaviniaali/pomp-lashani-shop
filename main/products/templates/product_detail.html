@@ -2,6 +2,7 @@
 {% load static %}
 {% load humanize %}
 {% load main_filters %}
+{% load imagekit_tags %}
 
 
 
@@ -57,13 +58,13 @@
               <div class="swiper-wrapper">
                 <div class="swiper-slide">
                   <div class="img">
-                    <img alt="{{product.title}}" src="{{product.image.url}}" />
+                    <img alt="{{product.title}}" src="{% product_detail_url product.image %}" />
                   </div>
                 </div>
                 {% for image in product.images.all %}
                 <div class="swiper-slide">
                   <div class="img">
-                    <img alt="{{product.title}}" src="{{ image.image.url }}" />
+                    <img alt="{{product.title}}" src="{% product_detail_url image.image %}" />
                   </div>
                 </div>
                 {% endfor %}
@@ -73,13 +74,13 @@
               <div class="swiper-wrapper">
                 <div class="swiper-slide">
                   <div class="img">
-                    <img alt="{{product.title}}" src="{{product.image.url}}" />
+                    <img alt="{{product.title}}" src="{% product_thumbnail_url product.image %}" />
                   </div>
                 </div>
                 {% for image in product.images.all %}
                 <div class="swiper-slide">
                   <div class="img">
-                    <img alt="{{product.title}}" src="{{ image.image.url }}" />
+                    <img alt="{{product.title}}" src="{% product_thumbnail_url image.image %}" />
                   </div>
                 </div>
                 {% endfor %}
@@ -360,7 +361,7 @@
               <div class="swiper-slide">
                 <div class="product-card">
                   <a class="img" href="{% url 'products:product_detail' pk=product.id slug=product.slug %}">
-                    <img src="{{ product.image.url }}" alt="{{ product.title }}" style="height: 180px; object-fit: contain;">
+                    <img src="{% product_card_url product.image %}" alt="{{ product.title }}" style="height: 180px; object-fit: contain;">
                   </a>
                   <div class="info">
                     <h6>

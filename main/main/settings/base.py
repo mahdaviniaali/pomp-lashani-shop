@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'rangefilter',
     'admin_auto_filters',
     'meta',
+    'imagekit',
 ]
 
 MIDDLEWARE = [
@@ -276,3 +277,10 @@ JAZZMIN_UI_TWEAKS = {
         "success": "btn-success"
     }
 }
+
+# ImageKit Configuration
+IMAGEKIT_DEFAULT_CACHEFILE_BACKEND = 'imagekit.cachefiles.backends.CachedFileBackend'
+IMAGEKIT_DEFAULT_CACHEFILE_STRATEGY = 'imagekit.cachefiles.strategies.Optimistic'
+IMAGEKIT_DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+IMAGEKIT_SPEC_CACHEFILE_BACKEND = 'imagekit.cachefiles.backends.CachedFileBackend'
+IMAGEKIT_SPEC_CACHEFILE_STRATEGY = 'imagekit.cachefiles.strategies.Optimistic'

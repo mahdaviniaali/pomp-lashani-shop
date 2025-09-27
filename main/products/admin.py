@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from rangefilter.filters import DateRangeFilter
 from import_export.admin import ImportExportModelAdmin
 from .models import Product, ProductImage, ProductAttributeValue, ProductVariant
+from .widgets import CropImageWidget
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
@@ -13,6 +14,11 @@ class ProductImageInline(admin.TabularInline):
     readonly_fields = ('image_preview',)
     verbose_name = _("تصویر محصول")
     verbose_name_plural = _("تصاویر محصول")
+    
+    def get_formset(self, request, obj=None, **kwargs):
+        formset = super().get_formset(request, obj, **kwargs)
+        formset.form.base_fields['image'].widget = CropImageWidget(target_size={'width': 800, 'height': 600})
+        return formset
     
     def image_preview(self, obj):
         if obj.image:
@@ -126,6 +132,11 @@ class ProductAdmin(ImportExportModelAdmin):
     )
     
     inlines = [ProductImageInline, ProductAttributeValueInline, ProductVariantInline]
+    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields['image'].widget = CropImageWidget(target_size={'width': 800, 'height': 600})
+        return form
     
     def image_thumbnail(self, obj):
         if obj.image:

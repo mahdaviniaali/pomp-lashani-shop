@@ -8,6 +8,8 @@ from django_ckeditor_5.fields import CKEditor5Field
 from auditlog.models import AuditlogHistoryField
 from auditlog.registry import auditlog
 from meta.models import ModelMeta
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill, ResizeToFit, Crop
 
 from django.contrib.auth import get_user_model
 
@@ -18,7 +20,13 @@ class Product(ModelMeta, models.Model):
     slug = models.SlugField(_("اسلاگ"), max_length=700, unique=True, blank=True)
     category = TreeForeignKey('categories.Category', on_delete=models.PROTECT, verbose_name=_("دسته‌بندی"))
     brand = models.ForeignKey('categories.Brand', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_("برند"))
-    image = models.ImageField(_("تصویر اصلی"), upload_to='products/')
+    image = ProcessedImageField(
+        upload_to='products/',
+        processors=[ResizeToFill(800, 600)],
+        format='JPEG',
+        options={'quality': 90},
+        verbose_name=_("تصویر اصلی")
+    )
     discounted_price = models.PositiveIntegerField(_("قیمت تخفیف‌خورده"), null=True, blank=True)
     available = models.BooleanField(_("موجود"), default=True)
     tags = TaggableManager(_("تگ‌ها"), blank=True)
@@ -72,7 +80,13 @@ class Product(ModelMeta, models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images', verbose_name=_("محصول"))
-    image = models.ImageField(_("تصویر"), upload_to='products/')
+    image = ProcessedImageField(
+        upload_to='products/',
+        processors=[ResizeToFill(800, 600)],
+        format='JPEG',
+        options={'quality': 90},
+        verbose_name=_("تصویر")
+    )
     alt_text = models.CharField(_("متن جایگزین"), max_length=255, blank=True)
 
     class Meta:
